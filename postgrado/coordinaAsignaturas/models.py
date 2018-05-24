@@ -7,6 +7,9 @@ class Coordinacion(models.Model):
     def __str__(self):
         return self.nomCoord
 
+    class Meta:
+        verbose_name_plural = "Coordinaciones"
+
 class Usuario(models.Model):
     nomUsr = models.CharField(max_length=20, primary_key=True)
     claveUsr = models.CharField(max_length=16)
@@ -21,12 +24,18 @@ class Usuario(models.Model):
     def __str__(self):
         return self.nomUsr
 
+    class Meta:
+        verbose_name_plural = "Usuarios"
+
 class Profesor(models.Model):
     ciProf = models.IntegerField(primary_key=True)
     nomProf = models.CharField(max_length=40)
 
     def __str__(self):
         return self.nomProf
+
+    class Meta:
+        verbose_name_plural = "Profesores"
 
 class Asignatura(models.Model):
     codAsig = models.CharField(max_length=7, primary_key=True)
