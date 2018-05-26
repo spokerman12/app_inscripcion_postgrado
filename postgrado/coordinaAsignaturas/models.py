@@ -7,7 +7,7 @@ import datetime
 
 fecha = datetime.datetime.now()
 
-
+#
 DPTOS = (
     ('EA','Estudios Ambientales'),
     ('CE','Ciencias Económicas y Administrativas'),
