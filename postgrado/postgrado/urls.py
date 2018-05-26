@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-#from . import login
+from postgrado import views
 
 urlpatterns = [
+	url(r'^$', views.login_redirect, name='login_redirect'),
     url(r'^admin/', admin.site.urls),
     url(r'^coordinaAsignaturas/', include('coordinaAsignaturas.urls')),
     #url(r'login/$', login, {'template_name': 'coordinaAsignaturas/login.html'})

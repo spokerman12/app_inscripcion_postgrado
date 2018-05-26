@@ -8,17 +8,17 @@
 	</head>
 	<body>
 	<div>
-		<h1>Sistema de Gestión de Postgrado</h1>
+		<h1>Sistema de ingreso de Postgrado</h1>
+		LOGIN!
+
 		<p>
-			Inicio de sesión
+			Log in aqui
 		</p>
-		<div class="container">
 		<form method="post">
 			{% csrf_token %}
 			{{ form.as_p }}
 			<button type="submit">Ingresar</button>
 		</form>
-		</div>
 	</div>
 	</body>
 </html>
