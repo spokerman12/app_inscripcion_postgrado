@@ -111,6 +111,9 @@ class Coordinacion(models.Model):
     nomCoord    = models.CharField(max_length=4, choices = COORDS)
     asignaturas = models.ManyToManyField(Asignatura)
 
+    class Meta:
+        verbose_name_plural = "Coordinaciones"
+
 class Oferta(models.Model):
     codCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
     trimestre   = models.CharField(max_length=7, choices = TRIMESTRES)
