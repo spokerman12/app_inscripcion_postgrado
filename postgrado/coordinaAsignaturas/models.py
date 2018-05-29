@@ -36,28 +36,34 @@ DPTOS = (
     )
 
 COORDS = (
-    ('BASICO','Ciclo Básico'),
-    ('EGE','Ciclo Profesional'),
-    ('GENERALES','Formación General'),
-    ('CIU','Ciclo de Iniciación Universitaria'),
-    ('QM','Química'),
-    ('MAT','Matemática'),
-    ('BIO','Biología'),
+    ('MAT','Matemáticas'),
+    ('CB','Ciencias Biológicas'),
+    ('CI','Ciencias de la Computación'),
+    ('CAN','Ciencias de los Alimentos y Nutrición'),
     ('FIS','Física'),
-    ('EL','Tecnología e Ingeniería Eléctrica'),
-    ('IE','Tecnología e Ingeniería Electrónica'),
-    ('MEC','Ingeniería Mecánica'),
-    ('IQ','Ingeniería Química'),
-    ('CI','Ingeniería de Computación'),
+    ('QM','Química'),
+    ('DIC','Doctorado Interdisciplinario en Ciencias'),
+    ('CP', 'Ciencia Política'),
+    ('DYA', 'Desarrollo y Ambiente'),
+    ('EDU', 'Educación'),
+    ('EH', 'Estudios Humanos'),
+    ('FLX', 'Filosofía'),
+    ('EGE','Estudios en Gerencia y Economía'),
+    ('LA','Lingüística Aplicada'),
+    ('LIT','Literatura'),
+    ('MUS','Música'),
+    ('PSI','Psicología'),
+    ('EXT','Coordinación de Comercio Exterior y Licenciatura en Comercio Internacional'),
+    ('DEI','Doctorado en Ingeniería'),
+    ('ECO','Estadística Computacional'),
+    ('IE','Ingeniería Electrónica'),
+    ('IT','Ingeniería y Tecnología Eléctrica'),
     ('GC','Ingeniería Geofísica'),
+    ('IM','Ingeniería Mecánica/Civil'),
+    ('IQ','Ingeniería Química'),
     ('MTR','Ingeniería de Materiales'),
-    ('PROD','Ingeniería de Producción y Organización Empresarial'),
-    ('TMMA','Tecnología Mecánica, Mantenimiento Aeronáutico e Ingeniería de Mantenimiento'),
-    ('IT','Ingeniería de Telecomunicaciones'),
-    ('ARQ','Arquitectura'),
-    ('URB','Estudios Urbanos'),
-    ('TUR','Turismo, Hotelería y Hospitalidad'),
-    ('EXT','Comercio Exterior y Licenciatura en Comercio Internacional'),
+    ('IS','Ingeniería de Sistemas'),
+    ('IT','Ingeniería de Telecomunicaciones/Biomédica'),
     ('P-CBA','Postgrado - Ciencias Básicas y Aplicadas'),
     ('P-CSH','Postgrado - Ciencias Sociales y Humanidades'),
     ('P-IT','Postgrado - Ingeniería y Tecnología'),
@@ -101,9 +107,12 @@ class Asignatura(models.Model):
     class Meta:
         ordering = ('nomAsig',)
 
+class Coordinacion(models.Model):
+    nomCoord    = models.CharField(max_length=4, choices = COORDS)
+    asignaturas = models.ManyToManyField(Asignatura)
 
 class Oferta(models.Model):
-    codCoord    = models.CharField(max_length=7, choices = COORDS)
+    codCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
     trimestre   = models.CharField(max_length=7, choices = TRIMESTRES)
     asignaturas = models.ManyToManyField(Asignatura)
     anio        = models.IntegerField(validators=[MinValueValidator(fecha.year),MaxValueValidator(2050)])
