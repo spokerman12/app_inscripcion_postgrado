@@ -2,7 +2,7 @@
 {% if ultimasOfertas %}
     <ul>
     {% for oferta in ultimasOfertas %}
-        <li><a href="/coordinaAsignaturas/{{ oferta.id }}/">{{ oferta.trimestre }}</a></li>
+        <li><a href="/coordinaAsignaturas/oferta/{{ oferta.id }}/">{{ oferta.trimestre }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
