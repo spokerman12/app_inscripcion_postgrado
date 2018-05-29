@@ -63,7 +63,7 @@ COORDS = (
     ('IQ','Ingeniería Química'),
     ('MTR','Ingeniería de Materiales'),
     ('IS','Ingeniería de Sistemas'),
-    ('IT','Ingeniería de Telecomunicaciones/Biomédica'),
+    ('ITB','Ingeniería de Telecomunicaciones/Biomédica'),
     ('P-CBA','Postgrado - Ciencias Básicas y Aplicadas'),
     ('P-CSH','Postgrado - Ciencias Sociales y Humanidades'),
     ('P-IT','Postgrado - Ingeniería y Tecnología'),
