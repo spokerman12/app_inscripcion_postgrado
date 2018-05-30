@@ -121,6 +121,8 @@ class Coordinador(models.Model):
     class Meta:
         verbose_name_plural = "Coordinadores"
 
+
+
 class Oferta(models.Model):
     nomCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
     trimestre   = models.CharField(max_length=7, choices = TRIMESTRES)
