@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+'''
+Ingeniería de Software I - CI3715
+Equipo Null Pointer Exception
+Modelos para la aplicación coordinaAsignaturas
+
+Ver modelo UML e informe técnico para mayor información
+
+'''
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -70,15 +79,6 @@ COORDS = (
     )
 
 TRIMESTRES   = (('E-M','Enero-Marzo'),('A-J','Abril-Julio'),('S-D','Septiembre-Diciembre'))
-
-
-class Coordinador(models.Model):
-    codCoord    = models.CharField(max_length=7, choices = COORDS)
-    usuario     = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name_plural = "Coordinadores"
-
     
 class Profesor(models.Model):
     ciProf      = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(99999999)])
@@ -97,8 +97,7 @@ class Asignatura(models.Model):
                                                 (7,7),(8,8),(9,9),(10,10),(11,11),(12,12),(13,13),(14,14),(15,15)))
     nomAsig     = models.CharField(max_length=80)
     progAsig    = models.CharField(max_length=20)
-    dia         = models.CharField(max_length=20)
-    horas       = models.CharField(max_length=10)
+    diaHora     = models.CharField(max_length=50)
     prof        = models.ForeignKey(Profesor, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -114,8 +113,16 @@ class Coordinacion(models.Model):
     class Meta:
         verbose_name_plural = "Coordinaciones"
 
+
+class Coordinador(models.Model):
+    nomCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
+    usuario     = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Coordinadores"
+
 class Oferta(models.Model):
-    codCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
+    nomCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
     trimestre   = models.CharField(max_length=7, choices = TRIMESTRES)
     asignaturas = models.ManyToManyField(Asignatura)
     anio        = models.IntegerField(validators=[MinValueValidator(fecha.year),MaxValueValidator(2050)])
