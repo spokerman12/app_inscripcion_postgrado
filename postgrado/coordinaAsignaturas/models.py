@@ -110,6 +110,9 @@ class Coordinacion(models.Model):
     nomCoord    = models.CharField(max_length=4, choices = COORDS)
     asignaturas = models.ManyToManyField(Asignatura)
 
+    def __str__(self):
+        return self.nomCoord
+
     class Meta:
         verbose_name_plural = "Coordinaciones"
 
