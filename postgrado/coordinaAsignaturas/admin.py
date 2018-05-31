@@ -1,15 +1,7 @@
-'''
-Universidad Simón Bolívar (USB)
-Ingeniería de Software I - CI3715
-Equipo Null Pointer Exception
-Configuración de panel de administrador de Django
-
-'''
-
 from django.contrib import admin
 from coordinaAsignaturas.models import *
 
-# Registre los modelos aquí
+# Register your models here.
 admin.site.register(Profesor)
 admin.site.register(Asignatura)
 admin.site.register(Oferta)
