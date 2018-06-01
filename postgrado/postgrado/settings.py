@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
 Universidad Simón Bolívar (USB)
 Ingeniería de Software I - CI3715

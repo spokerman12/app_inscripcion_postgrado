@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 from django.shortcuts import render, HttpResponse
 from django.template import loader
 from coordinaAsignaturas.models import *

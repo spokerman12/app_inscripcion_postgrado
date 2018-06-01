@@ -93,8 +93,8 @@ TRIMESTRES   = (('E-M','Enero-Marzo'),('A-J','Abril-Julio'),('S-D','Septiembre-D
 
 # Profesor de la USB
 class Profesor(models.Model):
-    ciProf      = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(99999999)])
-    nomProf     = models.CharField(max_length=40)
+    ciProf      = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(99999999)], primary_key=True)
+    nomProf     = models.CharField(max_length=80)
 
     def __str__(self):
         return self.nomProf
@@ -106,13 +106,13 @@ class Profesor(models.Model):
 # El campo diaHora recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6")
 # a través de la interfaz gráfica.
 class Asignatura(models.Model):
-    codAsig     = models.CharField(max_length=7)
+    codAsig     = models.CharField(max_length=7, primary_key=True)
     codDpto     = models.CharField(max_length=6, choices = DPTOS)
-    creditos    = models.IntegerField(choices = ((1,1),(2,2),(3,3),(4,4),(5,5),(6,6),
+    creditos    = models.IntegerField(choices = ((0,0),(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),
                                                 (7,7),(8,8),(9,9),(10,10),(11,11),(12,12),(13,13),(14,14),(15,15)))
     nomAsig     = models.CharField(max_length=80)
     progAsig    = models.CharField(max_length=20)
-    diaHora     = models.CharField(max_length=52)
+    diaHora     = models.CharField(max_length=60)
     prof        = models.ForeignKey(Profesor, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -124,7 +124,7 @@ class Asignatura(models.Model):
 # Coordinación de postgrado
 # Puede tener muchas asignaturas asociadas sin importar el departamento.
 class Coordinacion(models.Model):
-    nomCoord    = models.CharField(max_length=4, choices = COORDS)
+    nomCoord    = models.CharField(max_length=4, choices = COORDS, primary_key=True)
     asignaturas = models.ManyToManyField(Asignatura)
 
     def __str__(self):
@@ -137,7 +137,7 @@ class Coordinacion(models.Model):
 # Tiene un usuario Django asociado con permisología específica
 class Coordinador(models.Model):
     nomCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
-    usuario     = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario     = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
     class Meta:
         verbose_name_plural = "Coordinadores"
@@ -182,5 +182,5 @@ class Inscripcion(models.Model):
 # Necesita tener alguna inscripción para contar como estudiante.
 class Estudiante(models.Model):
     usuario         = models.OneToOneField(User, on_delete=models.CASCADE)
-    carnet          = models.CharField(max_length=12)
+    carnet          = models.CharField(max_length=12, primary_key=True)
     inscripciones   = models.ManyToManyField(Inscripcion)
