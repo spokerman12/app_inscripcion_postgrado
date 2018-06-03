@@ -11,9 +11,8 @@ Ver modelo UML e informe técnico para mayor información
 '''
 
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-import datetime
+import datetime, hashlib
 
 fecha = datetime.datetime.now()
 
@@ -91,6 +90,24 @@ TRIMESTRES   = (('E-M','Enero-Marzo'),('A-J','Abril-Julio'),('S-D','Septiembre-D
 # Las clases descritas a continuación siguen el orden de dependencia igual al que
 # poseen actualmente. Modificar con cuidado
 
+# Usuario del sistema de postgrado
+class Usuario(models.Model):
+    username    = models.EmailField(max_length=30, primary_key=True)
+    password    = models.CharField(max_length=64, null=False)
+    nombres     = models.CharField(max_length=80)
+    apellidos   = models.CharField(max_length=80)
+
+    def crearUsuario(self,usr,pwd):
+        self.username = usr
+        m = hashlib.sha256()
+        p = str.encode(pwd)
+        m.update(p)
+        self.password = m.hexdigest()
+
+    def __str__(self):
+        return self.username
+
+
 # Profesor de la USB
 class Profesor(models.Model):
     ciProf      = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(99999999)], primary_key=True)
@@ -124,20 +141,45 @@ class Asignatura(models.Model):
 # Coordinación de postgrado
 # Puede tener muchas asignaturas asociadas sin importar el departamento.
 class Coordinacion(models.Model):
-    nomCoord    = models.CharField(max_length=4, choices = COORDS, primary_key=True)
-    asignaturas = models.ManyToManyField(Asignatura)
-
-    def __str__(self):
-        return self.nomCoord
+    nomCoord      = models.CharField(max_length=15, choices = COORDS, primary_key=True)
+    asignaturas = models.ManyToManyField(Asignatura, blank = True, null = True)
 
     class Meta:
         verbose_name_plural = "Coordinaciones"
 
+    def __str__(self):
+        return self.nomCoord
+'''
+
+    def __repr__(self):
+        return self.__str__
+
+    def __init__(self, nombre: str) -> bool:
+        #Hay que revisar si explota cuando nombre no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
+        self.nombre = nombre
+        return True
+
+    def agregar_asignatura_existente(self, asignatura: Asignatura) -> bool:
+        #Hay que revisar si explota cuando asignatura no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
+        #Hay que revisar si explota cuando asignatura no tiene id (es decir, no esta en la base de datos)
+        self.asignatura.add(asignatura)
+        return True
+
+    def agregar_asignatura_nueva(self, diccionario que viene desde frontend) -> bool:
+        #Hay que revisar si explota cuando asignatura no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
+        #Hay que revisar si explota cuando asignatura no tiene id (es decir, no esta en la base de datos)
+        materia = Asignatura()
+        """Aqui se hacen las operaciones para generar la instancia valida, poner campos, blah blah blah"""
+        materia.save()
+        self.asignatura.add(materia)
+        return True
+'''
+
 # Coordinador de coordinación de postgrado
 # Tiene un usuario Django asociado con permisología específica
 class Coordinador(models.Model):
-    nomCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
-    usuario     = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    usuario          = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+    coordinacion   = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name_plural = "Coordinadores"
@@ -145,7 +187,7 @@ class Coordinador(models.Model):
 # Oferta de asignaturas proveniente de una coordinación de postgrado
 # Puede tener muchas asignaturas. Es una oferta con trimestre y año.
 class Oferta(models.Model):
-    nomCoord    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
+    coordinacion    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
     trimestre   = models.CharField(max_length=7, choices = TRIMESTRES)
     asignaturas = models.ManyToManyField(Asignatura)
     anio        = models.IntegerField(validators=[MinValueValidator(fecha.year),MaxValueValidator(2050)])
@@ -181,6 +223,36 @@ class Inscripcion(models.Model):
 # Está asociado a un usuario Django
 # Necesita tener alguna inscripción para contar como estudiante.
 class Estudiante(models.Model):
-    usuario         = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario         = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     carnet          = models.CharField(max_length=12, primary_key=True)
     inscripciones   = models.ManyToManyField(Inscripcion)
+
+
+
+# Una sesion en el sistema
+class Sesion(models.Model):
+    usuario     = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+
+    # Retorna Booleano
+    def validaUsuario(self,usr,pwd):
+        try:
+            q = Usuario.objects.get(pk=usr)
+            m = hashlib.sha256()
+            p = str.encode(pwd)
+            m.update(p)
+            if (m.hexdigest()==q.password):
+                self.usuario = q
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    # Retorna la coordinacion o False
+    def getCoordinacion(self):
+        try:
+            coordinador = Coordinador.objects.get(pk=self.usuario)
+            coordinacion = coordinador.coordinacion
+            return coordinacion
+        except:
+            return False
