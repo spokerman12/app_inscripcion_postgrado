@@ -14,7 +14,7 @@ urlpatterns = [
 	url(r'^ver/$', views.vistaAsignaturas, name='verAsignaturas'),
 	#url(r'^agregar/', views.agregarAsignatura),
 	#url(r'^editar/', views.editarAsignatura),
-	path('editar/', views.editarAsignatura, name='editarAsignatura'),
+	path('modificar/', views.modificarAsignatura, name='modificarAsignatura'),
 	path('agregar/', views.agregarAsignatura, name='agregarAsignatura'),
 	path('detalles/', views.detallesAsignatura, name='detallesAsignatura'),
 	path('principal/', views.principal, name='principal'),

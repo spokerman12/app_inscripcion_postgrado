@@ -51,13 +51,27 @@ def vistaAsignaturas(request):
 
 # Agregar una asignatura #
 def agregarAsignatura(request):
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
     if request.method == 'POST':
-      form = FormularioAsignatura(request.POST)
+      form = FormCrearAsignatura(request.POST)
       args = {'form' : form}
       if form.is_valid():
           form.save()
     else :
-      args = {'form' : FormularioAsignatura()}
+      args = {'form' : FormCrearAsignatura()}
+    return render(request, 'coordinaAsignaturas/agregar_asignatura.html', args)
+
+def modificarAsignatura(request):
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
+    if request.method == 'POST':
+      form = FormModificarAsignatura(request.POST)
+      args = {'form' : form}
+      if form.is_valid():
+          form.save()
+    else :
+      return redirect('/coordinaAsignaturas/login')
     return render(request, 'coordinaAsignaturas/agregar_asignatura.html', args)
 
 # Editar una asignatura #
