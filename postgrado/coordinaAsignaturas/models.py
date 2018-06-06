@@ -372,3 +372,13 @@ def obtenAsignaturasBack(usr):
         return asignaturas
     except:
         return False
+
+def buscaAsignaturasBack(usr,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
+    try:
+        usuario = Usuario.objects.get(pk=usr)
+        s = Sesion()
+        s.usuario = usuario
+        asignaturas = s.obtenCoordinacion().buscaAsignatura(codAsig,nomAsig,creditos,progAsig)
+        return asignaturas
+    except:
+        return False

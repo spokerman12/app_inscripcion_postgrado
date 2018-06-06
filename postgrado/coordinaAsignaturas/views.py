@@ -36,11 +36,10 @@ def vistaOfertas(request, oferta_id):
 # Ver las asisnaturas #
 def vistaAsignaturas(request):
     if 'username' in request.session.keys():
-        args = {'perro' : request.session['username']}
+        args = {'usuario' : request.session['username']}
         if request.method == 'POST' :
             try:
-                #busqueda
-                args['asignaturas'] = obtenAsignaturasBack(request.session['username'])
+                args['asignaturas'] = buscaAsignaturasBack(request.session['username'],codAsig=request.POST['search'],nomAsig=request.POST['search'])
             except:
                 args['asignaturas'] = []
         else :
