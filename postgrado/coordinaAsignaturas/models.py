@@ -97,16 +97,25 @@ class Usuario(models.Model):
     nombres     = models.CharField(max_length=80)
     apellidos   = models.CharField(max_length=80)
 
+    # Recibe strings. Devuelve Bool
     def crearUsuario(self,usr,pwd):
-        self.username = usr
-        m = hashlib.sha256()
-        p = str.encode(pwd)
-        m.update(p)
-        self.password = m.hexdigest()
+
+        try:
+            self.username = usr
+            m = hashlib.sha256()
+            p = str.encode(pwd)
+            m.update(p)
+            self.password = m.hexdigest()
+            self.save()
+            return True
+        except:
+            return False
 
     def __str__(self):
         return self.username
 
+    class Meta:
+        app_label = 'coordinaAsignaturas'
 
 # Profesor de la USB
 class Profesor(models.Model):
@@ -118,6 +127,7 @@ class Profesor(models.Model):
 
     class Meta:
         verbose_name_plural = "Profesores"
+        app_label = 'coordinaAsignaturas'
 
 # Asignatura de postgrado
 # El campo diaHora recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6")
@@ -137,18 +147,107 @@ class Asignatura(models.Model):
 
     class Meta:
         ordering = ('nomAsig',)
+        app_label = 'coordinaAsignaturas'
+
+    # Elimina asignatura de la base. Devuelve bool
+    def eliminarAsignatura(self):
+        try:
+            return self.delete()
+        except:
+            return False
+
+    # Recibe codigo string. Devuelve objeto asignatura
+    def obtenAsignatura(self,cod):
+        try:
+            codA = cod.upper()
+            return self.get(pk=codA)
+        except:
+            return False
 
 # Coordinación de postgrado
 # Puede tener muchas asignaturas asociadas sin importar el departamento.
 class Coordinacion(models.Model):
-    nomCoord      = models.CharField(max_length=15, choices = COORDS, primary_key=True)
-    asignaturas = models.ManyToManyField(Asignatura, blank = True, null = True)
+    nomCoord    = models.CharField(max_length=15, choices = COORDS, primary_key=True)
+    asignaturas = models.ManyToManyField(Asignatura, blank = True)
 
     class Meta:
+        app_label = 'coordinaAsignaturas'
         verbose_name_plural = "Coordinaciones"
 
     def __str__(self):
         return self.nomCoord
+
+    # ciprof y creditos son int. Los demas string.
+    # Devuelve bool
+    def agregaAsignaturaNueva(self,codAsig,codDpto,creditos,nomAsig,progAsig,diaHora,ciprof):
+        asig = Asignatura()
+
+        try:
+            asig.codAsig = codAsig
+            asig.codDpto = codDpto
+            asig.creditos = creditos
+            asig.nomAsig = nomAsig
+            asig.progAsig = progAsig
+            asig.diaHora = diaHora
+            asig.prof = Profesor.objects.get(pk=ciprof)
+            asig.save()
+            self.save()
+            self.asignaturas.add(Asignatura.objects.get(pk=codAsig))
+            return True
+        except:
+            return False
+
+    # Recibe el codigo de la asignatura. Devuelve bool
+    def agregaAsignaturaExistente(self,codAsig):
+        
+        try:
+            self.asignaturas.add(Asignatura.objects.get(pk=codAsig))
+            self.save()
+            return True
+        except:
+            return False
+
+    # Recibe codigo string. Devuelve objeto asignatura
+    def obtenAsignatura(self,cod):
+        try:
+            codA = cod.upper()
+            return self.asignaturas.get(pk=codA)
+        except:
+            return False
+
+    # Devuelve lista de asignaturas
+    def obtenAsignaturas(self):
+        try:
+            return list(self.asignaturas.all())
+        except:
+            return False
+
+    # Toma codigo string, devuelve bool. Elimina de la coordinacion.
+    def eliminaAsignatura(self,cod):
+        try:
+            codA = cod.upper()
+            self.asignaturas.remove(codA)
+            return True
+        except:
+            return False
+
+    def buscaAsignatura(self,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
+
+        try:
+            por_cod = self.asignaturas.filter(codAsig__iexact=str(codAsig))
+            por_nom = self.asignaturas.filter(nomAsig__icontains=str(nomAsig))
+            por_cred = self.asignaturas.filter(creditos__exact=creditos)
+            por_progAsig = self.asignaturas.filter(progAsig__icontains=str(progAsig))
+
+            result = set(por_cod).union(por_nom)
+            result = set(result).union(por_cred)
+            result = set(result).union(por_progAsig)
+
+            return(list(result))
+
+        except:
+            return False
+
 '''
 
     def __repr__(self):
@@ -182,6 +281,7 @@ class Coordinador(models.Model):
     coordinacion   = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
 
     class Meta:
+        app_label = 'coordinaAsignaturas'
         verbose_name_plural = "Coordinadores"
 
 # Oferta de asignaturas proveniente de una coordinación de postgrado
@@ -196,6 +296,7 @@ class Oferta(models.Model):
         return (str(self.trimestre)+" "+str(self.anio))
 
     class Meta:
+        app_label = 'coordinaAsignaturas'
         ordering = ('anio',)
 
 # Inscripción de un estudiante
@@ -217,6 +318,7 @@ class Inscripcion(models.Model):
         return (suma)
 
     class Meta:
+        app_label = 'coordinaAsignaturas'
         verbose_name_plural = "Inscripciones"
 
 # Estudiante de postgrado
@@ -227,13 +329,14 @@ class Estudiante(models.Model):
     carnet          = models.CharField(max_length=12, primary_key=True)
     inscripciones   = models.ManyToManyField(Inscripcion)
 
-
+    class Meta:
+        app_label = 'coordinaAsignaturas'
 
 # Una sesion en el sistema
 class Sesion(models.Model):
     usuario     = models.ForeignKey(Usuario, on_delete=models.PROTECT)
 
-    # Retorna Booleano
+    # Recibe strings. Retorna Booleano
     def validaUsuario(self,usr,pwd):
         try:
             q = Usuario.objects.get(pk=usr)
@@ -248,11 +351,14 @@ class Sesion(models.Model):
         except:
             return False
 
-    # Retorna la coordinacion o False
-    def getCoordinacion(self):
+    # Retorna la coordinacion del usuario activo o False
+    def obtenCoordinacion(self):
         try:
             coordinador = Coordinador.objects.get(pk=self.usuario)
             coordinacion = coordinador.coordinacion
             return coordinacion
         except:
             return False
+
+    class Meta:
+        app_label = 'coordinaAsignaturas'
