@@ -11,15 +11,9 @@ def home(request):
         form = LoginForm(request.POST)
         args = {'form': form}
         if form.is_valid() :
-            sesion = Sesion()
-            if sesion.validaUsuario(form['username'].value(),form['password'].value()):
-                args['sesion'] = sesion
-                context = { 'asignaturas' : args['sesion'].obtenCoordinacion().obtenAsignaturas()}
-                return render(request,'coordinaAsignaturas/ver_asignaturas.html',context)
-                
-                
-
-
+            request.session['username'] = form.cleaned_data['username']
+            return redirect('/coordinaAsignaturas/ver')
+            pass
     else :
         args = {'form': LoginForm()}
     return render(request, 'coordinaAsignaturas/login.html', args)
@@ -41,15 +35,20 @@ def vistaOfertas(request, oferta_id):
 
 # Ver las asisnaturas #
 def vistaAsignaturas(request):
-    if request.method == 'POST' :
-        try:
-            coordinacion = args['']
-            args = {'asignaturas' : Asignatura.objects(coordinacion.obtenAsignaturas())}
-        except:
-            args = {'asignaturas' : []}
+    if 'username' in request.session.keys():
+        args = {'perro' : request.session['username']}
+        if request.method == 'POST' :
+            try:
+                #busqueda
+                args['asignaturas'] = obtenAsignaturasBack(request.session['username'])
+            except:
+                args['asignaturas'] = []
+        else :
+            #args['asignaturas'] = coordinacion.obtenAsignaturas()
+            args['asignaturas'] = obtenAsignaturasBack(request.session['username'])
+        return render(request, 'coordinaAsignaturas/ver_asignaturas.html', args)
     else :
-        args = {'asignaturas' : Asignatura.objects.all()}
-    return render(request, 'coordinaAsignaturas/ver_asignaturas.html', args)
+        return redirect('/coordinaAsignaturas/login')
 
 # Agregar una asignatura #
 def agregarAsignatura(request):

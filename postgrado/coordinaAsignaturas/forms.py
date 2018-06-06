@@ -19,7 +19,8 @@ class LoginForm(forms.Form) :
             p = str.encode(pwd)
             m.update(p)
             if (m.hexdigest()==q.password):
-                self.usuario = q
+                pass
+                #self.usuario = q
             else:
                 self.add_error('username', 'Usuario o clave incorrecto')
         except Usuario.DoesNotExist:

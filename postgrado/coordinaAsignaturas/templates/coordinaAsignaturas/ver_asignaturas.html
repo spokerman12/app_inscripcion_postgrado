@@ -1,18 +1,18 @@
+<p>
+Bienvenido,
+{{asignaturas}}
+</p>
+
 <form method='post'>
 	<input type='text' name='search'>
 	<input type='submit' name='search'>
-</form>>
+</form>
 <table>
 	<tr>
 		<td>Codigo Asignaturas</td>
 		<td>Nombre Asignaturas</td>
 	</tr>
-{% for a in asignaturas %}
-	<tr>
-		<td>{{ a.codAsig }}</td>
-		<td>{{ a.nomAsig }}</td>
-	</tr>
-{% endfor %}
 </table>
 
-<a href="/coordinaAsignaturas/agregar">Agregar Asignatural</a>
+<a href="/coordinaAsignaturas/agregar">Agregar Asignatura</a>
+<a href="/coordinaAsignaturas/">Salir</a>

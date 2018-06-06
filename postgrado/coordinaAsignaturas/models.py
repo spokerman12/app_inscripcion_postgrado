@@ -362,3 +362,13 @@ class Sesion(models.Model):
 
     class Meta:
         app_label = 'coordinaAsignaturas'
+
+def obtenAsignaturasBack(usr):
+    try:
+        usuario = Usuario.objects.get(pk=usr)
+        s = Sesion()
+        s.usuario = usuario
+        asignaturas = s.obtenCoordinacion().obtenAsignaturas()
+        return asignaturas
+    except:
+        return False
