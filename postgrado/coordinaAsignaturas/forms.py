@@ -2,8 +2,31 @@
 
 
 from django import forms
-from coordinaAsignaturas.models import Asignatura
+from coordinaAsignaturas.models import *
+import hashlib
  
+class LoginForm(forms.Form) :
+    username = forms.EmailField(max_length=30)
+    password = forms.CharField(max_length=64, widget=forms.PasswordInput)
+
+    def clean(self):
+        limpio = super(LoginForm, self).clean()
+        usr = limpio.get('username')
+        pwd = limpio.get('password')
+        try:
+            q = Usuario.objects.get(pk=usr)
+            m = hashlib.sha256()
+            p = str.encode(pwd)
+            m.update(p)
+            if (m.hexdigest()==q.password):
+                self.usuario = q
+            else:
+                self.add_error('username', 'Usuario o clave incorrecto')
+        except Usuario.DoesNotExist:
+            self.add_error('username', 'Usuario o clave incorrecto')
+        return limpio
+
+
 class FormularioAsignatura(forms.ModelForm):
     lun = forms.BooleanField(required=False)
     lun_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
