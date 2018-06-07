@@ -1,0 +1,22 @@
+<p>
+Bienvenido,
+{{usuario}}
+</p>
+
+
+<form method='post'>
+	{% csrf_token %}
+	<input type='text' name='search'>
+	<input type='submit'>
+<a href="/coordinaAsignaturas/agregar">Agregar Asignatura</a>
+<a href="/coordinaAsignaturas/">Salir</a>
+</form>
+<table>
+	{% for a in asignaturas %}
+	<tr>
+		<td>{{ a.codAsig }}</td>
+		<td>{{ a.nomAsig }}</td>
+		<td>{{ a.diaHora }}</td>
+	</tr>
+	{% endfor %}
+</table>

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 from django.contrib import admin
 from coordinaAsignaturas.models import *
 
@@ -9,3 +12,4 @@ admin.site.register(Inscripcion)
 admin.site.register(Estudiante)
 admin.site.register(Coordinador)
 admin.site.register(Coordinacion)
+admin.site.register(Usuario)
