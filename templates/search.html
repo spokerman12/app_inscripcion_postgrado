@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% block head %}
+		<meta charset="utf-8">
+		<title>Sistema de Postgrado</title>
+		{% endblock %}
+	</head>
+	<body>
+
+	<form method="get" action="/search/">
+	  Search Notecards:<input type="text" name="q" id="id_q" value="{{ query }}"/>
+	  <input type="submit" value="Search" />
+	</form>
+
+	</body>
+</html>
