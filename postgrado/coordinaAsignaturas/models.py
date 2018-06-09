@@ -141,6 +141,7 @@ class Asignatura(models.Model):
     progAsig    = models.CharField(max_length=20)
     diaHora     = models.CharField(max_length=60)
     prof        = models.ForeignKey(Profesor, on_delete=models.PROTECT)
+    vista       = models.BooleanField(default = False)
 
     def __str__(self):
         return self.nomAsig
