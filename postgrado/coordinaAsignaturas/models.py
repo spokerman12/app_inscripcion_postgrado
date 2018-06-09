@@ -129,6 +129,7 @@ class Profesor(models.Model):
         verbose_name_plural = "Profesores"
         app_label = 'coordinaAsignaturas'
 
+
 # Asignatura de postgrado
 # El campo diaHora recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6")
 # a través de la interfaz gráfica.
@@ -160,7 +161,7 @@ class Asignatura(models.Model):
     def obtenAsignatura(self,cod):
         try:
             codA = cod.upper()
-            return self.get(pk=codA)
+            return Asignatura.objects.get(pk=codA)
         except:
             return False
 
@@ -248,36 +249,11 @@ class Coordinacion(models.Model):
         except:
             return False
 
-'''
-
-    def __repr__(self):
-        return self.__str__
-
-    def __init__(self, nombre: str) -> bool:
-        #Hay que revisar si explota cuando nombre no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
-        self.nombre = nombre
-        return True
-
-    def agregar_asignatura_existente(self, asignatura: Asignatura) -> bool:
-        #Hay que revisar si explota cuando asignatura no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
-        #Hay que revisar si explota cuando asignatura no tiene id (es decir, no esta en la base de datos)
-        self.asignatura.add(asignatura)
-        return True
-
-    def agregar_asignatura_nueva(self, diccionario que viene desde frontend) -> bool:
-        #Hay que revisar si explota cuando asignatura no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
-        #Hay que revisar si explota cuando asignatura no tiene id (es decir, no esta en la base de datos)
-        materia = Asignatura()
-        """Aqui se hacen las operaciones para generar la instancia valida, poner campos, blah blah blah"""
-        materia.save()
-        self.asignatura.add(materia)
-        return True
-'''
 
 # Coordinador de coordinación de postgrado
 # Tiene un usuario Django asociado con permisología específica
 class Coordinador(models.Model):
-    usuario          = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+    usuario        = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
     coordinacion   = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
 
     class Meta:
@@ -363,7 +339,7 @@ class Sesion(models.Model):
     class Meta:
         app_label = 'coordinaAsignaturas'
 
-def obtenAsignaturasBack(usr):
+def obtenAsignaturas():
     try:
         usuario = Usuario.objects.get(pk=usr)
         s = Sesion()
@@ -373,12 +349,30 @@ def obtenAsignaturasBack(usr):
     except:
         return False
 
-def buscaAsignaturasBack(usr,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
+def buscaAsignaturas(usr,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
     try:
         usuario = Usuario.objects.get(pk=usr)
         s = Sesion()
         s.usuario = usuario
         asignaturas = s.obtenCoordinacion().buscaAsignatura(codAsig,nomAsig,creditos,progAsig)
         return asignaturas
+    except:
+        return False
+
+
+def eliminaAsignatura(codAsig):
+    try:
+        q = Asignatura().obtenAsignatura(codAsig).delete()
+        return q
+    except:
+        return False
+
+def eliminaAsignaturaDeCoord(usr,codAsig):
+    try:
+        usuario = Usuario.objects.get(pk=usr)
+        s = Sesion()
+        s.usuario = usuario
+        s.obtenCoordinacion().asignaturas.remove(codAsig)
+        return True
     except:
         return False
