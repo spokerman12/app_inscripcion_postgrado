@@ -10,6 +10,7 @@ Bienvenido,
 	<input type='submit'>
 <a href="/coordinaAsignaturas/agregar">Agregar Asignatura</a>
 <a href="/coordinaAsignaturas/">Salir</a>
+
 </form>
 <table>
 	{% for a in asignaturas %}
@@ -17,6 +18,7 @@ Bienvenido,
 		<td>{{ a.codAsig }}</td>
 		<td>{{ a.nomAsig }}</td>
 		<td>{{ a.diaHora }}</td>
+		<td><a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=a.codAsig %}">Modificar Asignatura</a></td>
 	</tr>
 	{% endfor %}
 </table>

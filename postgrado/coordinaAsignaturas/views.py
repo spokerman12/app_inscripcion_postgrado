@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.template import loader
 from coordinaAsignaturas.models import *
 from coordinaAsignaturas.forms import *
@@ -33,18 +33,18 @@ def vistaOfertas(request, oferta_id):
     #return render(request, 'coordinaAsignaturas/oferta.html', context)
     pass
 
-# Ver las asisnaturas #
+# Ver las asignaturas #
 def vistaAsignaturas(request):
     if 'username' in request.session.keys():
         args = {'usuario' : request.session['username']}
         if request.method == 'POST' :
             try:
-                args['asignaturas'] = buscaAsignaturasBack(request.session['username'],codAsig=request.POST['search'],nomAsig=request.POST['search'])
+                args['asignaturas'] = buscaAsignaturas(request.session['username'],codAsig=request.POST['search'],nomAsig=request.POST['search'])
             except:
                 args['asignaturas'] = []
         else :
             #args['asignaturas'] = coordinacion.obtenAsignaturas()
-            args['asignaturas'] = obtenAsignaturasBack(request.session['username'])
+            args['asignaturas'] = obtenAsignaturas(request.session['username'])
         return render(request, 'coordinaAsignaturas/ver_asignaturas.html', args)
     else :
         return redirect('/coordinaAsignaturas/login')
@@ -62,16 +62,22 @@ def agregarAsignatura(request):
       args = {'form' : FormCrearAsignatura()}
     return render(request, 'coordinaAsignaturas/agregar_asignatura.html', args)
 
-def modificarAsignatura(request):
+def modificarAsignatura(request, codAsig):
+    asig = get_object_or_404(Asignatura, codAsig=codAsig)
+    
     if not('username' in request.session.keys()):
         return redirect('/coordinaAsignaturas/login')
-    if request.method == 'POST':
-      form = FormModificarAsignatura(request.POST)
-      args = {'form' : form}
-      if form.is_valid():
-          form.save()
+    if request.method == "POST":
+        form = FormCrearAsignatura(request.POST, instance=asig)
+        args = {'form' : form}
+        if form.is_valid():
+            aux = form.save(commit=False)
+            #Aqui guardar la asignatura para la coordinacion#
+            aux.save()
+            return redirect('/coordinaAsignaturas/ver')
     else :
-      return redirect('/coordinaAsignaturas/login')
+        form = FormCrearAsignatura(instance=codAsig)
+        #return redirect('/coordinaAsignaturas/login')
     return render(request, 'coordinaAsignaturas/agregar_asignatura.html', args)
 
 # Editar una asignatura #
