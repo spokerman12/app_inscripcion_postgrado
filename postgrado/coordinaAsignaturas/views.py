@@ -13,7 +13,6 @@ def home(request):
         if form.is_valid() :
             request.session['username'] = form.cleaned_data['username']
             return redirect('/coordinaAsignaturas/ver')
-            pass
     else :
         args = {'form': LoginForm()}
     return render(request, 'coordinaAsignaturas/login.html', args)
@@ -45,6 +44,8 @@ def vistaAsignaturas(request):
         else :
             #args['asignaturas'] = coordinacion.obtenAsignaturas()
             args['asignaturas'] = obtenAsignaturas(request.session['username'])
+            if not args['asignaturas'] :
+                args['asignaturas'] = []
         return render(request, 'coordinaAsignaturas/ver_asignaturas.html', args)
     else :
         return redirect('/coordinaAsignaturas/login')
@@ -58,13 +59,13 @@ def agregarAsignatura(request):
       args = {'form' : form}
       if form.is_valid():
           form.save()
+          return redirect('/coordinaAsignaturas/ver')
     else :
       args = {'form' : FormCrearAsignatura()}
     return render(request, 'coordinaAsignaturas/agregar_asignatura.html', args)
 
 def modificarAsignatura(request, codAsig):
     asig = get_object_or_404(Asignatura, codAsig=codAsig)
-    
     if not('username' in request.session.keys()):
         return redirect('/coordinaAsignaturas/login')
     if request.method == "POST":
@@ -79,6 +80,16 @@ def modificarAsignatura(request, codAsig):
         form = FormCrearAsignatura(instance=codAsig)
         #return redirect('/coordinaAsignaturas/login')
     return render(request, 'coordinaAsignaturas/agregar_asignatura.html', args)
+
+def eliminarAsignatura(request, codAsig):
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
+    try :
+        asig = Asignatura.objects.get(pk=codAsig)
+        asig.delete()
+        return redirect('/coordinaAsignaturas/ver')
+    except :
+        return redirect('/coordinaAsignaturas/ver')
 
 # Editar una asignatura #
 def editarAsignatura(request):

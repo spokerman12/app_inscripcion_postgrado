@@ -12,6 +12,7 @@ urlpatterns = [
 	url(r'^login/$', views.home),
 	url(r'^logout/$', login, {'template_name': 'coordinaAsignaturas/logout.html'}),
 	url(r'^ver/$', views.vistaAsignaturas, name='verAsignaturas'),
+	url(r'^eliminar/(?P<codAsig>[-\w]+)', views.eliminarAsignatura, name="eliminarAsignatura"),
 	#url(r'^agregar/', views.agregarAsignatura),
 	#url(r'^editar/', views.editarAsignatura),
 	path('modificar/(?P<codAsig>[-\w]+)', views.modificarAsignatura, name='modificarAsignatura'),
