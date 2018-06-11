@@ -151,11 +151,32 @@
                     <div class="row clearfix">
                         <form method="post" novalidate>
                         {% csrf_token %}
-                          <table border="1">
-  {{ form }}
-  </table>
-  <button type="submit">Submit</button>
+                        {{ form.codAsig }}
+                        {{ form.nomAsig }}
+                        {{ form.creditos }}
+                        {{ form.codDpto }}
+                        {{ form.progAsig }}
+                        {{ form.prof}}
+                        {{ form.vista }}
+                        {{ form.lun}}
+                        {{ form.lun_inicio}}
+                        {{ form.lun_fin}}
+                        {{ form.mar}}
+                        {{ form.mar_inicio}}
+                        {{ form.mar_fin}}
+                        {{ form.mie}}
+                        {{ form.mie_inicio}}
+                        {{ form.mie_fin}}
+                        {{ form.jue}}
+                        {{ form.jue_inicio}}
+                        {{ form.jue_fin}}
+                        {{ form.vie}}
+                        {{ form.vie_inicio}}
+                        {{ form.vie_fin}}
+
+                        <button type="submit">Submit</button>
                         </form>
+
                     </div>
                 </div>
             </div>
