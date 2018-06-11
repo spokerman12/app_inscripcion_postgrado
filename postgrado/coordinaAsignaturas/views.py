@@ -58,8 +58,8 @@ def agregarAsignatura(request):
         args = {'form' : form}
         if form.is_valid():
             form.save()
-            agregaAsignaturaACoord(request.session['username'],form.codAsig)
-            return redirect('/coordinaAsignaturas/ver')     
+            data = form.cleaned_data
+            agregaAsignaturaACoord(request.session['username'],data['codAsig'])
     else :
         args = {'form' : FormCrearAsignatura()}
     return render(request, 'coordinaAsignaturas/agregarAsignatura.html', args)
