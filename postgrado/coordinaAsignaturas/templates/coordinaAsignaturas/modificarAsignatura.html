@@ -75,7 +75,7 @@
             <div class="user-info">
                 <div class="info-container">
                     <div class="name font-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h4>Post Grado Ciencias</h4></div>
-                    <div class="email">postgradociencias@usb.ve</div>
+                    <div class="email">{{username}}</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -101,19 +101,19 @@
                         </a>
                     </li>
                     <li class="active">
-                        <a href="{% url 'coordinaAsignaturas:verAsignatura' %}">
+                        <a href="index.html">
                             <i class="material-icons">business</i>
                             <span>Asignaturas</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="index.html">
                             <i class="material-icons">toc</i>
                             <span>Programas</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="index.html">
                             <i class="material-icons">subject</i>
                             <span>Ofertas</span>
                         </a>
@@ -129,66 +129,28 @@
             <div class="card">
                 <div class="header">
                     <h2>
-                        Detalles de  Evaluación del Impacto ambiental del Desarrollo <i class="material-icons col-amber">search</i>
-                        <small>Aquí podrás añadir una nueva asignatura a tu coordinación</small>
+                        Modificar Asignatura <i class="material-icons col-amber">edit</i>
+                        <small>Aquí podrá modificar una asignatura existente</small>
                     </h2>
     
                 </div>
                 <div class="body">
                     <div class="row clearfix">
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.codAsig }}" />
-                                </div>
+                            <form method="POST" class="post-form">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                            <!--<button type="submit" class="save btn btn-default">Save</button>-->
+                            <div class="">
+                                <button type="submit" class="btn bg-amber waves-effect .align-right">
+                                <i class="material-icons">save</i>
+                                <span>Guardar</span>
+                                 </button>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.creditos }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.prof.nomProf }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.nomAsig }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.diaHora }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.progAsig }}" />
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="">
-                    <a href="{% url 'coordinaAsignaturas:editarAsignatura' codAsig=asignatura.codAsig %}"><button type="button" class="btn bg-amber waves-effect waves-amber .align-right">
-                        <i class="material-icons">edit</i>
-                        <span>Editar</span>
-                    </button></a>
-                    <button type="button" class="btn bg-red waves-effect waves-red .align-right">
-                        <i class="material-icons">delete</i>
-                        <span>Eliminar</span>
-                    </button>
-                </div>
+                    
                 </div>
             </div>
         </div>
@@ -233,7 +195,7 @@
     <script src="{% static 'js/admin.js' %}"></script>
 
     <!-- Demo Js -->
-    <script src="{% static 'js/demo.js' %}"></script>
+    <script src="{% static 'js/demo.js' %} "></script>
 </body>
 
 </html>
