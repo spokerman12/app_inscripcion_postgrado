@@ -61,7 +61,7 @@ def agregarAsignatura(request):
             data = form.cleaned_data
             agregaAsignaturaACoord(request.session['username'],data['codAsig'])
             args['asignaturas'] = obtenAsignaturas(request.session['username'])
-            return render(request, 'coordinaAsignaturas/asignaturas.html', args)
+            return redirect('/coordinaAsignaturas/ver')
     else :
         args = {'form' : FormCrearAsignatura()}
     return render(request, 'coordinaAsignaturas/agregarAsignatura.html', args)
@@ -80,6 +80,16 @@ def editarAsignatura(request, codAsig):
     else :
         form =  FormModificarAsignatura(instance=asignatura)
     return render(request, 'coordinaAsignaturas/editAsignatura.html', {'form' : form})
+
+def eliminarAsignatura(request, codAsig):
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
+    try :
+        asig = Asignatura.objects.get(pk=codAsig)
+        asig.delete()
+        return redirect('/coordinaAsignaturas/ver')
+    except :
+        return redirect('/coordinaAsignaturas/ver')
 
 def detallesAsignatura(request, codAsig):
     asignatura = get_object_or_404(Asignatura, codAsig=codAsig)

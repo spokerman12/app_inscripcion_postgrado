@@ -215,9 +215,9 @@
                                                     <button type="button" data-toggle="tooltip" data-placement="top" title="Editar" data-original-title="Editar" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Quitar" data-original-title="Quitar" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
+                                                    <a href="{% url 'coordinaAsignaturas:eliminarAsignatura' codAsig=a.codAsig %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Quitar" data-original-title="Quitar" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
                                                         <i class="material-icons">clear</i>
-                                                    </button>
+                                                    </button></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}

@@ -13,6 +13,7 @@ urlpatterns = [
 	#url(r'^logout/$', login, {'template_name': 'coordinaAsignaturas/logout.html'}),
 	url(r'^principal/$', views.principal, name='principal'),
 	url(r'^ver/$', views.vistaAsignaturas, name='verAsignatura'),
+	url(r'^eliminar/(?P<codAsig>[-\w]+)', views.eliminarAsignatura, name="eliminarAsignatura"),
 	url(r'^editar/(?P<codAsig>.+)/$', views.editarAsignatura, name='editarAsignatura'),
 	url(r'^agregar/$', views.agregarAsignatura, name='agregarAsignatura'),
 	url(r'^detalles/(?P<codAsig>.+)/$', views.detallesAsignatura, name='detallesAsignatura'),
