@@ -134,14 +134,15 @@ class Profesor(models.Model):
 # a través de la interfaz gráfica.
 class Asignatura(models.Model):
     codAsig     = models.CharField(max_length=7, primary_key=True)
-    codDpto     = models.CharField(max_length=6, choices = DPTOS)
+    codDpto     = models.CharField(max_length=6, choices = DPTOS, blank=True)
     creditos    = models.IntegerField(choices = ((0,0),(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),
                                                 (7,7),(8,8),(9,9),(10,10),(11,11),(12,12),(13,13),(14,14),(15,15)))
-    nomAsig     = models.CharField(max_length=80)
-    progAsig    = models.CharField(max_length=20)
-    diaHora     = models.CharField(max_length=60)
+    nomAsig     = models.CharField(max_length=80, blank=True)
+    progAsig    = models.CharField(max_length=20, blank=True)
+    diaHora     = models.CharField(max_length=60, blank=True)
     prof        = models.ForeignKey(Profesor, on_delete=models.PROTECT)
     vista       = models.BooleanField(default = False)
+
 
     def __str__(self):
         return self.nomAsig
@@ -248,32 +249,6 @@ class Coordinacion(models.Model):
 
         except:
             return False
-
-'''
-
-    def __repr__(self):
-        return self.__str__
-
-    def __init__(self, nombre: str) -> bool:
-        #Hay que revisar si explota cuando nombre no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
-        self.nombre = nombre
-        return True
-
-    def agregar_asignatura_existente(self, asignatura: Asignatura) -> bool:
-        #Hay que revisar si explota cuando asignatura no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
-        #Hay que revisar si explota cuando asignatura no tiene id (es decir, no esta en la base de datos)
-        self.asignatura.add(asignatura)
-        return True
-
-    def agregar_asignatura_nueva(self, diccionario que viene desde frontend) -> bool:
-        #Hay que revisar si explota cuando asignatura no cumple con las restricciones, si no hay que atender eso aqui a fuerza bruta.
-        #Hay que revisar si explota cuando asignatura no tiene id (es decir, no esta en la base de datos)
-        materia = Asignatura()
-        """Aqui se hacen las operaciones para generar la instancia valida, poner campos, blah blah blah"""
-        materia.save()
-        self.asignatura.add(materia)
-        return True
-'''
 
 # Coordinador de coordinación de postgrado
 # Tiene un usuario Django asociado con permisología específica
@@ -397,6 +372,16 @@ def eliminaAsignaturaDeCoord(usr,codAsig):
         s = Sesion()
         s.usuario = usuario
         s.obtenCoordinacion().asignaturas.remove(codAsig)
+        return True
+    except:
+        return False
+
+def agregaAsignaturaACoord(usr,codAsig):
+    try:
+        s = Sesion()
+        u = Usuario.objects.get(pk=usr)
+        s.usuario = u
+        s.obtenCoordinacion().asignaturas.add(Asignatura.objects.get(pk=codAsig))
         return True
     except:
         return False

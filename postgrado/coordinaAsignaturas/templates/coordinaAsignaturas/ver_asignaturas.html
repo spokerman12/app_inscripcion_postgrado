@@ -3,6 +3,7 @@ Bienvenido,
 {{usuario}}
 </p>
 
+
 <form method='post'>
 	{% csrf_token %}
 	<input type='text' name='search'>
@@ -17,8 +18,7 @@ Bienvenido,
 		<td>{{ a.codAsig }}</td>
 		<td>{{ a.nomAsig }}</td>
 		<td>{{ a.diaHora }}</td>
-		<td><a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=a.codAsig %}">Modificar</a></td>
-		<td><a href="{% url 'coordinaAsignaturas:eliminarAsignatura' codAsig=a.codAsig %}">Eliminar</a></td>
+		<td><a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=a.codAsig %}">Modificar Asignatura</a></td>
 	</tr>
 	{% endfor %}
 </table>

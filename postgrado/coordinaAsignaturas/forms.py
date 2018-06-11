@@ -4,7 +4,7 @@
 from django import forms
 from coordinaAsignaturas.models import *
 import hashlib
- 
+
 class LoginForm(forms.Form) :
     username = forms.EmailField(max_length=30)
     password = forms.CharField(max_length=64, widget=forms.PasswordInput)
@@ -89,6 +89,7 @@ class FormularioAsignatura(forms.ModelForm):
             asignatura.save()
         return asignatura
 
+
 class FormCrearAsignatura(FormularioAsignatura) :
     def clean(self) :
         limpio = super(FormCrearAsignatura, self).clean()
@@ -118,28 +119,3 @@ class FormModificarAsignatura(FormularioAsignatura) :
         self.fields['codAsig'].widget.attrs['readonly'] = True
 
 
-    class Meta:
-        model = Asignatura
-        exclude = ['diaHora']
-        labels = {'codAsig' : 'Codigo de asignatura',
-                  'creditos' : 'Numero de creditos',
-                  'nomAsig' : 'Nombre',
-                  'progAsig' : 'Programa',
-                  'prof' : 'Profesor'}
-
-'''
-        # Comprobando que no haya una asignatura con igual codigo
-        try:
-            Asignatura.objects.get(codAsig=codigo)
-            self.add_error('codAsig', 'Ya existe una asignatura con ese codigo')
-        except Asignatura.DoesNotExist :
-            pass
-       
-        # Comprobando que no haya una asignatura con igual nombre
-        try:
-            Asignatura.objects.get(nomAsig=nombre)
-            self.add_error('nomAsig', 'Ya existe una asignatura con ese nombre')
-        except Asignatura.DoesNotExist :
-            pass
-'''
-# Comprobando que haya al menos un día de clases
