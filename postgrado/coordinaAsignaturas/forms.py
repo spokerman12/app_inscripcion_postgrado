@@ -4,7 +4,7 @@
 from django import forms
 from coordinaAsignaturas.models import *
 import hashlib
- 
+
 class LoginForm(forms.Form) :
     username = forms.EmailField(max_length=30)
     password = forms.CharField(max_length=64, widget=forms.PasswordInput)
@@ -48,12 +48,30 @@ class FormularioAsignatura(forms.ModelForm):
     class Meta:
         model = Asignatura
         exclude = ['diaHora']
+        fields = [
+            'codAsig',
+            'creditos',
+            'nomAsig',
+            'progAsig',
+            'prof',
+            'codDpto',
+            'vista',
+        ]
         labels = {'codAsig' : 'Codigo de asignatura',
                   'creditos' : 'Numero de creditos',
                   'nomAsig' : 'Nombre',
                   'progAsig' : 'Programa',
-                  'prof' : 'Profesor'}
-   
+                  'prof' : 'Profesor',
+                  'codDpto': 'Departamento',
+                  'vista' : 'Vista'}
+        widgets = {
+            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'creditos' : forms.Select(attrs = {'class':'form-control'}),
+            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'prof' : forms.Select(attrs = {'class':'form-control'}),
+            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+        }
     # Haciendole override al metodo clean
     def clean(self):
         
@@ -71,7 +89,7 @@ class FormularioAsignatura(forms.ModelForm):
         for dia in dias :
             if  limpio.get(dia) == False :
                 continue
-            if int(limpio.get(dia+"_inicio")) >= int(limpio.get(dia+"_fin")) :
+            if int(limpio.get(dia+"_inicio")) > int(limpio.get(dia+"_fin")) :
                 self.add_error(dia+'_inicio', 'El intervalo de tiempo debe ser positivo')
         
         return limpio
@@ -88,6 +106,7 @@ class FormularioAsignatura(forms.ModelForm):
         if commit:
             asignatura.save()
         return asignatura
+
 
 class FormCrearAsignatura(FormularioAsignatura) :
     def clean(self) :
@@ -116,30 +135,19 @@ class FormModificarAsignatura(FormularioAsignatura) :
         super(FormModificarAsignatura, self).__init__(*args, **kwargs)
         codAsig = getattr(self, 'codAsig', None)
         self.fields['codAsig'].widget.attrs['readonly'] = True
-
-
-    class Meta:
-        model = Asignatura
-        exclude = ['diaHora']
         labels = {'codAsig' : 'Codigo de asignatura',
                   'creditos' : 'Numero de creditos',
                   'nomAsig' : 'Nombre',
                   'progAsig' : 'Programa',
-                  'prof' : 'Profesor'}
+                  'prof' : 'Profesor',
+                  'codDpto': 'Departamento',
+                  'vista' : 'Vista'}
+        widgets = {
+            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'creditos' : forms.Select(attrs = {'class':'form-control'}),
+            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'prof' : forms.Select(attrs = {'class':'form-control'}),
+            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+        }
 
-'''
-        # Comprobando que no haya una asignatura con igual codigo
-        try:
-            Asignatura.objects.get(codAsig=codigo)
-            self.add_error('codAsig', 'Ya existe una asignatura con ese codigo')
-        except Asignatura.DoesNotExist :
-            pass
-       
-        # Comprobando que no haya una asignatura con igual nombre
-        try:
-            Asignatura.objects.get(nomAsig=nombre)
-            self.add_error('nomAsig', 'Ya existe una asignatura con ese nombre')
-        except Asignatura.DoesNotExist :
-            pass
-'''
-# Comprobando que haya al menos un día de clases
