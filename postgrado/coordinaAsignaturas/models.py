@@ -382,6 +382,6 @@ def agregaAsignaturaACoord(usr,codAsig):
         u = Usuario.objects.get(pk=usr)
         s.usuario = u
         s.obtenCoordinacion().asignaturas.add(Asignatura.objects.get(pk=codAsig))
-        return True
     except:
         return False
+    return True
