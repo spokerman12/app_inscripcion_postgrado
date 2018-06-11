@@ -1,24 +1,44 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sistema de Gestión de Postgrado USB</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}" />
+</head>
+<body>
+	<form class="login-form" method="post">
+	  <p class="login-text">
+		<span class="fa-stack fa-lg">
+		  <i class="fa fa-circle fa-stack-2x"></i>
+		  <i class="fa fa-lock fa-stack-1x"></i>
+		</span>
+	  </p>
+	  <div align="center">
+		  {% csrf_token %}
+		  <label for="id_username">Email</label><br>
+		  {{ form.username }}
+		  <br>
+		  <label for="id_password">Password</label><br>
+		  {{ form.password }}
+		  <button type="submit" name="Login" value="Iniciar Sesión" class="login-submit" />Ingresar</button>
+	  </div>
+	  
+	</form>
 
-
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Sistema de Postgrado</title>
-	</head>
-	<body>
-	<div>
-		<h1>Sistema de Gestión de Postgrado</h1>
-		<p>
-			Inicio de sesión
-		</p>
-		<div class="container">
-		<form method="post">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit">Ingresar</button>
-		</form>
-		</div>
-	</div>
-	</body>
+	<!-- <form class="login-form" method="post">
+	  <p class="login-text">
+	    <span class="fa-stack fa-lg">
+	      <i class="fa fa-circle fa-stack-2x"></i>
+	      <i class="fa fa-lock fa-stack-1x"></i>
+	    </span>
+	  </p>
+	  <input type="email" class="login-username" autofocus="true" required="true" placeholder="Correo Electrónico" />
+	  <input type="password" class="login-password" required="true" placeholder="Contraseña" />
+	  <input type="submit" name="Login" value="Iniciar Sesión" class="login-submit" />
+	</form> -->
+	<a href="#" class="login-forgot-pass">¿Olvidaste tu contraseña?</a>
+	<div class="underlay-photo"></div>
+	<div class="underlay-black"></div> 
+</body>
 </html>

@@ -2,8 +2,32 @@
 
 
 from django import forms
-from coordinaAsignaturas.models import Asignatura
- 
+from coordinaAsignaturas.models import *
+import hashlib
+
+class LoginForm(forms.Form) :
+    username = forms.EmailField(max_length=30)
+    password = forms.CharField(max_length=64, widget=forms.PasswordInput)
+
+    def clean(self):
+        limpio = super(LoginForm, self).clean()
+        usr = limpio.get('username')
+        pwd = limpio.get('password')
+        try:
+            q = Usuario.objects.get(pk=usr)
+            m = hashlib.sha256()
+            p = str.encode(pwd)
+            m.update(p)
+            if (m.hexdigest()==q.password):
+                pass
+                #self.usuario = q
+            else:
+                self.add_error('username', 'Usuario o clave incorrecto')
+        except Usuario.DoesNotExist:
+            self.add_error('username', 'Usuario o clave incorrecto')
+        return limpio
+
+
 class FormularioAsignatura(forms.ModelForm):
     lun = forms.BooleanField(required=False)
     lun_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
@@ -24,34 +48,36 @@ class FormularioAsignatura(forms.ModelForm):
     class Meta:
         model = Asignatura
         exclude = ['diaHora']
+        fields = [
+            'codAsig',
+            'creditos',
+            'nomAsig',
+            'progAsig',
+            'prof',
+            'codDpto',
+            'vista',
+        ]
         labels = {'codAsig' : 'Codigo de asignatura',
                   'creditos' : 'Numero de creditos',
                   'nomAsig' : 'Nombre',
                   'progAsig' : 'Programa',
-                  'prof' : 'Profesor'}
-   
+                  'prof' : 'Profesor',
+                  'codDpto': 'Departamento',
+                  'vista' : 'Vista'}
+        widgets = {
+            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'creditos' : forms.Select(attrs = {'class':'form-control'}),
+            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'prof' : forms.Select(attrs = {'class':'form-control'}),
+            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+        }
     # Haciendole override al metodo clean
     def clean(self):
         
         limpio = super(FormularioAsignatura, self).clean()
         codigo = limpio.get('codAsig')
         nombre = limpio.get('nomAsig')
-       
-        # Comprobando que no haya una asignatura con igual codigo
-        try:
-            Asignatura.objects.get(codAsig=codigo)
-            self.add_error('codAsig', 'Ya existe una asignatura con ese codigo')
-        except Asignatura.DoesNotExist :
-            pass
-       
-        # Comprobando que no haya una asignatura con igual nombre
-        try:
-            Asignatura.objects.get(nomAsig=nombre)
-            self.add_error('nomAsig', 'Ya existe una asignatura con ese nombre')
-        except Asignatura.DoesNotExist :
-            pass
-        
-        # Comprobando que haya al menos un día de clases
         dias = ['lun','mar','mie','jue','vie']
         d = False
         for dia in dias :
@@ -63,7 +89,7 @@ class FormularioAsignatura(forms.ModelForm):
         for dia in dias :
             if  limpio.get(dia) == False :
                 continue
-            if int(limpio.get(dia+"_inicio")) >= int(limpio.get(dia+"_fin")) :
+            if int(limpio.get(dia+"_inicio")) > int(limpio.get(dia+"_fin")) :
                 self.add_error(dia+'_inicio', 'El intervalo de tiempo debe ser positivo')
         
         return limpio
@@ -80,3 +106,48 @@ class FormularioAsignatura(forms.ModelForm):
         if commit:
             asignatura.save()
         return asignatura
+
+
+class FormCrearAsignatura(FormularioAsignatura) :
+    def clean(self) :
+        limpio = super(FormCrearAsignatura, self).clean()
+        codigo = limpio.get('codAsig')
+        nombre = limpio.get('nomAsig')
+        # Comprobando que no haya una asignatura con igual codigo
+        try:
+            Asignatura.objects.get(codAsig=codigo)
+            self.add_error('codAsig', 'Ya existe una asignatura con ese codigo')
+        except Asignatura.DoesNotExist :
+            pass
+       
+        # Comprobando que no haya una asignatura con igual nombre
+        try:
+            Asignatura.objects.get(nomAsig=nombre)
+            self.add_error('nomAsig', 'Ya existe una asignatura con ese nombre')
+        except Asignatura.DoesNotExist :
+            pass
+
+        return limpio
+
+class FormModificarAsignatura(FormularioAsignatura) :
+    
+    def __init__(self, *args, **kwargs):
+        super(FormModificarAsignatura, self).__init__(*args, **kwargs)
+        codAsig = getattr(self, 'codAsig', None)
+        self.fields['codAsig'].widget.attrs['readonly'] = True
+        labels = {'codAsig' : 'Codigo de asignatura',
+                  'creditos' : 'Numero de creditos',
+                  'nomAsig' : 'Nombre',
+                  'progAsig' : 'Programa',
+                  'prof' : 'Profesor',
+                  'codDpto': 'Departamento',
+                  'vista' : 'Vista'}
+        widgets = {
+            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'creditos' : forms.Select(attrs = {'class':'form-control'}),
+            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'prof' : forms.Select(attrs = {'class':'form-control'}),
+            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+        }
+
