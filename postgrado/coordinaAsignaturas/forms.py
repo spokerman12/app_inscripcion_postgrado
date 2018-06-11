@@ -151,3 +151,10 @@ class FormModificarAsignatura(FormularioAsignatura) :
             'codDpto' : forms.Select(attrs = {'class':'form-control'})
         }
 
+class FormAgregarAsignatura(FormularioAsignatura) :
+    def clean(self) :
+        limpio = super(FormAgregarAsignatura, self).clean()
+        codigo = limpio.get('codAsig')
+        nombre = limpio.get('nomAsig')
+
+        return limpio

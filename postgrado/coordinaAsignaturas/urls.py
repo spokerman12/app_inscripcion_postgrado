@@ -16,6 +16,8 @@ urlpatterns = [
 	url(r'^modificar/(?P<codAsig>.+)/$', views.modificarAsignatura, name='modificarAsignatura'),
 	url(r'^eliminar/(?P<codAsig>[-\w]+)', views.eliminarAsignatura, name="eliminarAsignatura"),
 	url(r'^detalles/(?P<codAsig>.+)/$', views.detallesAsignatura, name='detallesAsignatura'),
-	url(r'^<int:oferta_id>/$', views.verOfertas, name='oferta')
+	url(r'^<int:oferta_id>/$', views.verOfertas, name='oferta'),
+	url(r'^listaAsignaturas/$', views.listaTodasAsignaturas, name="listaTodasAsignaturas"),
+	url(r'^agregarACoord/(?P<codAsig>.+)/$', views.agregarACoord, name="agregarACoord"),
 	#url(r'^logout/$', login, {'template_name': 'coordinaAsignaturas/logout.html'}),
 ]

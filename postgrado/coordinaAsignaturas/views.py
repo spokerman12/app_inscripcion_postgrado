@@ -65,6 +65,7 @@ def agregarAsignatura(request):
         args = {'form' : FormCrearAsignatura()}
     return render(request, 'coordinaAsignaturas/agregarAsignatura.html', args)
 
+#Modifica los datos de una asignatura#
 def modificarAsignatura(request, codAsig):
     asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
     
@@ -81,6 +82,7 @@ def modificarAsignatura(request, codAsig):
         form =  FormModificarAsignatura(instance=asignatura)
     return render(request, 'coordinaAsignaturas/modificarAsignatura.html', {'form' : form})
 
+#Elimina una asignatura de la coordinacion#
 def eliminarAsignatura(request, codAsig):
     if not('username' in request.session.keys()):
         return redirect('/coordinaAsignaturas/login')
@@ -91,6 +93,32 @@ def eliminarAsignatura(request, codAsig):
     except :
         return redirect('/coordinaAsignaturas/ver')
 
+#Mustra los detalles de la asignatura#
 def detallesAsignatura(request, codAsig):
     asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
     return render(request, 'coordinaAsignaturas/detallesAsignatura.html', {'asignatura' : asignatura})
+
+#Litar todas las asignaturas existentes##
+def listaTodasAsignaturas(request):
+    asignaturas = Asignatura.objects.all()
+    return render(request, 'coordinaAsignaturas/listaTodasAsignaturas.html', {'asignaturas' : asignaturas})
+
+#Agrega una asignatura a la coordinacion#
+def agregarACoord(request, codAsig):
+    asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
+    if request.method == 'POST':
+        form = FormAgregarAsignatura(request.POST, instance=asignatura)
+        args = {'form' : form}
+        if form.is_valid():
+            #form.save()
+            data = form.cleaned_data
+            if (agregaAsignaturaACoord(request.session['username'],data['codAsig'])):
+                args['asignaturas'] = obtenAsignaturas(request.session['username'])
+                return redirect('/coordinaAsignaturas/ver')
+        else :
+            print("No se agrego la materia a la coordinacion")
+    else :
+        args = {'form' : FormAgregarAsignatura(instance=asignatura)}
+    return render(request, 'coordinaAsignaturas/agregarAsignatura.html', args)
