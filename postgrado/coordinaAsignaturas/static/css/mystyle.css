@@ -51,8 +51,8 @@ input:focus :-ms-input-placeholder {
   color: black;
 }
 
-.login-username,
-.login-password {
+#id_username,
+#id_password {
   background: transparent;
   border: 0 solid;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
@@ -63,8 +63,8 @@ input:focus :-ms-input-placeholder {
   transition: 250ms background ease-in;
   width: calc(100% - 3rem);
 }
-.login-username:focus,
-.login-password:focus {
+#id_username:focus,
+#id_password:focus {
   background: white;
   color: black;
   transition: 250ms background ease-in;
@@ -141,4 +141,10 @@ input:focus :-ms-input-placeholder {
   to {
     -webkit-filter: grayscale(30%) hue-rotate(360deg);
   }
+}
+
+label {
+  text-align: center;
+  color: white;
+  font-family: "Arial";
 }

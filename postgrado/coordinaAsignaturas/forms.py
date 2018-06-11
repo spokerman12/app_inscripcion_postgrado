@@ -48,12 +48,30 @@ class FormularioAsignatura(forms.ModelForm):
     class Meta:
         model = Asignatura
         exclude = ['diaHora']
+        fields = [
+            'codAsig',
+            'creditos',
+            'nomAsig',
+            'progAsig',
+            'prof',
+            'codDpto',
+            'vista',
+        ]
         labels = {'codAsig' : 'Codigo de asignatura',
                   'creditos' : 'Numero de creditos',
                   'nomAsig' : 'Nombre',
                   'progAsig' : 'Programa',
-                  'prof' : 'Profesor'}
-   
+                  'prof' : 'Profesor',
+                  'codDpto': 'Departamento',
+                  'vista' : 'Vista'}
+        widgets = {
+            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'creditos' : forms.Select(attrs = {'class':'form-control'}),
+            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'prof' : forms.Select(attrs = {'class':'form-control'}),
+            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+        }
     # Haciendole override al metodo clean
     def clean(self):
         
@@ -117,5 +135,19 @@ class FormModificarAsignatura(FormularioAsignatura) :
         super(FormModificarAsignatura, self).__init__(*args, **kwargs)
         codAsig = getattr(self, 'codAsig', None)
         self.fields['codAsig'].widget.attrs['readonly'] = True
-
+        labels = {'codAsig' : 'Codigo de asignatura',
+                  'creditos' : 'Numero de creditos',
+                  'nomAsig' : 'Nombre',
+                  'progAsig' : 'Programa',
+                  'prof' : 'Profesor',
+                  'codDpto': 'Departamento',
+                  'vista' : 'Vista'}
+        widgets = {
+            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'creditos' : forms.Select(attrs = {'class':'form-control'}),
+            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
+            'prof' : forms.Select(attrs = {'class':'form-control'}),
+            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+        }
 

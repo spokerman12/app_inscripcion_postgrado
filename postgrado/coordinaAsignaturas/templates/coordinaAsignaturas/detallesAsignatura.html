@@ -1,4 +1,81 @@
-Aas>postgradociencias@usb.ve</div>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>ING DE SOFTWARE</title>
+    <!-- Favicon
+    <link rel="icon" href="favicon.ico" type="image/x-icon">-->
+
+    <!-- Google Fonts -->
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="{% static 'plugins/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="{% static 'plugins/node-waves/waves.css' %}" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="{% static 'plugins/animate-css/animate.css' %}" rel="stylesheet" />
+
+    <!-- Morris Chart Css-->
+    <link href="{% static 'plugins/morrisjs/morris.css' %}" rel="stylesheet" />
+     <!-- Sweet Alert Css -->
+    <link href="{% static 'plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="{% static 'css/themes/all-themes.css' %}" rel="stylesheet" />
+</head>
+
+<body class="theme-indigo">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="index.html">SISTEMA GESTOR DE ASIGNATURAS</a>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="info-container">
+                    <div class="name font-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h4>Post Grado Ciencias</h4></div>
+                    <div class="email">{{username}}</div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -24,19 +101,19 @@ Aas>postgradociencias@usb.ve</div>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="{% url 'coordinaAsignaturas:verAsignatura' %}">
+                        <a href="index.html">
                             <i class="material-icons">business</i>
                             <span>Asignaturas</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="index.html">
                             <i class="material-icons">toc</i>
                             <span>Programas</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="index.html">
                             <i class="material-icons">subject</i>
                             <span>Ofertas</span>
                         </a>
@@ -50,68 +127,112 @@ Aas>postgradociencias@usb.ve</div>
     <section class="content">
         <div class="container-fluid">
             <div class="card">
-                <div class="header">
+                <div class="header text-center">
                     <h2>
-                        Detalles de  Evaluación del Impacto ambiental del Desarrollo <i class="material-icons col-amber">search</i>
-                        <small>Aquí podrás añadir una nueva asignatura a tu coordinación</small>
+                        Detalles de: {{asignatura.nomAsig}} <i class="material-icons col-amber">search</i>
+                        <small>Aquí podrás ver los detalles de esta asignatura</small>
                     </h2>
     
                 </div>
                 <div class="body">
                     <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.codAsig }}" />
+                        <div class="col-sm-12">
+                            <form method="POST" class="post-form">
+                                {% csrf_token %}
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.codAsig.id_for_label">Código: </label>
+                                            {{asignatura.codAsig}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.creditos.id_for_label">Créditos: </label>
+                                            {{asignatura.creditos}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.nomAsig.id_for_label">Denominación y Programa: </label>
+                                            {{asignatura.nomAsig}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.codDpto.id_for_label">Departamento: </label>
+                                            {{asignatura.codDpto}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.prof.id_for_label">Profesor: </label>
+                                            {{asignatura.prof}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.progAsig.id_for_label">Programa: </label>
+                                            {{asignatura.progAsig}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.vista.id_for_label">Vista: </label>
+                                            {{asignatura.vista}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 fieldWrapper">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <label for="asignatura.diaHora.id_for_label">Horario: </label>
+                                            {{asignatura.diaHora}}
+                                        </div>
+                                    </div>
+                                </div>
+                            <!--<button type="submit" class="save btn btn-default">Save</button>-->
+                             <div class="col-sm-6 fieldWrapper">
+                                <div class="form-group">
+                                    <div class="text-center">
+                                        <a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=asignatura.codAsig %}">
+                                            <button type="submit" class="btn bg-indigo waves-effect col-sm-12">
+                                                  <i class="material-icons">edit</i>
+                                                    <span>Editar</span>
+                                                    
+                                                    
+                                              </button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.creditos }}" />
+                            <div class="col-sm-6 fieldWrapper">
+                                <div class="form-group">
+                                    <div class="text-center">
+                                        <button type="submit" class="btn bg-red waves-effect col-sm-12">
+                                          <i class="material-icons">clear</i>
+                                            <span>Eliminar</span>
+                                      </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.prof.nomProf }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.nomAsig }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.diaHora }}" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" value="" placeholder="{{ asignatura.progAsig }}" />
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="">
-                    <a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=asignatura.codAsig %}"><button type="button" class="btn bg-amber waves-effect waves-amber .align-right">
-                        <i class="material-icons">edit</i>
-                        <span>Editar</span>
-                    </button></a>
-                    <button type="button" class="btn bg-red waves-effect waves-red .align-right">
-                        <i class="material-icons">delete</i>
-                        <span>Eliminar</span>
-                    </button>
-                </div>
+                    
                 </div>
             </div>
         </div>
@@ -156,7 +277,7 @@ Aas>postgradociencias@usb.ve</div>
     <script src="{% static 'js/admin.js' %}"></script>
 
     <!-- Demo Js -->
-    <script src="{% static 'js/demo.js' %}"></script>
+    <script src="{% static 'js/demo.js' %} "></script>
 </body>
 
 </html>

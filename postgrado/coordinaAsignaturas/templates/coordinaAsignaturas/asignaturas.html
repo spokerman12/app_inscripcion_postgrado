@@ -50,6 +50,15 @@
             <p>Cargando...</p>
         </div>
     </div>
+    <div class="search-bar">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input type="text" placeholder="BUSCAR ASIGNATURA">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
     <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
@@ -154,7 +163,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-orange hover-expand-effect">
+                    <div class="info-box bg-grey hover-expand-effect">
                         <div class="icon">
                             <i class="material-icons">do_not_disturb_on</i>
                         </div>
@@ -172,45 +181,26 @@
                     <div class="card">
                         <div class="header">
                             <h2>ASIGNATURAS DE LA COORDINACIÓN</h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </div>
                         <div class="body">
                             
                             <div class="table-responsive">
-                                <table class="table table-hover dashboard-task-infos">
+                                <table class="table table-hover dashboard-task-infos text-center">
                                     <thead>
                                         <tr>
-                                            <th>Código</th>
-                                            <th>UC</th>
-                                            <th>Denominación y Programa</th>
-                                            <th>Profesor</th>
-                                            <th>Programa</th>
-                                            <th>Horario</th>
-                                            <th>Vista</th>
-                                            <th>Acciones</th>
+                                            <th class="text-center">Código</th>
+                                            <th class="text-center">Denominación y Programa</th>
+                                            <th class="text-center">Horario</th>
+                                            <th class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for a in asignaturas %}
                                             <tr>
-                                                <td>{{ a.codAsig }}</td>
-                                                <td>{{a.creditos}}</td>
+                                                <td><a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=a.codAsig %}">
+                                                    {{ a.codAsig }}</a></td>
                                                 <td><span class="">{{ a.nomAsig }}</span></td>
-                                                <td>{{a.prof}}</td>
-                                                <td>{{a.progAsig}}</td>
                                                 <td>{{a.diaHora}}</td>
-                                                <td>{{a.vista}}</td>
                                                 <td>
                                                     <a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=a.codAsig %}">
                                                     <button type="button" data-toggle="tooltip" data-placement="top" title="Modificar" data-original-title="Editar" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
@@ -224,7 +214,7 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                <nav>
+                               <!-- <nav>
                                         <ul class="pager">
                                             <li class="previous">
                                                 <a href="javascript:void(0);" class="waves-effect"><span aria-hidden="true">←</span> Anterior</a>
@@ -233,7 +223,7 @@
                                                 <a href="javascript:void(0);" class="waves-effect">Siguiente <span aria-hidden="true">→</span></a>
                                             </li>
                                         </ul>
-                                    </nav>
+                                    </nav>-->
                             </div>
                         </div>
                     </div>
@@ -241,10 +231,30 @@
                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                     <div class="align-center">
                     <form method='post'>
-                        <h5>Añadir Asignatura</h5>
+                        <a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                        <i class="material-icons">search</i>
+                        </button></a>
+                    </form>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                    <div class="align-center">
+                    <form method='post'>
+                        <h5>Añadir Nueva</h5>
                         <a href="{% url 'coordinaAsignaturas:agregarAsignatura' %}">
                         <button type="button" class="btn bg-green btn-circle-lg waves-effect waves-circle waves-float">
                             <i class="material-icons">add</i>
+                        </button></a>
+                    </form>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                    <div class="align-center">
+                    <form method='post'>
+                        <h5>Añadir Existente</h5>
+                        <a href="{% url 'coordinaAsignaturas:agregarAsignatura' %}">
+                        <button type="button" class="btn bg-amber btn-circle-lg waves-effect waves-circle waves-float">
+                            <i class="material-icons">add_to_photos</i>
                         </button></a>
                     </form>
                     </div>
