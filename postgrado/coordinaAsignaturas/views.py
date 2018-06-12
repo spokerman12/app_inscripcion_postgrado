@@ -87,8 +87,7 @@ def eliminarAsignatura(request, codAsig):
     if not('username' in request.session.keys()):
         return redirect('/coordinaAsignaturas/login')
     try :
-        asig = Asignatura.objects.get(pk=codAsig)
-        asig.delete()
+        eliminaAsignaturaDeCoord(request.session["username"],codAsig)
         return redirect('/coordinaAsignaturas/ver')
     except :
         return redirect('/coordinaAsignaturas/ver')
