@@ -50,11 +50,11 @@
             <p>Cargando...</p>
         </div>
     </div>
-    <div class="search-bar">
+    <div class="search-bar" onkeyup="myFunction()">
         <div class="search-icon">
             <i class="material-icons">search</i>
         </div>
-        <input type="text" placeholder="BUSCAR ASIGNATURA">
+        <input id="myInput" type="text" placeholder="BUSCAR ASIGNATURA">
         <div class="close-search">
             <i class="material-icons">close</i>
         </div>
@@ -138,60 +138,24 @@
                 <h2>ASIGNATURAS</h2>
             </div>
 
-            <!-- Widgets -->
-            <div class="row clearfix">>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-indigo hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">clear_all</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">TODAS</div>
-                            <div class="number count-to" data-from="0" data-to="6" data-speed="2000" data-fresh-interval="2"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">check</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">ACTIVAS</div>
-                            <div class="number count-to" data-from="0" data-to="2" data-speed="2000" data-fresh-interval="2"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-grey hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">do_not_disturb_on</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">DESHABILITADAS</div>
-                            <div class="number count-to" data-from="0" data-to="3" data-speed="2000" data-fresh-interval="1"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="row clearfix">
                 <!-- Task Info -->
                 <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
                     <div class="card">
-                        <div class="header">
-                            <h2>ASIGNATURAS DE LA COORDINACIÓN</h2>
+                        <div class="header text-center">
+                            <h2>AÑADIR ASIGNATURAS<i class="material-icons col-amber">add</i></h2>
+                            <span>Aquí podrás agregar asignaturas existentes a tu coordinación</span>
                         </div>
                         <div class="body">
                             
                             <div class="table-responsive">
-                                <table class="table table-hover dashboard-task-infos text-center">
+                                <table id="myTable" class="table table-hover dashboard-task-infos text-center">
                                     <thead>
                                         <tr>
                                             <th class="text-center">Código</th>
-                                            <th class="text-center">Denominación y Programa</th>
-                                            <th class="text-center">Horario</th>
-                                            <th class="text-center">Acciones</th>
+                                            <th class="text-center">Denominación</th>
+                                            <th class="text-center">Programa</th>
+                                            <th class="text-center">Añadir</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -200,20 +164,12 @@
                                                 <td><a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=a.codAsig %}">
                                                     {{ a.codAsig }}</a></td>
                                                 <td><span class="">{{ a.nomAsig }}</span></td>
-                                                <td>{{a.diaHora}}</td>
+                                                <td>{{a.progAsig}}</td>
                                                 <td>
-                                                    <a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=a.codAsig %}">
-                                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Modificar" data-original-title="Editar" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
-                                                        <i class="material-icons">edit</i>
-                                                    </button></a>
-
-                                                    <a href="{% url 'coordinaAsignaturas:eliminarAsignatura' codAsig=a.codAsig %}">
-                                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Quitar" data-original-title="Quitar" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
-                                                        <i class="material-icons">clear</i>
-                                                    </button></a>
                                                     <a href="{% url 'coordinaAsignaturas:agregarACoord' codAsig=a.codAsig%}">
-                                                        <button type="button" title="Agregar">
+                                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Añadir" data-original-title="Editar" class="btn bg-green btn-circle waves-effect waves-circle waves-float">
                                                         <i class="material-icons">add</i>
+                                                    </button></a>
                                                     </button></a>
                                                 </td>
                                             </tr>
@@ -243,29 +199,6 @@
                     </form>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                    <div class="align-center">
-                    <form method='post'>
-                        <h5>Añadir Nueva</h5>
-                        <a href="{% url 'coordinaAsignaturas:agregarAsignatura' %}">
-                        <button type="button" class="btn bg-green btn-circle-lg waves-effect waves-circle waves-float">
-                            <i class="material-icons">add</i>
-                        </button></a>
-                    </form>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                    <div class="align-center">
-                    <form method='post'>
-                        <h5>Añadir Existente</h5>
-                        <a href="{% url 'coordinaAsignaturas:listaTodasAsignaturas' %}">
-                        <button type="button" class="btn bg-amber btn-circle-lg waves-effect waves-circle waves-float">
-                            <i class="material-icons">add_to_photos</i>
-                        </button></a>
-                    </form>
-                    </div>
-                </div>
-
             </div>
         </div>
             <div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
@@ -329,6 +262,29 @@
 
     <!-- Demo Js -->
     <script src="{% static 'js/demo.js' %}"></script>
+    <script>
+        function myFunction() {
+          // Declare variables 
+          var input, filter, table, tr, td, i;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            td2 = tr[i].getElementsByTagName("td")[1];
+            if (td || td2) {
+              if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) ||(td2.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            } 
+          }
+        }
+    </script>
 </body>
 
 </html>
