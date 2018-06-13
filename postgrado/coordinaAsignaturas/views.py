@@ -99,7 +99,7 @@ def detallesAsignatura(request, codAsig):
 
 #Litar todas las asignaturas existentes##
 def listaTodasAsignaturas(request):
-    asignaturas = Asignatura.objects.all()
+    asignaturas = list(set(Asignatura.objects.all()) - set(obtenAsignaturas(request.session['username'])))
     return render(request, 'coordinaAsignaturas/listaTodasAsignaturas.html', {'asignaturas' : asignaturas})
 
 #Agrega una asignatura a la coordinacion#
