@@ -21,15 +21,41 @@ def principal(request):
     context = {'asignaturas' : asignaturas}
     return render(request, 'coordinaAsignaturas/initIndex.html', context)
 
-def verOfertas(request, oferta_id):
+# Mostrar las ofertas registradas #
+def verOfertas(request):
     #return HttpResponse("Estas en la vista de oferta %s" % oferta_id)
-    #ultimasOfertas = Oferta.objects
+    ultimasOfertas = Oferta.objects.all()
     #template = loader.get_template('coordinaAsignaturas/oferta.html')
-    #context = {
-    #   'ultimasOfertas' : ultimasOfertas,
-    #}
-    #return render(request, 'coordinaAsignaturas/oferta.html', context)
-    pass
+    context = {
+       'ultimasOfertas' : ultimasOfertas,
+    }
+    return render(request, 'coordinaAsignaturas/oferta.html', context)
+
+# Muestra las materias registradas en la oferta #    
+def detallesOferta(request, oferta_id):
+    materiasOfertadas = get_object_or_404(Oferta, pk=oferta_id)
+    materiasOfertadas = materiasOfertadas.asignaturas.all()
+    context = {
+        'materiasOfertadas' : materiasOfertadas
+    }
+    return render(request, 'coordinaAsignaturas/detallesOferta.html', context)
+
+# Agrega una oferta #
+def agregarOferta(request):
+    form = FormCrearOferta(request.POST)
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
+    if request.method == 'POST':
+        form = FormCrearOferta(request.POST)
+        args = {'form' : form}
+        if form.is_valid():
+            form.save()
+            
+            return redirect('/coordinaAsignaturas/ofertas')
+    else :
+        args = {'form' : FormCrearAsignatura()}
+
+    return render(request, 'coordinaAsignaturas/agregarOferta.html', {'form' : form})
 
 # Ver las asisnaturas #
 def verAsignaturas(request):
@@ -99,7 +125,7 @@ def detallesAsignatura(request, codAsig):
 
 #Litar todas las asignaturas existentes##
 def listaTodasAsignaturas(request):
-    asignaturas = list(set(Asignatura.objects.all()) - set(obtenAsignaturas(request.session['username'])))
+    asignaturas = Asignatura.objects.all()
     return render(request, 'coordinaAsignaturas/listaTodasAsignaturas.html', {'asignaturas' : asignaturas})
 
 #Agrega una asignatura a la coordinacion#

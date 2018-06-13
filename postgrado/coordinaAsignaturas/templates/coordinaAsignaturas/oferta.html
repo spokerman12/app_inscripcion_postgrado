@@ -1,10 +1,12 @@
-{#Plantilla para polls#}
+
 {% if ultimasOfertas %}
     <ul>
     {% for oferta in ultimasOfertas %}
-        <li><a href="/coordinaAsignaturas/{{ oferta.id }}/">{{ oferta.trimestre }}</a></li>
+        <li><a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}">{{ oferta.trimestre }} {{ oferta.anio }}</a></li>
     {% endfor %}
     </ul>
+
+    <a href="{% url 'coordinaAsignaturas:agregarOferta' %}">Agregar Oferta</a>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}

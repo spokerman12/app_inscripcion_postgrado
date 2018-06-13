@@ -1,0 +1,10 @@
+
+{% if materiasOfertadas %}
+    <ul>
+    {% for mat in materiasOfertadas %}
+        <li><a href="">{{ mat.codAsig }} {{ mat.nomAsig }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No existe La oferta</p>
+{% endif %}

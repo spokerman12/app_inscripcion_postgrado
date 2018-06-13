@@ -5,6 +5,7 @@ from django import forms
 from coordinaAsignaturas.models import *
 import hashlib
 
+# Formulario de registro #
 class LoginForm(forms.Form) :
     username = forms.EmailField(max_length=30)
     password = forms.CharField(max_length=64, widget=forms.PasswordInput)
@@ -27,7 +28,7 @@ class LoginForm(forms.Form) :
             self.add_error('username', 'Usuario o clave incorrecto')
         return limpio
 
-
+# Formulario base de una asignatura #
 class FormularioAsignatura(forms.ModelForm):
     lun = forms.BooleanField(required=False)
     lun_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
@@ -107,7 +108,7 @@ class FormularioAsignatura(forms.ModelForm):
             asignatura.save()
         return asignatura
 
-
+# Formulario para crear una nueva asignatura #
 class FormCrearAsignatura(FormularioAsignatura) :
     def clean(self) :
         limpio = super(FormCrearAsignatura, self).clean()
@@ -129,6 +130,7 @@ class FormCrearAsignatura(FormularioAsignatura) :
 
         return limpio
 
+# Formulario para Modificar una asignatura #
 class FormModificarAsignatura(FormularioAsignatura) :
     
     def __init__(self, *args, **kwargs):
@@ -151,6 +153,7 @@ class FormModificarAsignatura(FormularioAsignatura) :
             'codDpto' : forms.Select(attrs = {'class':'form-control'})
         }
 
+# Formulario para agregar una asignatura a la coordinacion #
 class FormAgregarAsignatura(FormularioAsignatura) :
     def clean(self) :
         limpio = super(FormAgregarAsignatura, self).clean()
@@ -158,3 +161,18 @@ class FormAgregarAsignatura(FormularioAsignatura) :
         nombre = limpio.get('nomAsig')
 
         return limpio
+
+# Formulario para agregar una nueva oferta #
+class FormCrearOferta(forms.ModelForm):
+    class Meta:
+        model = Oferta
+        exclude = []
+
+        labels = {
+            'coordinacion' : 'Coordinacion',
+            'trimestre' : 'Trimestre',
+            'asignaturas' : 'Asignaturas',
+            'anio' : 'Periodo',
+        }
+
+        
