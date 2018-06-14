@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 
 {% if ultimasOfertas %}
     <ul>
@@ -11,3 +13,342 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>ING DE SOFTWARE</title>
+    <!-- Favicon
+    <link rel="icon" href="favicon.ico" type="image/x-icon">-->
+
+    <!-- Google Fonts -->
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="{% static 'plugins/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="{% static 'plugins/node-waves/waves.css' %}" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="{% static 'plugins/animate-css/animate.css' %}" rel="stylesheet" />
+    <!-- Sweetalert Css -->
+    <!-- Custom Css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="{% static 'css/themes/all-themes.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
+<body class="theme-indigo">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+    <div class="search-bar" onkeyup="myFunction()">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input id="myInput" type="text" placeholder="BUSCAR ASIGNATURA">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="index.html">SISTEMA GESTOR DE ASIGNATURAS</a>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="info-container">
+                    <div class="name font-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h4>Post Grado Ciencias</h4></div>
+                    <div class="email">postgradociencias@usb.ve</div>
+                    <div class="btn-group user-helper-dropdown">
+                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
+                            <li role="seperator" class="divider"></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">business</i>Asignaturas</a></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">subject</i>Ofertas Académicas</a></li>
+                            <li role="seperator" class="divider"></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">input</i>Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">OPCIONES</li>
+                    <li class="">
+                        <a href="">
+                            <i class="material-icons">home</i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="">
+                            <i class="material-icons">business</i>
+                            <span>Asignaturas</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <i class="material-icons">toc</i>
+                            <span>Programas</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="ofertaIndex.html">
+                            <i class="material-icons">subject</i>
+                            <span>Ofertas</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </aside>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>OFERTAS</h2>
+            </div>
+
+            <!-- Widgets -->
+            <div class="row clearfix">>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-indigo hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">clear_all</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">TODAS</div>
+                            <div class="number count-to" data-from="0" data-to="6" data-speed="2000" data-fresh-interval="2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-light-green hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">check</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">ACTIVAS</div>
+                            <div class="number count-to" data-from="0" data-to="2" data-speed="2000" data-fresh-interval="2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="info-box bg-grey hover-expand-effect">
+                        <div class="icon">
+                            <i class="material-icons">do_not_disturb_on</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">DESHABILITADAS</div>
+                            <div class="number count-to" data-from="0" data-to="3" data-speed="2000" data-fresh-interval="1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <!-- Task Info -->
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                    <div class="card">
+                        <div class="header">
+                            <h2>OFERTAS DE LA COORDINACIÓN</h2>
+                        </div>
+                        <div class="body">
+                            
+                            <div class="table-responsive">
+                                <table id="myTable" class="table table-hover dashboard-task-infos text-center">
+                                	{% if ultimasOfertas %}
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Coordinación</th>
+                                            <th class="text-center">Trimestre</th>
+                                            <th class="text-center">Año</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for oferta in ultimasOfertas %}
+                                    		<tr>
+                                            	<td>{{oferta.coordinacion}}</td>
+                                            	<td>{{oferta.trimestre}}</td>
+                                            	<td>{{oferta.anio}}</td>
+                                                <td>
+                                                	<a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Modificar" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
+                                                		<i class="material-icons">pageview</i>
+                                            		</a>
+                                            	</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {% else %}
+                                    	<p>No hay ofertas creadas</p>
+                                    {% endif %} 
+                                </table>
+                               <!-- <nav>
+                                        <ul class="pager">
+                                            <li class="previous">
+                                                <a href="javascript:void(0);" class="waves-effect"><span aria-hidden="true">←</span> Anterior</a>
+                                            </li>
+                                            <li class="next">
+                                                <a href="javascript:void(0);" class="waves-effect">Siguiente <span aria-hidden="true">→</span></a>
+                                            </li>
+                                        </ul>
+                                    </nav>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                    <div class="align-center">
+                    <form method='post'>
+                        <h5>Buscar</h5>
+                        <a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                        <i class="material-icons">search</i>
+                        </button></a>
+                    </form>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                    <div class="align-center">
+                    <form method='post'>
+                        <h5>Nueva</h5>
+                        <a href="{% url 'coordinaAsignaturas:agregarOferta' %}">
+                        <button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                            <i class="material-icons">add</i>
+                        </button></a>
+                    </form>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                    <div class="align-center">
+                    <form method='post'>
+                        <h5>Existente</h5>
+                        <a href="{% url 'coordinaAsignaturas:listaTodasAsignaturas' %}">
+                        <button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                            <i class="material-icons">add_to_photos</i>
+                        </button></a>
+                    </form>
+                    </div>
+                </div>
+
+            </div>
+            <button id="pruebaalert">ejemplo</button>
+        </div>
+    </section>
+
+    <!-- Jquery Core Js -->
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %}"></script>
+
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="{% static 'plugins/node-waves/waves.js' %}"></script>
+
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="{% static 'plugins/jquery-countto/jquery.countTo.js' %}"></script>
+    <script src="{% static 'plugins/jquery-slimscroll/jquery.slimscroll.js' %}"></script>
+
+    <!-- Bootstrap Notify Plugin Js -->
+    <script src="{% static 'plugins/bootstrap-notify/bootstrap-notify.js' %}"></script>
+
+    <!-- Sparkline Chart Plugin Js -->
+    <script src="{% static 'plugins/jquery-sparkline/jquery.sparkline.js' %}"></script>
+
+    <!-- Custom Js -->
+    <script src="{% static 'js/admin.js' %}"></script>
+    <script src="{% static 'js/pages/index.js' %}"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="{% static 'js/pages/ui/dialogs.js' %}"></script>
+    <!-- Demo Js -->
+    <script src="{% static 'js/demo.js' %}"></script>
+    <script>
+        function myFunction() {
+          // Declare variables 
+          var input, filter, table, tr, td, i;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            td2 = tr[i].getElementsByTagName("td")[1];
+            if (td || td2) {
+              if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) ||(td2.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            } 
+          }
+        }
+        $('#pruebaalert').click(function(event){
+            swal({
+                  title: "¿Estas seguro?",
+                  text: "Quieres quitar esta asignatura de tu coordinación?",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {
+                    swal("La asignatura ha sido quitada de tu coordinación", {
+                      icon: "success",
+                    });
+                  } else {
+                    swal("No pasa nada");
+                  }
+                });
+        });
+    </script>
+
+</body>
+
+</html>
+

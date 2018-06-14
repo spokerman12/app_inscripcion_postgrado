@@ -35,12 +35,9 @@ def verOfertas(request):
 
 # Muestra las materias registradas en la oferta #    
 def detallesOferta(request, oferta_id):
-    materiasOfertadas = get_object_or_404(Oferta, pk=oferta_id)
-    materiasOfertadas = materiasOfertadas.asignaturas.all()
-    context = {
-        'materiasOfertadas' : materiasOfertadas
-    }
-    return render(request, 'coordinaAsignaturas/detallesOferta.html', context)
+    oferta_info = get_object_or_404(Oferta, pk=oferta_id)
+    materiasOfertadas = oferta_info.asignaturas.all()
+    return render(request, 'coordinaAsignaturas/detallesOferta.html', {'materiasOfertadas':materiasOfertadas,'oferta_info':oferta_info})
 
 # Agrega una oferta #
 def agregarOferta(request):
