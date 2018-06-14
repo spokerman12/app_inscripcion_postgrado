@@ -72,6 +72,18 @@ def modificarOferta(request,oferta_id):
 
     return render(request, 'coordinaAsignaturas/modificarOferta.html', args)
 
+# Elimina una oferta de la base de datos
+def eliminarOferta(request, oferta_id):
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
+    try :
+        if eliminaOferta(request.session["username"], oferta_id) :
+            return redirect('/coordinaAsignaturas/ofertas')
+        else :
+            return redirect('/coordinaAsignaturas/login')
+    except :
+        return redirect('/coordinaAsignaturas/ofertas')
+
 # Ver las asisnaturas #
 def verAsignaturas(request):
     if 'username' in request.session.keys():

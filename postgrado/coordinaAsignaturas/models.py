@@ -366,6 +366,21 @@ def eliminaAsignatura(codAsig):
     except:
         return False
 
+def eliminaOferta(usr,oferta_id):
+    try:
+        usuario = Usuario.objects.get(pk=usr)
+        s = Sesion()
+        s.usuario = usuario
+        c = s.obtenCoordinacion()
+        o = Oferta.objects.get(pk = oferta_id)
+        if c == o.coordinacion :
+            o.delete()
+            return True
+        else :
+            return False
+    except:
+        return False
+    
 def eliminaAsignaturaDeCoord(usr,codAsig):
     try:
         usuario = Usuario.objects.get(pk=usr)

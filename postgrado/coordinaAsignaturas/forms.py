@@ -166,10 +166,10 @@ class FormAgregarAsignatura(FormularioAsignatura) :
         return limpio
 
 # Formulario para agregar una nueva oferta #
-class FormCrearOferta(forms.ModelForm):
+class FormularioOferta(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(FormCrearOferta, self).__init__(*args, **kwargs)
+        super(FormularioOferta, self).__init__(*args, **kwargs)
         self.fields['asignaturas'].widget = CheckboxSelectMultiple()
         self.fields['asignaturas'].queryset = Asignatura.objects.all()
 
@@ -194,9 +194,13 @@ class FormCrearOferta(forms.ModelForm):
             'anio' : forms.TextInput(attrs = {'class':'form-control'}),
             'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
         }
+        
+class FormCrearOferta(FormularioOferta):
+    pass
 
-class FormModificarOferta(forms.ModelForm):
-
+class FormModificarOferta(FormularioOferta) :
+    pass
+"""
     def __init__(self, *args, **kwargs):
         super(FormModificarOferta, self).__init__(*args, **kwargs)
         self.fields['asignaturas'].widget = CheckboxSelectMultiple()
@@ -217,3 +221,4 @@ class FormModificarOferta(forms.ModelForm):
             'anio' : 'Periodo',
             'asignaturas' : 'Asignaturas'
         }
+        """
