@@ -2,8 +2,11 @@
 
 
 from django import forms
+from django.forms.widgets import CheckboxSelectMultiple
 from coordinaAsignaturas.models import *
-import hashlib
+import hashlib, datetime
+
+fecha = datetime.datetime.now()
 
 # Formulario de registro #
 class LoginForm(forms.Form) :
@@ -164,6 +167,7 @@ class FormAgregarAsignatura(FormularioAsignatura) :
 
 # Formulario para agregar una nueva oferta #
 class FormCrearOferta(forms.ModelForm):
+
     class Meta:
         model = Oferta
         exclude = []
@@ -175,4 +179,27 @@ class FormCrearOferta(forms.ModelForm):
             'anio' : 'Periodo',
         }
 
-        
+class FormModificarOferta(forms.ModelForm):
+
+    #asignaturas = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple,required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(FormModificarOferta, self).__init__(*args, **kwargs)
+        self.fields['asignaturas'].widget = CheckboxSelectMultiple()
+        self.fields['asignaturas'].queryset = Asignatura.objects.all()
+
+    class Meta:
+        model = Oferta
+        fields = [
+            'coordinacion',
+            'trimestre',
+            'anio',
+            'asignaturas'
+        ]
+
+        labels = {
+            'coordinacion' : 'Coordinacion',
+            'trimestre' : 'Trimestre',
+            'anio' : 'Periodo',
+            'asignaturas' : 'Asignaturas'
+        }

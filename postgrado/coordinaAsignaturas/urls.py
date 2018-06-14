@@ -19,6 +19,7 @@ urlpatterns = [
 	url(r'^ofertas/$', views.verOfertas, name='oferta'),
 	url(r'^ofertas/(?P<oferta_id>[0-9]+)/$', views.detallesOferta, name='detallesOferta'),
 	url(r'^agregarOferta/$', views.agregarOferta, name='agregarOferta'),
+	url(r'^modificaroferta(?P<oferta_id>[0-9]+)/$', views.modificarOferta, name='modificarOferta'),
 	url(r'^listaAsignaturas/$', views.listaTodasAsignaturas, name="listaTodasAsignaturas"),
 	url(r'^agregarACoord/(?P<codAsig>.+)/$', views.agregarACoord, name="agregarACoord"),
 	#url(r'^logout/$', login, {'template_name': 'coordinaAsignaturas/logout.html'}),

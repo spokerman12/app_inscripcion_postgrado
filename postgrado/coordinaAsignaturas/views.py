@@ -59,6 +59,22 @@ def agregarOferta(request):
 
     return render(request, 'coordinaAsignaturas/agregarOferta.html', {'form' : form})
 
+def modificarOferta(request,oferta_id):
+
+    if not('username' in request.session.keys()):
+        return redirect('/coordinaAsignaturas/login')
+    if request.method == 'POST':
+        form = FormModificarOferta(request.POST, instance=Oferta.objects.get(pk=oferta_id))
+        args = {'form' : form}
+        if form.is_valid():
+            form.save(commit=False)
+            
+            return redirect('/coordinaAsignaturas/ofertas')
+    else :
+        args = {'form' : FormModificarOferta(instance=Oferta.objects.get(pk=oferta_id))}
+
+    return render(request, 'coordinaAsignaturas/modificarOferta.html', args)
+
 # Ver las asisnaturas #
 def verAsignaturas(request):
     if 'username' in request.session.keys():
