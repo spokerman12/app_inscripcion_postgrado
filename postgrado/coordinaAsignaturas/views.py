@@ -24,8 +24,10 @@ def principal(request):
 # Mostrar las ofertas registradas #
 def verOfertas(request):
     #return HttpResponse("Estas en la vista de oferta %s" % oferta_id)
-    ultimasOfertas = Oferta.objects.all()
-    #template = loader.get_template('coordinaAsignaturas/oferta.html')
+    s = Sesion()
+    s.usuario = Usuario.objects.get(pk=request.session['username'])
+    coord = s.obtenCoordinacion()
+    ultimasOfertas = Oferta.objects.filter(coordinacion=coord)
     context = {
        'ultimasOfertas' : ultimasOfertas,
     }
