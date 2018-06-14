@@ -155,6 +155,20 @@ class FormModificarAsignatura(FormularioAsignatura) :
             'prof' : forms.Select(attrs = {'class':'form-control'}),
             'codDpto' : forms.Select(attrs = {'class':'form-control'})
         }
+        try :
+            if kwargs is not None:
+                if "instance" in kwargs.keys() :
+                    horario = kwargs["instance"].diaHora
+                    horario = horario.split(" ; ")
+                    for H in horario :
+                        if H != "" :
+                            H = H.split(" ")
+                            H[1] = H[1].split("-")
+                            self.fields[H[0]].initial = True
+                            self.fields[H[0]+str("_inicio")].initial = int(H[1][0])
+                            self.fields[H[0]+str("_fin")].initial = int(H[1][1])
+        except :
+            pass
 
 # Formulario para agregar una asignatura a la coordinacion #
 class FormAgregarAsignatura(FormularioAsignatura) :
