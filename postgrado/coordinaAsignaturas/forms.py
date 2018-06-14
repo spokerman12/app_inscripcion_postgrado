@@ -168,6 +168,11 @@ class FormAgregarAsignatura(FormularioAsignatura) :
 # Formulario para agregar una nueva oferta #
 class FormCrearOferta(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(FormCrearOferta, self).__init__(*args, **kwargs)
+        self.fields['asignaturas'].widget = CheckboxSelectMultiple()
+        self.fields['asignaturas'].queryset = Asignatura.objects.all()
+
     class Meta:
         model = Oferta
         exclude = []
@@ -191,8 +196,6 @@ class FormCrearOferta(forms.ModelForm):
         }
 
 class FormModificarOferta(forms.ModelForm):
-
-    #asignaturas = forms.ModelMultipleChoiceField(widget = forms.CheckboxSelectMultiple,required=True)
 
     def __init__(self, *args, **kwargs):
         super(FormModificarOferta, self).__init__(*args, **kwargs)
