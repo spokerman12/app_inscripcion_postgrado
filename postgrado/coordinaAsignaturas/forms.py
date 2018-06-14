@@ -167,12 +167,23 @@ class FormCrearOferta(forms.ModelForm):
     class Meta:
         model = Oferta
         exclude = []
-
+        fields = [
+            'coordinacion',
+            'trimestre',
+            'asignaturas',
+            'anio'
+        ]
         labels = {
             'coordinacion' : 'Coordinacion',
             'trimestre' : 'Trimestre',
             'asignaturas' : 'Asignaturas',
             'anio' : 'Periodo',
+        }
+        widgets = {
+            'coordinacion' : forms.Select(attrs = {'class':'form-control'}),
+            'trimestre' : forms.Select(attrs = {'class':'form-control'}),
+            'anio' : forms.TextInput(attrs = {'class':'form-control'}),
+            'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
         }
 
         
