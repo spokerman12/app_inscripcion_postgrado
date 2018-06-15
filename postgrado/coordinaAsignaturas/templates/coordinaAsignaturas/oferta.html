@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<!--
 {% if ultimasOfertas %}
     <ul>
     {% for oferta in ultimasOfertas %}
@@ -12,7 +12,7 @@
     <a href="{% url 'coordinaAsignaturas:agregarOferta' %}">Agregar Oferta</a>
 {% else %}
     <p>No polls are available.</p>
-{% endif %}
+{% endif %}-->
 
 <head>
     <meta charset="UTF-8">
@@ -213,9 +213,14 @@
                                             	<td>{{oferta.trimestre}}</td>
                                             	<td>{{oferta.anio}}</td>
                                                 <td>
-                                                	<a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Modificar" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
+                                                	<a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
                                                 		<i class="material-icons">pageview</i>
-                                            		</a>
+                                            		</a> 
+                                                    <a href="{% url 'coordinaAsignaturas:eliminarOferta' oferta_id=oferta.id %}">
+                                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Eliminar" data-original-title="Eliminar" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
+                                                        <i class="material-icons">delete</i>
+                                                        </button>
+                                                    </a>
                                             	</td>
                                             </tr>
                                         {% endfor %}
@@ -255,17 +260,6 @@
                         <a href="{% url 'coordinaAsignaturas:agregarOferta' %}">
                         <button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
                             <i class="material-icons">add</i>
-                        </button></a>
-                    </form>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                    <div class="align-center">
-                    <form method='post'>
-                        <h5>Existente</h5>
-                        <a href="{% url 'coordinaAsignaturas:listaTodasAsignaturas' %}">
-                        <button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
-                            <i class="material-icons">add_to_photos</i>
                         </button></a>
                     </form>
                     </div>

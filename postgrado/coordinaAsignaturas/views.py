@@ -65,8 +65,10 @@ def modificarOferta(request,oferta_id):
         args = {'form' : form}
         if form.is_valid():
             form.save(commit=False)
-            
-            return redirect('/coordinaAsignaturas/ofertas')
+            return redirect('coordinaAsignaturas:detallesOferta', oferta_id=oferta_id)
+            #return redirect('/coordinaAsignaturas/ofertas')
+        else : 
+            print("Error al modificar oferta")
     else :
         args = {'form' : FormModificarOferta(instance=Oferta.objects.get(pk=oferta_id))}
 

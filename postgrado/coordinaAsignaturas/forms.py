@@ -213,7 +213,23 @@ class FormCrearOferta(FormularioOferta):
     pass
 
 class FormModificarOferta(FormularioOferta) :
-    pass
+    def __init__(self, *args, **kwargs):
+        super(FormModificarOferta, self).__init__(*args, **kwargs)
+        self.fields['asignaturas'].widget = CheckboxSelectMultiple()
+        self.fields['asignaturas'].queryset = Asignatura.objects.all()
+        labels = {
+            'coordinacion' : 'Coordinacion',
+            'trimestre' : 'Trimestre',
+            'asignaturas' : 'Asignaturas',
+            'anio' : 'Periodo',
+        }
+        widgets = {
+            'coordinacion' : forms.Select(attrs = {'class':'form-control'}),
+            'trimestre' : forms.Select(attrs = {'class':'form-control'}),
+            'anio' : forms.TextInput(attrs = {'class':'form-control'}),
+            'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
+        }
+
 """
     def __init__(self, *args, **kwargs):
         super(FormModificarOferta, self).__init__(*args, **kwargs)
