@@ -192,7 +192,11 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                             <label for="asignatura.vista.id_for_label">Vista: </label>
-                                            {{asignatura.vista}}
+                                            {% if asignatura.vista %}
+                                                Sí
+                                            {% else %}
+                                                No
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
