@@ -15,30 +15,22 @@
 		</span>
 	  </p>
 	  <div align="center">
-		  {% csrf_token %}
-		  <label for="id_username">Email</label><br>
+		  {% csrf_token %}<br>
 		  {{ form.username }}
 		  <br>
-		  <label for="id_password">Password</label><br>
 		  {{ form.password }}
 		  <button type="submit" name="Login" value="Iniciar Sesión" class="login-submit" />Ingresar</button>
 	  </div>
 	  
 	</form>
-
-	<!-- <form class="login-form" method="post">
-	  <p class="login-text">
-	    <span class="fa-stack fa-lg">
-	      <i class="fa fa-circle fa-stack-2x"></i>
-	      <i class="fa fa-lock fa-stack-1x"></i>
-	    </span>
-	  </p>
-	  <input type="email" class="login-username" autofocus="true" required="true" placeholder="Correo Electrónico" />
-	  <input type="password" class="login-password" required="true" placeholder="Contraseña" />
-	  <input type="submit" name="Login" value="Iniciar Sesión" class="login-submit" />
-	</form> -->
 	<a href="#" class="login-forgot-pass">¿Olvidaste tu contraseña?</a>
 	<div class="underlay-photo"></div>
 	<div class="underlay-black"></div> 
+	<!-- Jquery Core Js -->
+   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+   <script>
+   	$('#id_username').attr('placeholder','Correo')
+   	$('#id_password').attr('placeholder','Contraseña')
+   </script>
 </body>
 </html>

@@ -29,6 +29,7 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{% static 'css/themes/all-themes.css' %}" rel="stylesheet" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{% static 'js/sortable.js' %}"></script>
 </head>
 
 <body class="theme-indigo">
@@ -183,7 +184,7 @@
                         <div class="body">
                             
                             <div class="table-responsive">
-                                <table id="myTable" class="table table-hover dashboard-task-infos text-center">
+                                <table id="myTable" class="table table-hover dashboard-task-infos text-center sortable">
                                     <thead>
                                         <tr>
                                             <th class="text-center">Código</th>
