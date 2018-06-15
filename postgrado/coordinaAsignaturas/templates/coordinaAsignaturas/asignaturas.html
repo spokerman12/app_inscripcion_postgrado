@@ -22,6 +22,7 @@
 
     <!-- Animation Css -->
     <link href="{% static 'plugins/animate-css/animate.css' %}" rel="stylesheet" />
+    <link href="{% static 'plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" />
     <!-- Sweetalert Css -->
     <!-- Custom Css -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -89,7 +90,7 @@
                             <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">business</i>Asignaturas</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">subject</i>Ofertas Académicas</a></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">subject</i>Ofertas</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">input</i>Cerrar Sesión</a></li>
                         </ul>
@@ -138,37 +139,37 @@
             </div>
 
             <!-- Widgets -->
-            <div class="row clearfix">>
+            <div class="row clearfix">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-indigo hover-expand-effect">
+                    <div class="info-box bg-indigo hover-expand-effect hover-zoom-effect">
                         <div class="icon">
                             <i class="material-icons">clear_all</i>
                         </div>
                         <div class="content">
                             <div class="text">TODAS</div>
-                            <div class="number count-to" data-from="0" data-to="6" data-speed="2000" data-fresh-interval="2"></div>
+                            <div class="number count-to" data-from="0" data-to="{{ asignaturas|length }}" data-speed="1000" data-fresh-interval="0"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
+                    <div class="info-box bg-light-green hover-expand-effect hover-zoom-effect">
                         <div class="icon">
                             <i class="material-icons">check</i>
                         </div>
                         <div class="content">
                             <div class="text">ACTIVAS</div>
-                            <div class="number count-to" data-from="0" data-to="2" data-speed="2000" data-fresh-interval="2"></div>
+                            <div class="number count-to" data-from="0" data-to="{{ asignaturas|length }}" data-speed="1000" data-fresh-interval="0"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-grey hover-expand-effect">
+                    <div class="info-box bg-amber hover-expand-effect hover-zoom-effect">
                         <div class="icon">
                             <i class="material-icons">do_not_disturb_on</i>
                         </div>
                         <div class="content">
                             <div class="text">DESHABILITADAS</div>
-                            <div class="number count-to" data-from="0" data-to="3" data-speed="2000" data-fresh-interval="1"></div>
+                            <div class="number count-to" data-from="0" data-to="0" data-speed="2000" data-fresh-interval="1"></div>
                         </div>
                     </div>
                 </div>
@@ -206,10 +207,10 @@
                                                         <i class="material-icons">edit</i>
                                                     </button></a>
 
-                                                    <a href="{% url 'coordinaAsignaturas:eliminarAsignatura' codAsig=a.codAsig %}">
-                                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Quitar" data-original-title="Quitar" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
+                                                    
+                                                        <button type="button" data-toggle="modal" data-target="#{{a.codAsig}}" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
                                                         <i class="material-icons">clear</i>
-                                                    </button></a>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -261,6 +262,71 @@
                     </form>
                     </div>
                 </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-orange">
+                            <h2>
+                                Sistema Gestor de Asignaturas <small>Lee la Descripción</small>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            El sistema gestor de asignaturas permite a la coordinación llevar un control ordenado, limpio, sencillo y eficaz para la admnistración y control de asignaturas y ofertas.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-orange">
+                            <h2>
+                                Módulo de Asignaturas <small>Lee la Descripción</small>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            En el módulo de asginaturas podrás agregar nuevas asignaturas  personalmente o tomarlas de una lista de asignaturas creadas. También, podrás modificarlas, eliminarlas y acceder a su información detallada.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <div class="card">
+                            
+                                <div class="header bg-orange">
+                                    <h2>
+                                        Módulo de Ofertas <small>Lee la Descripción</small>
+                                    </h2>
+                                </div>
+                            
+                            <div class="body">
+                                En el módulo de ofertas podrás agregar nuevas ofertas a tu coordinación. También, podrás modificarlas, eliminarlas y acceder a su información detallada. <br>
+                                <div class="text-left">
+                                     <a href="{% url 'coordinaAsignaturas:oferta' %}"><button type="button" class="btn bg-amber waves-effect">Ir a ofertas</button></a>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    
+                </div>
+                {% for a in asignaturas %}
+                    <div class="modal fade" id="{{a.codAsig}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header text-center">
+                            <i class="material-icons">warning</i>
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar Asignatura: {{a.nomAsig}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body text-center">
+                            ¿Está seguro que desea eliminar de su coordinación la asignatura {{a.nomAsig}}?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <a href="{% url 'coordinaAsignaturas:eliminarAsignatura' codAsig=a.codAsig %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
 
             </div>
             <!-- <button id="pruebaalert">ejemplo</button> -->

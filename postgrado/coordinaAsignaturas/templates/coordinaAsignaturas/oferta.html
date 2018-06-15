@@ -42,6 +42,7 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{% static 'css/themes/all-themes.css' %}" rel="stylesheet" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{% static 'js/sortable.js' %}"></script>
 </head>
 
 <body class="theme-indigo">
@@ -101,7 +102,7 @@
                             <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">business</i>Asignaturas</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">subject</i>Ofertas Académicas</a></li>
+                            <li><a href="javascript:void(0);"><i class="material-icons">subject</i>Ofertas</a></li>
                             <li role="seperator" class="divider"></li>
                             <li><a href="javascript:void(0);"><i class="material-icons">input</i>Cerrar Sesión</a></li>
                         </ul>
@@ -150,37 +151,37 @@
             </div>
 
             <!-- Widgets -->
-            <div class="row clearfix">>
+            <div class="row clearfix">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-indigo hover-expand-effect">
+                    <div class="info-box bg-indigo hover-expand-effect hover-zoom-effect">
                         <div class="icon">
                             <i class="material-icons">clear_all</i>
                         </div>
                         <div class="content">
                             <div class="text">TODAS</div>
-                            <div class="number count-to" data-from="0" data-to="6" data-speed="2000" data-fresh-interval="2"></div>
+                            <div class="number count-to" data-from="0" data-to="{{ ultimasOfertas|length }}" data-speed="1000" data-fresh-interval="0"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
+                    <div class="info-box bg-light-green hover-expand-effect hover-zoom-effect">
                         <div class="icon">
                             <i class="material-icons">check</i>
                         </div>
                         <div class="content">
                             <div class="text">ACTIVAS</div>
-                            <div class="number count-to" data-from="0" data-to="2" data-speed="2000" data-fresh-interval="2"></div>
+                            <div class="number count-to" data-from="0" data-to="{{ ultimasOfertas|length }}" data-speed="1000" data-fresh-interval="0"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-grey hover-expand-effect">
+                    <div class="info-box bg-amber hover-expand-effect hover-zoom-effect">
                         <div class="icon">
                             <i class="material-icons">do_not_disturb_on</i>
                         </div>
                         <div class="content">
                             <div class="text">DESHABILITADAS</div>
-                            <div class="number count-to" data-from="0" data-to="3" data-speed="2000" data-fresh-interval="1"></div>
+                            <div class="number count-to" data-from="0" data-to="0" data-speed="2000" data-fresh-interval="1"></div>
                         </div>
                     </div>
                 </div>
@@ -196,7 +197,7 @@
                         <div class="body">
                             
                             <div class="table-responsive">
-                                <table id="myTable" class="table table-hover dashboard-task-infos text-center">
+                                <table id="myTable" class="table table-hover dashboard-task-infos text-center sortable">
                                 	{% if ultimasOfertas %}
                                     <thead>
                                         <tr>
@@ -214,13 +215,14 @@
                                             	<td>{{oferta.anio}}</td>
                                                 <td>
                                                 	<a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
-                                                		<i class="material-icons">pageview</i>
+                                                        <i class="material-icons">pageview</i>
+                                                    </a> 
+                                                    <a href="{% url 'coordinaAsignaturas:modificarOferta' oferta_id=oferta.id %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
+                                                		<i class="material-icons">edit</i>
                                             		</a> 
-                                                    <a href="{% url 'coordinaAsignaturas:eliminarOferta' oferta_id=oferta.id %}">
-                                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Eliminar" data-original-title="Eliminar" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
+                                                        <button type="button" data-toggle="modal" data-target="#{{oferta.id}}" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
                                                         <i class="material-icons">delete</i>
                                                         </button>
-                                                    </a>
                                             	</td>
                                             </tr>
                                         {% endfor %}
@@ -264,11 +266,72 @@
                     </form>
                     </div>
                 </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-orange">
+                            <h2>
+                                Sistema Gestor de Asignaturas <small>Lee la Descripción</small>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            El sistema gestor de asignaturas permite a la coordinación llevar un control ordenado, limpio, sencillo y eficaz para la admnistración y control de asignaturas y ofertas.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-orange">
+                            <h2>
+                                Módulo de Asignaturas <small>Lee la Descripción</small>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            En el módulo de asginaturas podrás agregar nuevas asignaturas  personalmente o tomarlas de una lista de asignaturas creadas. También, podrás modificarlas, eliminarlas y acceder a su información detallada.
+                                <div class="text-left">
+                                     <a href="{% url 'coordinaAsignaturas:verAsignaturas' %}"><button type="button" class="btn bg-amber waves-effect">Ir a asignaturas</button></a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-orange">
+                            <h2>
+                                Módulo de Ofertas <small>Lee la Descripción</small>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            En el módulo de ofertas podrás agregar nuevas ofertas a tu coordinación. También, podrás modificarlas, eliminarlas y acceder a su información detallada.
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <!-- <button id="pruebaalert">ejemplo</button> -->
         </div>
     </section>
+    {% for oferta in ultimasOfertas %}
+        <div class="modal fade" id="{{oferta.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <i class="material-icons">warning</i><h5 class="modal-title" id="exampleModalLabel">Eliminar Oferta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-center">
+
+                ¿Está seguro que desea eliminar de su coordinación esta oferta académica?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <a href="{% url 'coordinaAsignaturas:eliminarOferta' oferta_id=oferta.id %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
 
     <!-- Jquery Core Js -->
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>

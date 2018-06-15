@@ -224,12 +224,10 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="text-center">
-                                        <a href="{% url 'coordinaAsignaturas:eliminarAsignatura' codAsig=asignatura.codAsig %}">
-                                            <button type="button" class="btn bg-red waves-effect col-sm-12">
+                                            <button type="button" data-toggle="modal" data-target="#{{asignatura.codAsig}}" class="btn bg-red waves-effect col-sm-12">
                                             <i class="material-icons">clear</i>
                                                 <span>Eliminar</span>
                                             </button>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -241,6 +239,26 @@
             </div>
         </div>
     </section>
+        <div class="modal fade" id="{{asignatura.codAsig}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <i class="material-icons">warning</i>
+            <h5 class="modal-title" id="exampleModalLabel">Eliminar Asignatura: {{asignatura.nomAsig}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            ¿Está seguro que desea eliminar de su coordinación la asignatura {{asignatura.nomAsig}}?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <a href="{% url 'coordinaAsignaturas:eliminarAsignatura' codAsig=asignatura.codAsig %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+          </div>
+        </div>
+        </div>
+        </div>
 
     <!-- Jquery Core Js -->
    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
