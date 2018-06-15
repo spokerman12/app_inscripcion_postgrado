@@ -61,7 +61,7 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">SISTEMA GESTOR DE ASIGNATURAS</a>
+                <a class="navbar-brand" href="">SISTEMA GESTOR DE ASIGNATURAS</a>
             </div>
         </div>
     </nav>
@@ -94,27 +94,27 @@
                 <ul class="list">
                     <li class="header">OPCIONES</li>
                     <li class="">
-                        <a href="index.html">
+                        <a href="">
                             <i class="material-icons">home</i>
                             <span>Inicio</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="index.html">
+                        <a href="{% url 'coordinaAsignaturas:verAsignaturas' %}">
                             <i class="material-icons">business</i>
                             <span>Asignaturas</span>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="index.html">
-                            <i class="material-icons">subject</i>
-                            <span>Ofertas</span>
-                        </a>
-                    </li>
                     <li class="">
-                        <a href="index.html">
+                        <a href="">
                             <i class="material-icons">toc</i>
                             <span>Programas</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'coordinaAsignaturas:oferta' %}">
+                            <i class="material-icons">subject</i>
+                            <span>Ofertas</span>
                         </a>
                     </li>
                     
