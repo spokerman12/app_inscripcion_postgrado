@@ -1,290 +1,114 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>ING DE SOFTWARE</title>
-    <!-- Favicon
-    <link rel="icon" href="favicon.ico" type="image/x-icon">-->
 
-    <!-- Google Fonts -->
-    {% load static %}
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
-    <!-- Bootstrap Core Css -->
-    <link href="{% static 'plugins/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
 
-    <!-- Waves Effect Css -->
-    <link href="{% static 'plugins/node-waves/waves.css' %}" rel="stylesheet" />
-
-    <!-- Animation Css -->
-    <link href="{% static 'plugins/animate-css/animate.css' %}" rel="stylesheet" />
-
-    <!-- Morris Chart Css-->
-    <link href="{% static 'plugins/morrisjs/morris.css' %}" rel="stylesheet" />
-
-    <!-- Custom Css -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-
-    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="{% static 'css/themes/all-themes.css' %}" rel="stylesheet" />
-</head>
-
-<body class="theme-indigo">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Cargando...</p>
-        </div>
+<div class="search-bar" onkeyup="myFunction()">
+    <div class="search-icon">
+        <i class="material-icons">search</i>
     </div>
-    <div class="search-bar" onkeyup="myFunction()">
-        <div class="search-icon">
-            <i class="material-icons">search</i>
-        </div>
-        <input id="myInput" type="text" placeholder="BUSCAR ASIGNATURA">
-        <div class="close-search">
-            <i class="material-icons">close</i>
-        </div>
+    <input id="myInput" type="text" placeholder="BUSCAR ASIGNATURA">
+    <div class="close-search">
+        <i class="material-icons">close</i>
     </div>
-    <!-- #END# Page Loader -->
-    <!-- Overlay For Sidebars -->
-    <div class="overlay"></div>
-    <!-- #END# Overlay For Sidebars -->
-    <!-- Search Bar -->
-    <!-- #END# Search Bar -->
-    <!-- Top Bar -->
-    <nav class="navbar">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-                <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="">SISTEMA GESTOR DE ASIGNATURAS</a>
-            </div>
+</div>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>ASIGNATURAS</h2>
         </div>
-    </nav>
-    <!-- #Top Bar -->
-    <section>
-        <!-- Left Sidebar -->
-        <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info">
-                <div class="info-container">
-                    <div class="name font-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h4>Post Grado Ciencias</h4></div>
-                    <div class="email">postgradociencias@usb.ve</div>
-                    <div class="btn-group user-helper-dropdown">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
-                            <li role="seperator" class="divider"></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">business</i>Asignaturas</a></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">subject</i>Ofertas Académicas</a></li>
-                            <li role="seperator" class="divider"></li>
-                            <li><a href="javascript:void(0);"><i class="material-icons">input</i>Cerrar Sesión</a></li>
-                        </ul>
+
+        <div class="row clearfix">
+            <!-- Task Info -->
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                <div class="card">
+                    <div class="header text-center">
+                        <h2>AÑADIR ASIGNATURAS<i class="material-icons col-amber">add</i></h2>
+                        <span>Aquí podrás agregar asignaturas existentes a tu coordinación</span>
                     </div>
-                </div>
-            </div>
-            <!-- #User Info -->
-            <!-- Menu -->
-            <div class="menu">
-                <ul class="list">
-                    <li class="header">OPCIONES</li>
-                    <li class="">
-                        <a href="">
-                            <i class="material-icons">home</i>
-                            <span>Inicio</span>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="{% url 'coordinaAsignaturas:verAsignaturas' %}">
-                            <i class="material-icons">business</i>
-                            <span>Asignaturas</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="">
-                            <i class="material-icons">toc</i>
-                            <span>Programas</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'coordinaAsignaturas:oferta' %}">
-                            <i class="material-icons">subject</i>
-                            <span>Ofertas</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </aside>
-    </section>
-
-    <section class="content">
-        <div class="container-fluid">
-            <div class="block-header">
-                <h2>ASIGNATURAS</h2>
-            </div>
-
-            <div class="row clearfix">
-                <!-- Task Info -->
-                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-                    <div class="card">
-                        <div class="header text-center">
-                            <h2>AÑADIR ASIGNATURAS<i class="material-icons col-amber">add</i></h2>
-                            <span>Aquí podrás agregar asignaturas existentes a tu coordinación</span>
-                        </div>
-                        <div class="body">
-                            
-                            <div class="table-responsive">
-                                <table id="myTable" class="table table-hover dashboard-task-infos text-center">
-                                    <thead>
+                    <div class="body">
+                        
+                        <div class="table-responsive">
+                            <table id="myTable" class="table table-hover dashboard-task-infos text-center">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            <button style="background: transparent; border-style: none">
+                                            Código</button>
+                                        </th>
+                                        <th class="text-center">
+                                            <button style="background: transparent; border-style: none">
+                                            Denominación</button>
+                                        </th>
+                                        <th class="text-center">
+                                            <button style="background: transparent; border-style: none">
+                                            Programa</button>
+                                        </th>
+                                        <th class="text-center">Añadir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for a in asignaturas %}
                                         <tr>
-                                            <th class="text-center">Código</th>
-                                            <th class="text-center">Denominación</th>
-                                            <th class="text-center">Programa</th>
-                                            <th class="text-center">Añadir</th>
+                                            <td><a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=a.codAsig %}">
+                                                {{ a.codAsig }}</a></td>
+                                            <td><span class="">{{ a.nomAsig }}</span></td>
+                                            <td>{{a.progAsig}}</td>
+                                            <td>
+                                                <a href="{% url 'coordinaAsignaturas:agregarACoord' codAsig=a.codAsig%}">
+                                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Añadir" data-original-title="Editar" class="btn bg-green btn-circle waves-effect waves-circle waves-float">
+                                                    <i class="material-icons">add</i>
+                                                </button></a>
+                                                </button></a>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for a in asignaturas %}
-                                            <tr>
-                                                <td><a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=a.codAsig %}">
-                                                    {{ a.codAsig }}</a></td>
-                                                <td><span class="">{{ a.nomAsig }}</span></td>
-                                                <td>{{a.progAsig}}</td>
-                                                <td>
-                                                    <a href="{% url 'coordinaAsignaturas:agregarACoord' codAsig=a.codAsig%}">
-                                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Añadir" data-original-title="Editar" class="btn bg-green btn-circle waves-effect waves-circle waves-float">
-                                                        <i class="material-icons">add</i>
-                                                    </button></a>
-                                                    </button></a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                               <!-- <nav>
-                                        <ul class="pager">
-                                            <li class="previous">
-                                                <a href="javascript:void(0);" class="waves-effect"><span aria-hidden="true">←</span> Anterior</a>
-                                            </li>
-                                            <li class="next">
-                                                <a href="javascript:void(0);" class="waves-effect">Siguiente <span aria-hidden="true">→</span></a>
-                                            </li>
-                                        </ul>
-                                    </nav>-->
-                            </div>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                           <!-- <nav>
+                                    <ul class="pager">
+                                        <li class="previous">
+                                            <a href="javascript:void(0);" class="waves-effect"><span aria-hidden="true">←</span> Anterior</a>
+                                        </li>
+                                        <li class="next">
+                                            <a href="javascript:void(0);" class="waves-effect">Siguiente <span aria-hidden="true">→</span></a>
+                                        </li>
+                                    </ul>
+                                </nav>-->
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                    <div class="align-center">
-                    <form method='post'>
-                        <a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
-                        <i class="material-icons">search</i>
-                        </button></a>
-                    </form>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                <div class="align-center">
+                <form method='post'>
+                    <a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                    <i class="material-icons">search</i>
+                    </button></a>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="defaultModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales orci ante, sed ornare eros vestibulum ut. Ut accumsan
+                        vitae eros sit amet tristique. Nullam scelerisque nunc enim, non dignissim nibh faucibus ullamcorper.
+                        Fusce pulvinar libero vel ligula iaculis ullamcorper. Integer dapibus, mi ac tempor varius, purus
+                        nibh mattis erat, vitae porta nunc nisi non tellus. Vivamus mollis ante non massa egestas fringilla.
+                        Vestibulum egestas consectetur nunc at ultricies. Morbi quis consectetur nunc.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
                     </div>
                 </div>
             </div>
         </div>
-            <div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="defaultModalLabel">Modal title</h4>
-                        </div>
-                        <div class="modal-body">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales orci ante, sed ornare eros vestibulum ut. Ut accumsan
-                            vitae eros sit amet tristique. Nullam scelerisque nunc enim, non dignissim nibh faucibus ullamcorper.
-                            Fusce pulvinar libero vel ligula iaculis ullamcorper. Integer dapibus, mi ac tempor varius, purus
-                            nibh mattis erat, vitae porta nunc nisi non tellus. Vivamus mollis ante non massa egestas fringilla.
-                            Vestibulum egestas consectetur nunc at ultricies. Morbi quis consectetur nunc.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </section>
-
-    <!-- Jquery Core Js -->
-    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-
-    <!-- Bootstrap Core Js -->
-    <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
-
-    <!-- Select Plugin Js -->
-    <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %}"></script>
-
-
-    <!-- Waves Effect Plugin Js -->
-    <script src="{% static 'plugins/node-waves/waves.js' %}"></script>
-
-    <!-- Jquery CountTo Plugin Js -->
-    <script src="{% static 'plugins/jquery-countto/jquery.countTo.js' %}"></script>
-
-    <!-- Morris Plugin Js -->
-    <script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
-    <script src="{% static 'plugins/morrisjs/morris.js' %}"></script>
-
-    <!-- ChartJs -->
-    <script src="{% static 'plugins/chartjs/Chart.bundle.js' %}"></script>
-
-    <!-- Flot Charts Plugin Js -->
-    <script src="{% static 'plugins/flot-charts/jquery.flot.js' %}"></script>
-    <script src="{% static 'plugins/flot-charts/jquery.flot.resize.js' %}"></script>
-    <script src="{% static 'plugins/flot-charts/jquery.flot.pie.js' %}"></script>
-    <script src="{% static 'plugins/flot-charts/jquery.flot.categories.js' %}"></script>
-    <script src="{% static 'plugins/flot-charts/jquery.flot.time.js' %}"></script>
-
-    <!-- Sparkline Chart Plugin Js -->
-    <script src="{% static 'plugins/jquery-sparkline/jquery.sparkline.js' %}"></script>
-
-    <!-- Custom Js -->
-    <script src="{% static 'js/admin.js' %}"></script>
-    <script src="{% static 'js/pages/index.js' %}"></script>
-
-    <!-- Demo Js -->
-    <script src="{% static 'js/demo.js' %}"></script>
-    <script>
-        function myFunction() {
-          // Declare variables 
-          var input, filter, table, tr, td, i;
-          input = document.getElementById("myInput");
-          filter = input.value.toUpperCase();
-          table = document.getElementById("myTable");
-          tr = table.getElementsByTagName("tr");
-
-          // Loop through all table rows, and hide those who don't match the search query
-          for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td2 = tr[i].getElementsByTagName("td")[1];
-            if (td || td2) {
-              if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) ||(td2.innerHTML.toUpperCase().indexOf(filter) > -1)) {
-                tr[i].style.display = "";
-              } else {
-                tr[i].style.display = "none";
-              }
-            } 
-          }
-        }
-    </script>
-</body>
-
-</html>
+</section>
