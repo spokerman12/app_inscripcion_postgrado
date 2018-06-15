@@ -1,5 +1,6 @@
+{% extends 'base.html' %}
 
-
+{% block content %}
 
 <section class="content">
     <div class="container-fluid">
@@ -9,7 +10,6 @@
                     Modificar Asignatura <i class="material-icons col-amber">edit</i>
                     <small>Aquí podrá modificar una asignatura existente</small>
                 </h2>
-
             </div>
             <div class="body">
                 <div class="row clearfix">
@@ -144,7 +144,10 @@
                         </form>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
 </section>
+
+{% endblock %}

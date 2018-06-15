@@ -23,7 +23,6 @@ def principal(request):
 
 # Mostrar las ofertas registradas #
 def verOfertas(request):
-    #return HttpResponse("Estas en la vista de oferta %s" % oferta_id)
     s = Sesion()
     s.usuario = Usuario.objects.get(pk=request.session['username'])
     coord = s.obtenCoordinacion()
@@ -66,7 +65,6 @@ def modificarOferta(request,oferta_id):
         if form.is_valid():
             form.save()
             return redirect('coordinaAsignaturas:detallesOferta', oferta_id=oferta_id)
-            #return redirect('/coordinaAsignaturas/ofertas')
         else :
             print("Error al modificar oferta")
     else :
@@ -89,7 +87,8 @@ def eliminarOferta(request, oferta_id):
 # Ver las asisnaturas #
 def verAsignaturas(request):
     if 'username' in request.session.keys():
-        args = {'usuario' : request.session['username']}
+        args = {'usuario' : request.session['username']
+                }
         if request.method == 'POST' :
             try:
                 return render(request, 'coordinaAsignaturas/asignaturas.html', args)
@@ -101,7 +100,7 @@ def verAsignaturas(request):
                 args['asignaturas'] = []
         return render(request, 'coordinaAsignaturas/asignaturas.html', args)
     else :
-        return redirect('/coordinaAsignaturas/login')
+        return redirect('login')
 
 # Agregar una asignatura #
 def agregarAsignatura(request):

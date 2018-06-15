@@ -1,20 +1,8 @@
+{% extends 'base.html' %}
+{% load static %}
 
 
-<!--
-{% if ultimasOfertas %}
-    <ul>
-    {% for oferta in ultimasOfertas %}
-        <li><a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}">{{ oferta.trimestre }} {{ oferta.anio }}</a> <a href="{% url 'coordinaAsignaturas:modificarOferta' oferta_id=oferta.pk %}">Modificar</a></li>
-
-    {% endfor %}
-    </ul>
-
-    <a href="{% url 'coordinaAsignaturas:agregarOferta' %}">Agregar Oferta</a>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}-->
-
-
+{% block content %}
 
 <div class="search-bar" onkeyup="myFunction()">
     <div class="search-icon">
@@ -74,16 +62,14 @@
             <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
                 <div class="card">
                     <div class="header">
-                        <h2>OFERTAS DE LA COORDINACIÓN</h2>
+                        <h2>OFERTAS DE LA COORDINACIÓN {{ultimasOfertas.coordinacion}}</h2>
                     </div>
                     <div class="body">
-                        
                         <div class="table-responsive">
                             <table id="myTable" class="table table-hover dashboard-task-infos text-center sortable">
                             	{% if ultimasOfertas %}
                                 <thead>
                                     <tr>
-                                        <th class="text-center"><button style="background: transparent; border-style: none">Coordinación</button></th>
                                         <th class="text-center"><button style="background: transparent; border-style: none">Trimestre</button></th>
                                         <th class="text-center"><button style="background: transparent; border-style: none">Año</button></th>
                                         <th class="text-center">Acciones</th>
@@ -92,7 +78,6 @@
                                 <tbody>
                                     {% for oferta in ultimasOfertas %}
                                 		<tr>
-                                        	<td>{{oferta.coordinacion}}</td>
                                         	<td>{{oferta.trimestre}}</td>
                                         	<td>{{oferta.anio}}</td>
                                             <td>
@@ -187,9 +172,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        <!-- <button id="pruebaalert">ejemplo</button> -->
     </div>
 </section>
 {% for oferta in ultimasOfertas %}
@@ -214,3 +197,5 @@
       </div>
     </div>
 {% endfor %}
+
+{% endblock %}

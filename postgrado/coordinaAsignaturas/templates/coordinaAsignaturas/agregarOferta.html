@@ -1,5 +1,6 @@
+{% extends 'base.html' %}
 
-
+{% block styles %}
 
 <style>
 .grid-container {
@@ -9,9 +10,9 @@
 }
 </style>
 
+{% endblock %}
 
-
-
+{% block content %}
 
 <section class="content">
     <div class="container-fluid">
@@ -27,15 +28,6 @@
                 <div class="row clearfix">
                     <form method="post" novalidate>
                     {% csrf_token %}
-                    <div class="col-sm-12 fieldWrapper">
-                        <div class="form-group">
-                            <div class="form-line text-center">
-                                {{form.coordinacion.errors}}
-                                <label for="form.coordinacion.id_for_label">Coordinación: </label>
-                                {{form.coordinacion}}
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-sm-6 fieldWrapper">
                         <div class="form-group">
                             <div class="form-line text-center">
@@ -78,9 +70,11 @@
                         </div>
                     </div>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+{% endblock %}

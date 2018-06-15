@@ -1,6 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
 
-
-
+{% block content %}
 
 <div class="search-bar" onkeyup="myFunction()">
     <div class="search-icon">
@@ -11,8 +12,6 @@
         <i class="material-icons">close</i>
     </div>
 </div>
-
-
 
 <section class="content">
     <div class="container-fluid">
@@ -97,8 +96,6 @@
                                                 <button type="button" data-toggle="tooltip" data-placement="top" title="Modificar" data-original-title="Editar" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
                                                     <i class="material-icons">edit</i>
                                                 </button></a>
-
-                                                
                                                     <button type="button" data-toggle="modal" data-target="#{{a.codAsig}}" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
                                                     <i class="material-icons">clear</i>
                                                 </button>
@@ -222,3 +219,5 @@
         </div>
     </div>
 </section>
+
+{% endblock %}
