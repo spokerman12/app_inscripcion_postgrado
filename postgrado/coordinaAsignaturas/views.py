@@ -33,7 +33,7 @@ def verOfertas(request):
     }
     return render(request, 'coordinaAsignaturas/oferta.html', context)
 
-# Muestra las materias registradas en la oferta #    
+# Muestra las materias registradas en la oferta #
 def detallesOferta(request, oferta_id):
     oferta_info = get_object_or_404(Oferta, pk=oferta_id)
     materiasOfertadas = oferta_info.asignaturas.all()
@@ -49,7 +49,7 @@ def agregarOferta(request):
         args = {'form' : form}
         if form.is_valid():
             form.save()
-            
+
             return redirect('/coordinaAsignaturas/ofertas')
     else :
         args = {'form' : FormCrearAsignatura()}
@@ -65,7 +65,7 @@ def modificarOferta(request,oferta_id):
         args = {'form' : form}
         if form.is_valid():
             form.save(commit=False)
-            
+
             return redirect('/coordinaAsignaturas/ofertas')
     else :
         args = {'form' : FormModificarOferta(instance=Oferta.objects.get(pk=oferta_id))}
@@ -87,7 +87,8 @@ def eliminarOferta(request, oferta_id):
 # Ver las asisnaturas #
 def verAsignaturas(request):
     if 'username' in request.session.keys():
-        args = {'usuario' : request.session['username']}
+        args = {'usuario' : request.session['username']
+                }
         if request.method == 'POST' :
             try:
                 return render(request, 'coordinaAsignaturas/asignaturas.html', args)
@@ -99,7 +100,7 @@ def verAsignaturas(request):
                 args['asignaturas'] = []
         return render(request, 'coordinaAsignaturas/asignaturas.html', args)
     else :
-        return redirect('/coordinaAsignaturas/login')
+        return redirect('login')
 
 # Agregar una asignatura #
 def agregarAsignatura(request):
@@ -121,7 +122,7 @@ def agregarAsignatura(request):
 #Modifica los datos de una asignatura#
 def modificarAsignatura(request, codAsig):
     asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
-    
+
     if request.method == "POST":
         form = FormModificarAsignatura(request.POST, instance=asignatura)
         if form.is_valid():
