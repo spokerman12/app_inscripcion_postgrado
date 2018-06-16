@@ -22,6 +22,7 @@ class LoginForm(forms.Form) :
             m = hashlib.sha256()
             p = str.encode(pwd)
             m.update(p)
+
             if (m.hexdigest()==q.password):
                 pass
                 #self.usuario = q

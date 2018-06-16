@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import *
 from .forms import *
@@ -11,7 +9,8 @@ def home(request):
         args = {'form': form}
         if form.is_valid() :
             request.session['username'] = form.cleaned_data['username']
-            return redirect('/coordinaAsignaturas/ver')
+            # return redirect('/coordinaAsignaturas/ver')
+            return redirect('/coordinaAsignaturas/principal')
     else :
         args = {'form': LoginForm()}
     return render(request, 'coordinaAsignaturas/login.html', args)

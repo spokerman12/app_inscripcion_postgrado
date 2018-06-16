@@ -1,10 +1,19 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Sistema de Gestión de Postgrado USB</title>
-	{% load static %}
+
+	<!-- Instala bootstrap -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
 	<link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 </head>
 <body>
 	<form class="login-form" method="post">
@@ -16,16 +25,18 @@
 	  </p>
 	  <div align="center">
 		  {% csrf_token %}<br>
+		  <!-- {{ form.username.errors }} -->
 		  {{ form.username }}
 		  <br>
 		  {{ form.password }}
 		  <button type="submit" name="Login" value="Iniciar Sesión" class="login-submit" />Ingresar</button>
 	  </div>
 	  
-	</form>
 	<a href="#" class="login-forgot-pass">¿Olvidaste tu contraseña?</a>
+	</form>
 	<div class="underlay-photo"></div>
 	<div class="underlay-black"></div> 
+	
 	<!-- Jquery Core Js -->
    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
    <script>
