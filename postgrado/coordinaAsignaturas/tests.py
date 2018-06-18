@@ -786,13 +786,13 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
+            # 'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
         form = FormularioAsignatura(data = valores)
-        self.assertFalse(form.is_valid())
+        self.assertTrue(form.is_valid())
 
     # testFormularioAsignaturaProfVacio: verifica que se retorne False si no se
     # ingresa el profesor de la asignatura. Caso frontera
@@ -852,7 +852,7 @@ class TestFormularioAsignatura(TestCase):
             # 'vista': False
         }
         form = FormularioAsignatura(data = valores)
-        self.assertFalse(form.is_valid())
+        self.assertTrue(form.is_valid())
 
     # testFormularioAsignaturVacio: verifica que se retorne False si no se
     # ingresa ningun campo al formulario. Caso esquina
