@@ -1,5 +1,80 @@
-<form method="post" novalidate>
-  {% csrf_token %}
-  {{ form }}
-  <button type="submit">Submit</button>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+
+<style>
+.grid-container {
+  display: grid;
+  justify-content: space-evenly;
+   grid-template-columns: auto auto auto auto auto;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="header text-center">
+                <h2>
+                    Modificar Oferta <i class="material-icons col-amber">edit</i>
+                    <small>Aquí podrá editar la oferta a seleccionada</small>
+                </h2>
+
+            </div>
+            <div class="body">
+                <div class="row clearfix">
+                    <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="col-sm-6 fieldWrapper">
+                        <div class="form-group">
+                            <div class="form-line text-center">
+                                {{form.trimestre.errors}}
+                                <label for="form.trimestre.id_for_label">Trimestre: </label>
+                                {{form.trimestre}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 fieldWrapper">
+                        <div class="form-group">
+                            <div class="form-line text-center">
+                                {{form.anio.errors}}
+                                <label for="form.anio.id_for_label">Año: </label>
+                                {{form.anio}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 fieldWrapper">
+                        <div class="form-group">
+                            <div class="form-line text-center">
+                                {{form.asignaturas.errors}}
+                                <label for="form.asignaturas.id_for_label">Asignaturas: </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 fieldWrapper">
+                        <div class="form-group text-center" id="select_id">          
+		                        {{form.asignaturas}}
+                        </div>
+                    </div>
+                    <div class="col-sm-12 fieldWrapper">
+                        <div class="form-group">
+                            <div class="text-center">
+                                <button type="submit" class="btn bg-amber waves-effect col-sm-12">
+                                  <i class="material-icons">save</i>
+                                    <span>Guardar</span>
+                              </button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -22,6 +22,8 @@ class LoginForm(forms.Form) :
             m = hashlib.sha256()
             p = str.encode(pwd)
             m.update(p)
+
+            print('kak')
             if (m.hexdigest()==q.password):
                 pass
                 #self.usuario = q
@@ -48,7 +50,7 @@ class FormularioAsignatura(forms.ModelForm):
     vie = forms.BooleanField(required=False)
     vie_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
     vie_fin = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    
+
     class Meta:
         model = Asignatura
         exclude = ['diaHora']
@@ -78,7 +80,7 @@ class FormularioAsignatura(forms.ModelForm):
         }
     # Haciendole override al metodo clean
     def clean(self):
-        
+
         limpio = super(FormularioAsignatura, self).clean()
         codigo = limpio.get('codAsig')
         nombre = limpio.get('nomAsig')
@@ -89,15 +91,15 @@ class FormularioAsignatura(forms.ModelForm):
         if not(d) :
             self.add_error('lun', 'Debe haber al menos un dia de clases')
             return limpio
-        
+
         for dia in dias :
             if  limpio.get(dia) == False :
                 continue
             if int(limpio.get(dia+"_inicio")) > int(limpio.get(dia+"_fin")) :
                 self.add_error(dia+'_inicio', 'El intervalo de tiempo debe ser positivo')
-        
+
         return limpio
-    
+
     def save(self, commit=True):
         asignatura = super(FormularioAsignatura, self).save(commit=False)
         dias = ['lun','mar','mie','jue','vie']
@@ -123,7 +125,7 @@ class FormCrearAsignatura(FormularioAsignatura) :
             self.add_error('codAsig', 'Ya existe una asignatura con ese codigo')
         except Asignatura.DoesNotExist :
             pass
-       
+
         # Comprobando que no haya una asignatura con igual nombre
         try:
             Asignatura.objects.get(nomAsig=nombre)
@@ -135,7 +137,7 @@ class FormCrearAsignatura(FormularioAsignatura) :
 
 # Formulario para Modificar una asignatura #
 class FormModificarAsignatura(FormularioAsignatura) :
-    
+
     def __init__(self, *args, **kwargs):
         super(FormModificarAsignatura, self).__init__(*args, **kwargs)
         codAsig = getattr(self, 'codAsig', None)
@@ -191,48 +193,36 @@ class FormularioOferta(forms.ModelForm):
         model = Oferta
         exclude = []
         fields = [
-            'coordinacion',
             'trimestre',
             'asignaturas',
             'anio'
         ]
         labels = {
-            'coordinacion' : 'Coordinacion',
             'trimestre' : 'Trimestre',
             'asignaturas' : 'Asignaturas',
             'anio' : 'Periodo',
         }
         widgets = {
-            'coordinacion' : forms.Select(attrs = {'class':'form-control'}),
             'trimestre' : forms.Select(attrs = {'class':'form-control'}),
             'anio' : forms.TextInput(attrs = {'class':'form-control'}),
             'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
         }
-        
+
 class FormCrearOferta(FormularioOferta):
     pass
 
 class FormModificarOferta(FormularioOferta) :
-    pass
-"""
     def __init__(self, *args, **kwargs):
         super(FormModificarOferta, self).__init__(*args, **kwargs)
         self.fields['asignaturas'].widget = CheckboxSelectMultiple()
         self.fields['asignaturas'].queryset = Asignatura.objects.all()
-
-    class Meta:
-        model = Oferta
-        fields = [
-            'coordinacion',
-            'trimestre',
-            'anio',
-            'asignaturas'
-        ]
-
         labels = {
-            'coordinacion' : 'Coordinacion',
             'trimestre' : 'Trimestre',
+            'asignaturas' : 'Asignaturas',
             'anio' : 'Periodo',
-            'asignaturas' : 'Asignaturas'
         }
-        """
+        widgets = {
+            'trimestre' : forms.Select(attrs = {'class':'form-control'}),
+            'anio' : forms.TextInput(attrs = {'class':'form-control'}),
+            'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
+        }

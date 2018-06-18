@@ -303,7 +303,10 @@ class Inscripcion(models.Model):
 class Estudiante(models.Model):
     usuario         = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     carnet          = models.CharField(max_length=12, primary_key=True)
-    inscripciones   = models.ManyToManyField(Inscripcion)
+    inscripciones   = models.ManyToManyField(Inscripcion, blank=True)
+
+    def __str__(self):
+        return self.usuario.apellidos+", "+self.usuario.nombres+". "+self.carnet
 
     class Meta:
         app_label = 'coordinaAsignaturas'
@@ -400,3 +403,15 @@ def agregaAsignaturaACoord(usr,codAsig):
     except:
         return False
     return True
+
+def esEstudiante(usr):
+
+    try:
+        u = Usuario.objects.get(pk=usr)
+        e = Estudiante.objects.filter(usuario__exact=u)
+        if len(e)==0 : 
+            return False 
+        else : 
+            return True
+    except: 
+        return False
