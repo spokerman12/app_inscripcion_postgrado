@@ -5,6 +5,7 @@ from django import forms
 from django.forms.widgets import CheckboxSelectMultiple
 from coordinaAsignaturas.models import *
 import hashlib, datetime
+import re
 
 fecha = datetime.datetime.now()
 
@@ -28,7 +29,7 @@ class LoginForm(forms.Form) :
                 #self.usuario = q
             else:
                 self.add_error('username', 'Usuario o clave incorrecto')
-        except Usuario.DoesNotExist:
+        except:
             self.add_error('username', 'Usuario o clave incorrecto')
         return limpio
 

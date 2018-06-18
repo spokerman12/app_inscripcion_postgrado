@@ -575,7 +575,7 @@ class TestFormularioAsignatura(TestCase):
             'vie_fin': 6,
             'codAsig': "MA1111",
             'creditos': 4,
-            'nomAsig': "Matemáticas I~",
+            'nomAsig': "かわいいMatemáticas I",
             'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
