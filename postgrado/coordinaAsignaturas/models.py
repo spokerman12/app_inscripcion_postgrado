@@ -342,6 +342,7 @@ class Sesion(models.Model):
     class Meta:
         app_label = 'coordinaAsignaturas'
 
+# Obtiene asignaturas del coordinador 'usr'
 def obtenAsignaturas(usr):
     try:
         usuario = Usuario.objects.get(pk=usr)
@@ -352,6 +353,7 @@ def obtenAsignaturas(usr):
     except:
         return False
 
+# Busca asignaturas del coordinador 'usr' con campos flexibles
 def buscaAsignaturas(usr,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
     try:
         usuario = Usuario.objects.get(pk=usr)
@@ -362,6 +364,7 @@ def buscaAsignaturas(usr,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
     except:
         return False
 
+# Elimina de la base de datos la asignatura de codigo 'codAsig'
 def eliminaAsignatura(codAsig):
     try:
         q = Asignatura().obtenAsignatura(codAsig).delete()
@@ -369,6 +372,7 @@ def eliminaAsignatura(codAsig):
     except:
         return False
 
+# Elimina la oferta 'oferta_id' de la coordinacion de 'usr'
 def eliminaOferta(usr,oferta_id):
     try:
         usuario = Usuario.objects.get(pk=usr)
@@ -383,7 +387,8 @@ def eliminaOferta(usr,oferta_id):
             return False
     except:
         return False
-    
+
+# Elimina la asignatura 'codAsig' de la coordinacion de 'usr'
 def eliminaAsignaturaDeCoord(usr,codAsig):
     try:
         usuario = Usuario.objects.get(pk=usr)
@@ -394,6 +399,7 @@ def eliminaAsignaturaDeCoord(usr,codAsig):
     except:
         return False
 
+# Agrega la asignatura 'codAsig' a la coordinacion de 'usr'
 def agregaAsignaturaACoord(usr,codAsig):
     try:
         s = Sesion()
@@ -404,6 +410,7 @@ def agregaAsignaturaACoord(usr,codAsig):
         return False
     return True
 
+# Retorna True o False dependiendo de si 'usr' es Estudiante o no
 def esEstudiante(usr):
     try:
         u = Usuario.objects.get(pk=usr)
