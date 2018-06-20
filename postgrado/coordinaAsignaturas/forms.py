@@ -5,6 +5,7 @@ from django import forms
 from django.forms.widgets import CheckboxSelectMultiple
 from coordinaAsignaturas.models import *
 import hashlib, datetime
+import re
 
 fecha = datetime.datetime.now()
 
@@ -23,13 +24,12 @@ class LoginForm(forms.Form) :
             p = str.encode(pwd)
             m.update(p)
 
-            print('kak')
             if (m.hexdigest()==q.password):
                 pass
                 #self.usuario = q
             else:
                 self.add_error('username', 'Usuario o clave incorrecto')
-        except Usuario.DoesNotExist:
+        except:
             self.add_error('username', 'Usuario o clave incorrecto')
         return limpio
 
@@ -80,24 +80,41 @@ class FormularioAsignatura(forms.ModelForm):
         }
     # Haciendole override al metodo clean
     def clean(self):
-
-        limpio = super(FormularioAsignatura, self).clean()
-        codigo = limpio.get('codAsig')
-        nombre = limpio.get('nomAsig')
-        dias = ['lun','mar','mie','jue','vie']
-        d = False
-        for dia in dias :
-            d = d or limpio.get(dia)
-        if not(d) :
-            self.add_error('lun', 'Debe haber al menos un dia de clases')
-            return limpio
-
-        for dia in dias :
-            if  limpio.get(dia) == False :
-                continue
-            if int(limpio.get(dia+"_inicio")) > int(limpio.get(dia+"_fin")) :
-                self.add_error(dia+'_inicio', 'El intervalo de tiempo debe ser positivo')
-
+        regexCodigo = '^([A-Z]{2,2})(\-){0,1}([0-9]{4,4})$'
+        mensajeErrorCodigo = 'El codigo debe ser dos letras mayusculas y cuatro digitos separados, o no, por un guion'
+        regexNombre = '^[a-záéíóúäëïöüA-ZÁÉÍÓÚÄËÏÖÜ0-9ñ¿?¡!\ ]{0,80}$'
+        mensajeErrorNombre = 'El nombre de la materia no es valido'
+        mensajeErrorIntervalo = 'El intervalo de tiempo debe ser positivo'
+        mensajeErrorLimites = 'Debe indicarse el inicio y la finalizacion'
+        try:
+            limpio = super(FormularioAsignatura, self).clean()
+            codigo = limpio.get('codAsig')
+            cod = re.compile(regexCodigo)
+            if cod.match(codigo) == None:
+                self.add_error('codAsig', mensajeErrorCodigo)
+                return limpio
+            nombre = limpio.get('nomAsig')
+            nom = re.compile(regexNombre)
+            if nom.match(nombre) == None:
+                self.add_error('nomAsig', mensajeErrorNombre)
+                return limpio
+            dias = ['lun','mar','mie','jue','vie']
+            d = False
+            for dia in dias :
+                d = d or limpio.get(dia)
+            if not(d) :
+                self.add_error('lun', 'Debe haber al menos un dia de clases')
+                return limpio
+            for dia in dias :
+                if  limpio.get(dia) == False :
+                    continue
+                try:
+                    if int(limpio.get(dia+"_inicio")) > int(limpio.get(dia+"_fin")):
+                        self.add_error(dia+'_inicio', mensajeErrorIntervalo)
+                except:
+                    self.add_error(dia+'_inicio', mensajeErrorLimites)
+        except:
+            pass
         return limpio
 
     def save(self, commit=True):

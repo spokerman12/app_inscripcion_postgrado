@@ -305,11 +305,11 @@ class Estudiante(models.Model):
     carnet          = models.CharField(max_length=12, primary_key=True)
     inscripciones   = models.ManyToManyField(Inscripcion, blank=True)
 
-    def __str__(self):
-        return self.usuario.apellidos+", "+self.usuario.nombres+". "+self.carnet
-
     class Meta:
         app_label = 'coordinaAsignaturas'
+
+    def __str__(self):
+        return (self.carnet+" "+self.usuario.apellidos+", "+self.usuario.nombres)
 
 # Una sesion en el sistema
 class Sesion(models.Model):
@@ -405,13 +405,11 @@ def agregaAsignaturaACoord(usr,codAsig):
     return True
 
 def esEstudiante(usr):
-
     try:
         u = Usuario.objects.get(pk=usr)
         e = Estudiante.objects.filter(usuario__exact=u)
-        if len(e)==0 : 
-            return False 
-        else : 
+        if e != None:
             return True
-    except: 
+        else: return False
+    except:
         return False
