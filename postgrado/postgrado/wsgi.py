@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
 
+'''
+Universidad Simón Bolívar
+Ingeniería de Software I CI-3715
+Sistema de gestión de postgrados de la USB
+
+Coniguración WSGI
+
+Este módulo no se ha mod
+
+'''
+
+
 """
 WSGI config for postgrado project.
 
