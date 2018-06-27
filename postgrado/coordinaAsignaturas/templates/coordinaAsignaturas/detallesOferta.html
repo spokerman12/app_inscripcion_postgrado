@@ -14,8 +14,7 @@
             <div class="body">
                 <div class="row clearfix">
                     <div class="col-sm-12">
-                        <form method="POST" class="post-form">
-                            {% csrf_token %}
+                        <form method="POST" class="post-form">{% csrf_token %}
                             <div class="col-sm-12 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line text-center">
@@ -52,7 +51,8 @@
 										<ul class="list-group">
 											{% for mat in materiasOfertadas %}
 			                                <li class="list-group-item">
-			                                	<a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=mat.codAsig %}" style="color:#555"><b>Código:</b> {{ mat.codAsig }}, <b>Nombre:</b> {{ mat.nomAsig }}
+			                                	<a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=mat.codAsig %}" style="color:#555">
+                                                    <b>Código:</b> {{ mat.codAsig }}, <b>Nombre:</b> {{ mat.nomAsig }}
 												</a><span class="badge bg-amber">{{ mat.creditos }} Créditos</span>
 			                                </li>
 			                                {% endfor %}
@@ -89,6 +89,8 @@
         </div>
     </div>
 </section>
+
+<!-- PopUp de confirmación para eliminar una oferta -->
 <div class="modal fade" id="{{oferta_info.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

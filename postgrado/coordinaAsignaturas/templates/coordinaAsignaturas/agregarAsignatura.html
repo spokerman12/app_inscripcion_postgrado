@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block styles %}
-
 <style>
 .grid-container {
   display: grid;
@@ -9,11 +8,10 @@
    grid-template-columns: auto auto auto auto auto;
 }
 </style>
-
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
 <section class="content">
     <div class="container-fluid">
         <div class="card">
@@ -26,8 +24,7 @@
             </div>
             <div class="body">
                 <div class="row clearfix">
-                    <form method="post" novalidate>
-                    {% csrf_token %}
+                    <form method="post" novalidate>{% csrf_token %}
                     <div class="col-sm-6 fieldWrapper" >
                         <div class="form-group">
                             <div class="form-line">
@@ -160,5 +157,4 @@
         </div>
     </div>
 </section>
-
 {% endblock %}

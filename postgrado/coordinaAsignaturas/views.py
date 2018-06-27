@@ -3,6 +3,8 @@ from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import *
 from .forms import *
 
+
+# Vista que representa la página de inicio de sesión
 def home(request):
     if request.method == "POST" :
         form = LoginForm(request.POST)
@@ -15,12 +17,14 @@ def home(request):
         args = {'form': LoginForm()}
     return render(request, 'coordinaAsignaturas/login.html', args)
 
+
 def principal(request):
     asignaturas = Asignatura.objects.all()
     context = {'asignaturas' : asignaturas}
     return render(request, 'coordinaAsignaturas/initIndex.html', context)
 
-# Mostrar las ofertas registradas #
+
+# Vista de la página de mostrar las ofertas registradas #
 def verOfertas(request):
     s = Sesion()
     s.usuario = Usuario.objects.get(pk=request.session['username'])
@@ -31,11 +35,13 @@ def verOfertas(request):
     }
     return render(request, 'coordinaAsignaturas/oferta.html', context)
 
+
 # Muestra las materias registradas en la oferta #
 def detallesOferta(request, oferta_id):
     oferta_info = get_object_or_404(Oferta, pk=oferta_id)
     materiasOfertadas = oferta_info.asignaturas.all()
     return render(request, 'coordinaAsignaturas/detallesOferta.html', {'materiasOfertadas':materiasOfertadas,'oferta_info':oferta_info})
+
 
 # Agrega una oferta #
 def agregarOferta(request):
@@ -53,6 +59,7 @@ def agregarOferta(request):
         args = {'form' : FormCrearAsignatura()}
 
     return render(request, 'coordinaAsignaturas/agregarOferta.html', {'form' : form})
+
 
 def modificarOferta(request,oferta_id):
 
