@@ -1,176 +1,253 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
-from .models import *
-from .forms import *
+#   Vistas de la aplicacion.
+#
+#   Indice de vistas:
+#       1.  home.
+#       2.  principal.
+#       3.  verOfertas.
+#       4.  detallesOferta.
+#       5.  agregarOferta.
+#       6.  modificarOferta.
+#       7.  verAsignaturas.
+#       8.  eliminarOferta.
+#       9.  verAsignaturas.
+#       10. agregarAsignatura.
+#       11. modificarAsignatura.
+#       12. eliminarAsignatura.
+#       13. detallesAsignatura.
+#       14. listaTodasAsignaturas.
+#       15. agregarACoord.
 
-def home(request):
-    if request.method == "POST" :
+from django.http import HttpResponse, HttpRequest
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import LoginForm, FormCrearOferta, FormCrearAsignatura
+from .forms import FormModificarOferta, FormAgregarAsignatura
+from .models import Oferta, Usuario, Sesion, Asignatura 
+from .models import agregaAsignaturaACoord, eliminaOferta, obtenAsignaturas
+from .models import eliminaAsignaturaDeCoord
+
+# Funcion home: muestra la pantalla de inicio de la aplicacion, presenta el
+# formulario de inicio de sesion para la aplicacion.
+def home(request: HttpRequest) -> HttpResponse:
+    login     = 'coordinaAsignaturas/login.html'
+    principal = '/coordinaAsignaturas/principal'
+    if request.method == "POST" :   
         form = LoginForm(request.POST)
         args = {'form': form}
         if form.is_valid() :
             request.session['username'] = form.cleaned_data['username']
-            # return redirect('/coordinaAsignaturas/ver')
-            return redirect('/coordinaAsignaturas/principal')
+            return redirect(principal)
     else :
         args = {'form': LoginForm()}
-    return render(request, 'coordinaAsignaturas/login.html', args)
+    return render(request, login, args)
 
-def principal(request):
+# Funcion principal: muestra la pantalla de inicio, despues de la autenticacion
+# del usuario.
+def principal(request: HttpRequest) -> HttpResponse:
+    initIndex = 'coordinaAsignaturas/initIndex.html'
     asignaturas = Asignatura.objects.all()
     context = {'asignaturas' : asignaturas}
-    return render(request, 'coordinaAsignaturas/initIndex.html', context)
+    return render(request, initIndex, context)
 
-# Mostrar las ofertas registradas #
-def verOfertas(request):
-    s = Sesion()
-    s.usuario = Usuario.objects.get(pk=request.session['username'])
-    coord = s.obtenCoordinacion()
-    ultimasOfertas = Oferta.objects.filter(coordinacion=coord)
+# Funcion verOfertas: muestra las ofertas registradas para el usuario que se ha
+# autenticado.
+def verOfertas(request: HttpRequest) -> HttpResponse:
+    oferta = 'coordinaAsignaturas/oferta.html'
+    sesion = Sesion()
+    sesion.usuario = Usuario.objects.get(pk = request.session['username'])
+    coord = sesion.obtenCoordinacion()
+    ultimasOfertas = Oferta.objects.filter(coordinacion = coord)
     context = {
        'ultimasOfertas' : ultimasOfertas,
     }
-    return render(request, 'coordinaAsignaturas/oferta.html', context)
+    return render(request, oferta, context)
 
-# Muestra las materias registradas en la oferta #
-def detallesOferta(request, oferta_id):
-    oferta_info = get_object_or_404(Oferta, pk=oferta_id)
+# Funcion detallesOferta: muestra las materias registradas en la oferta que ha
+# sido seleccionada en la base de datos por su clave: oferta_id.
+def detallesOferta(request: HttpRequest, oferta_id: int) -> HttpResponse:
+    detallesOferta = 'coordinaAsignaturas/detallesOferta.html'
+    oferta_info = get_object_or_404(Oferta, pk = oferta_id)
     materiasOfertadas = oferta_info.asignaturas.all()
-    return render(request, 'coordinaAsignaturas/detallesOferta.html', {'materiasOfertadas':materiasOfertadas,'oferta_info':oferta_info})
+    context = {
+        'materiasOfertadas': materiasOfertadas,
+        'oferta_info': oferta_info
+    }
+    return render(request, detallesOferta, context)
 
-# Agrega una oferta #
-def agregarOferta(request):
+# Funcion agregarOferta: despliega el formulario para crear una nueva oferta en
+# el espacio del usuario autenticado.
+def agregarOferta(request: HttpRequest) -> HttpResponse:
+    login         = '/coordinaAsignaturas/login'
+    ofertas       = '/coordinaAsignaturas/ofertas'
+    agregarOferta = 'coordinaAsignaturas/agregarOferta.html'
     form = FormCrearOferta(request.POST)
     if not('username' in request.session.keys()):
-        return redirect('/coordinaAsignaturas/login')
+        return redirect(login)
     if request.method == 'POST':
         form = FormCrearOferta(request.POST)
         args = {'form' : form}
         if form.is_valid():
             form.save()
-
-            return redirect('/coordinaAsignaturas/ofertas')
+            return redirect(ofertas)
     else :
         args = {'form' : FormCrearAsignatura()}
+    context = {
+        'form': form
+    }
+    return render(request, agregarOferta, context)
 
-    return render(request, 'coordinaAsignaturas/agregarOferta.html', {'form' : form})
-
-def modificarOferta(request,oferta_id):
-
+# Funcion modificarOferta: accede a la oferta que ha sido seleccionada en la
+# base de datos por su clave: oferta_id y redirige a la vista para modificarla.
+def modificarOferta(request: HttpRequest, oferta_id: int) -> HttpResponse:
+    login           = '/coordinaAsignaturas/login'
+    detallesOferta  = 'coordinaAsignaturas:detallesOferta'
+    modificarOferta = 'coordinaAsignaturas/modificarOferta.html'
+    oferta = Oferta.objects.get(pk=oferta_id)
+    detallesOferta
     if not('username' in request.session.keys()):
-        return redirect('/coordinaAsignaturas/login')
+        return redirect(login)
     if request.method == 'POST':
-        form = FormModificarOferta(request.POST, instance=Oferta.objects.get(pk=oferta_id))
+        form = FormModificarOferta(request.POST, instance = oferta)
         args = {'form' : form}
         if form.is_valid():
             form.save()
-            return redirect('coordinaAsignaturas:detallesOferta', oferta_id=oferta_id)
+            return redirect(detallesOferta, oferta_id = oferta_id)
         else :
             print("Error al modificar oferta")
     else :
-        args = {'form' : FormModificarOferta(instance=Oferta.objects.get(pk=oferta_id))}
+        args = {'form' : FormModificarOferta(instance = ofertas)}
+    return render(request, modificarOferta, args)
 
-    return render(request, 'coordinaAsignaturas/modificarOferta.html', args)
-
-# Elimina una oferta de la base de datos
-def eliminarOferta(request, oferta_id):
+# Funcion eliminarOferta: elimina la oferta senalada por oferta_id de la base
+# de datos.
+def eliminarOferta(request: HttpRequest, oferta_id: int) -> HttpResponse:
+    login = '/coordinaAsignaturas/login'
+    ofertas = '/coordinaAsignaturas/ofertas'
     if not('username' in request.session.keys()):
-        return redirect('/coordinaAsignaturas/login')
+        return redirect(login)
     try :
         if eliminaOferta(request.session["username"], oferta_id) :
-            return redirect('/coordinaAsignaturas/ofertas')
+            return redirect(ofertas)
         else :
-            return redirect('/coordinaAsignaturas/login')
+            return redirect(login)
     except :
-        return redirect('/coordinaAsignaturas/ofertas')
+        return redirect(ofertas)
 
-# Ver las asisnaturas #
-def verAsignaturas(request):
+# Funcion verAsignaturas: permite visualizar las asignaturas dentro de la
+# coordinacion.
+def verAsignaturas(request: HttpRequest) -> HttpResponse:
+    asignaturas = 'coordinaAsignaturas/asignaturas.html'
     if 'username' in request.session.keys():
-        args = {'usuario' : request.session['username']
-                }
+        args = {'usuario': request.session['username']}
         if request.method == 'POST' :
             try:
-                return render(request, 'coordinaAsignaturas/asignaturas.html', args)
+                return render(request, asignaturas, args)
             except:
                 args['asignaturas'] = []
         else :
             args['asignaturas'] = obtenAsignaturas(request.session['username'])
-            if not args['asignaturas'] :
+            if not args['asignaturas']:
                 args['asignaturas'] = []
-        return render(request, 'coordinaAsignaturas/asignaturas.html', args)
+        return render(request, asignaturas, args)
     else :
         return redirect('login')
 
-# Agregar una asignatura #
-def agregarAsignatura(request):
-    if not('username' in request.session.keys()):
-        return redirect('/coordinaAsignaturas/login')
+# Funcion agregarAsignatura: agregar una asignatura nueva a la base de datos y
+# la muestra en la vista.
+def agregarAsignatura(request: HttpRequest) -> HttpResponse:
+    login             = '/coordinaAsignaturas/login'
+    vista             = '/coordinaAsignaturas/ver'
+    agregarAsignatura = 'coordinaAsignaturas/agregarAsignatura.html'
+    usuario = 'username' in request.session.keys()
+    if not usuario:
+        return redirect(login)
     if request.method == 'POST':
         form = FormCrearAsignatura(request.POST)
         args = {'form' : form}
         if form.is_valid():
             form.save()
             data = form.cleaned_data
-            agregaAsignaturaACoord(request.session['username'],data['codAsig'])
-            args['asignaturas'] = obtenAsignaturas(request.session['username'])
-            return redirect('/coordinaAsignaturas/ver')
+            username = request.session['username']
+            codAsig = data['codAsig']
+            agregaAsignaturaACoord(username, codAsig)
+            args['asignaturas'] = obtenAsignaturas(username)
+            return redirect(vista)
     else :
         args = {'form' : FormCrearAsignatura()}
-    return render(request, 'coordinaAsignaturas/agregarAsignatura.html', args)
+    return render(request, agregarAsignatura, args)
 
-#Modifica los datos de una asignatura#
-def modificarAsignatura(request, codAsig):
-    asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
-
+# Funcion modificarAsignatura: Modifica los datos de la asignatura de codigo
+# codAsig, existente en la base de datos.
+def modificarAsignatura(request: HttpRequest, codAsig: str) -> HttpResponse:
+    detallesAsignatura  = 'coordinaAsignaturas:detallesAsignatura'
+    modificarAsignatura = 'coordinaAsignaturas/modificarAsignatura.html'
+    asignatura = get_object_or_404(Asignatura, codAsig = codAsig)
     if request.method == "POST":
-        form = FormModificarAsignatura(request.POST, instance=asignatura)
+        form = FormModificarAsignatura(request.POST, instance = asignatura)
         if form.is_valid():
-            asignatura = form.save(commit=False)
-
+            asignatura = form.save(commit = False)
             asignatura.save()
-            return redirect('coordinaAsignaturas:detallesAsignatura', codAsig=asignatura.codAsig)
+            return redirect(detallesAsignatura, codAsig = asignatura.codAsig)
         else :
             print("Error al modificar asignatura")
     else :
-        form =  FormModificarAsignatura(instance=asignatura)
-    return render(request, 'coordinaAsignaturas/modificarAsignatura.html', {'form' : form})
+        form =  FormModificarAsignatura(instance = asignatura)
+    context = {'form' : form}
+    return render(request, modificarAsignatura, context)
 
-#Elimina una asignatura de la coordinacion#
-def eliminarAsignatura(request, codAsig):
-    if not('username' in request.session.keys()):
-        return redirect('/coordinaAsignaturas/login')
+# Funcion eliminarAsignatura: Elimina la asignatura de codigo codAsig de la
+# coordinacion.
+def eliminarAsignatura(request: HttpRequest, codAsig: str) -> HttpResponse:
+    login = '/coordinaAsignaturas/login'
+    vista = '/coordinaAsignaturas/ver'
+    usuario = 'username' in request.session.keys()
+    if not usuario:
+        return redirect()
     try :
-        eliminaAsignaturaDeCoord(request.session["username"],codAsig)
-        return redirect('/coordinaAsignaturas/ver')
+        eliminaAsignaturaDeCoord(request.session["username"], codAsig)
+        return redirect(vista)
     except :
-        return redirect('/coordinaAsignaturas/ver')
+        return redirect(vista)
 
-#Mustra los detalles de la asignatura#
-def detallesAsignatura(request, codAsig):
-    asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
-    return render(request, 'coordinaAsignaturas/detallesAsignatura.html', {'asignatura' : asignatura})
+# Funcion detallesAsignatura: Muestra los detalles de la asignatura de codigo
+# codAsig.
+def detallesAsignatura(request: HttpRequest, codAsig: str) -> HttpResponse:
+    detallesAsignatura = 'coordinaAsignaturas/detallesAsignatura.html'
+    asignatura         = get_object_or_404(Asignatura, codAsig = codAsig)
+    context            = {'asignatura': asignatura}
+    return render(request, detallesAsignatura, context)
 
-#Litar todas las asignaturas existentes##
-def listaTodasAsignaturas(request):
-    asignaturas = Asignatura.objects.all()
-    return render(request, 'coordinaAsignaturas/listaTodasAsignaturas.html', {'asignaturas' : asignaturas})
+# Funcion listaTodasAsignaturas: Despliega una lista de todas las asignaturas
+# existentes en la base de datos.
+def listaTodasAsignaturas(request: HttpRequest) -> HttpResponse:
+    listaTodasAsignaturas = 'coordinaAsignaturas/listaTodasAsignaturas.html'
+    asignaturas           = Asignatura.objects.all()
+    context               = {'asignaturas': asignaturas}
+    return render(request, listaTodasAsignaturas, context)
 
-#Agrega una asignatura a la coordinacion#
-def agregarACoord(request, codAsig):
-    asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
-    if not('username' in request.session.keys()):
-        return redirect('/coordinaAsignaturas/login')
+# Funcion agregarACoord: Agrega la asignatura de codigo codAsig a la
+# coordinacion.
+def agregarACoord(request: HttpRequest, codAsig: str) -> HttpResponse:
+    login             = '/coordinaAsignaturas/login'
+    vista             = '/coordinaAsignaturas/ver'
+    agregarAsignatura = 'coordinaAsignaturas/agregarAsignatura.html'
+    asignatura = get_object_or_404(Asignatura, codAsig = codAsig)
+    usuario = 'username' in request.session.keys()
+    if not usuario:
+        return redirect(login)
     if request.method == 'POST':
-        form = FormAgregarAsignatura(request.POST, instance=asignatura)
+        form = FormAgregarAsignatura(request.POST, instance = asignatura)
         args = {'form' : form}
         if form.is_valid():
-            #form.save()
+            # form.save()
             data = form.cleaned_data
-            if (agregaAsignaturaACoord(request.session['username'],data['codAsig'])):
-                args['asignaturas'] = obtenAsignaturas(request.session['username'])
-                return redirect('/coordinaAsignaturas/ver')
+            username = request.session['username']
+            codAsig  = data['codAsig']
+            if (agregaAsignaturaACoord(username, codAsig)):
+                args['asignaturas'] = obtenAsignaturas(username)
+                return redirect(vista)
         else :
             print("No se agrego la materia a la coordinacion")
     else :
-        args = {'form' : FormAgregarAsignatura(instance=asignatura)}
-    return render(request, 'coordinaAsignaturas/agregarAsignatura.html', args)
+        args = {'form' : FormAgregarAsignatura(instance = asignatura)}
+    return render(request, agregarAsignatura, args)
