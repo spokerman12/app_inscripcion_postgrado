@@ -15,12 +15,12 @@
             <div class="body">
                 <div class="row clearfix">
                     <div class="col-sm-12">
-                        <form method="POST" class="post-form">
-                            {% csrf_token %}
+                        <form method="POST" class="post-form">{% csrf_token %}
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.codAsig.id_for_label">Código: </label>
+                                        <label for="asignatura.codAsig.id_for_label">
+                                        Código: </label>
                                         {{asignatura.codAsig}}
                                     </div>
                                 </div>
@@ -28,7 +28,8 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.creditos.id_for_label">Créditos: </label>
+                                        <label for="asignatura.creditos.id_for_label">
+                                        Créditos: </label>
                                         {{asignatura.creditos}}
                                     </div>
                                 </div>
@@ -36,7 +37,8 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.nomAsig.id_for_label">Denominación y Programa: </label>
+                                        <label for="asignatura.nomAsig.id_for_label">
+                                        Denominación y Programa: </label>
                                         {{asignatura.nomAsig}}
                                     </div>
                                 </div>
@@ -44,7 +46,8 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.codDpto.id_for_label">Departamento: </label>
+                                        <label for="asignatura.codDpto.id_for_label">
+                                        Departamento: </label>
                                         {{asignatura.codDpto}}
                                     </div>
                                 </div>
@@ -53,7 +56,8 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.prof.id_for_label">Profesor: </label>
+                                        <label for="asignatura.prof.id_for_label">
+                                        Profesor: </label>
                                         {{asignatura.prof}}
                                     </div>
                                 </div>
@@ -61,7 +65,8 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.progAsig.id_for_label">Programa: </label>
+                                        <label for="asignatura.progAsig.id_for_label">
+                                        Programa: </label>
                                         {{asignatura.progAsig}}
                                     </div>
                                 </div>
@@ -69,7 +74,8 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.vista.id_for_label">Vista: </label>
+                                        <label for="asignatura.vista.id_for_label">
+                                        Vista: </label>
                                         {% if asignatura.vista %}
                                             Sí
                                         {% else %}
@@ -81,7 +87,8 @@
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="asignatura.diaHora.id_for_label">Horario: </label>
+                                        <label for="asignatura.diaHora.id_for_label">
+                                        Horario: </label>
                                         {{asignatura.diaHora}}
                                     </div>
                                 </div>
@@ -116,6 +123,8 @@
         </div>
     </div>
 </section>
+
+<!-- PopUp de confirmación para eliminar una asignatura -->
 <div class="modal fade" id="{{asignatura.codAsig}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
 <div class="modal-content">

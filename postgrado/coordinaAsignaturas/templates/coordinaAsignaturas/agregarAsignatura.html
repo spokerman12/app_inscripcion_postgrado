@@ -1,22 +1,31 @@
 {% extends 'base.html' %}
 
 {% block styles %}
-
 <style>
 .grid-container {
   display: grid;
   justify-content: space-evenly;
    grid-template-columns: auto auto auto auto auto;
 }
+input[type="checkbox"] {
+    display:none;
+}
+input[type="checkbox"] {
+    display:inline-block;
+    width:19px;
+    height:19px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+}
 </style>
-
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
 <section class="content">
     <div class="container-fluid">
-        <div class="card">
+        <div class="card"><!-- TITULO -->
             <div class="header text-center">
                 <h2>
                     Añadir Asignatura <i class="material-icons col-amber">add</i>
@@ -26,24 +35,28 @@
             </div>
             <div class="body">
                 <div class="row clearfix">
-                    <form method="post" novalidate>
-                    {% csrf_token %}
+                    <!-- FORMULARIO PARA AGREGAR ASIGNATURAS
+                        EL MISMO CONTIENE CADA ATRIBUTO DEL FORM DJANGO
+                        REPORTA SUS ATRIBUTOS, Y LOS ERRORES EN CASO DE QUE OCURRAN
+                        
+                     -->
+                    <form method="post" novalidate>{% csrf_token %}
                     <div class="col-sm-6 fieldWrapper" >
                         <div class="form-group">
                             <div class="form-line">
-                                {{form.codAsig.errors}}
                                 <label for="form.codAsig.id_for_label">Código</label>
                                 {{form.codAsig}}
                             </div>
+                                {{form.codAsig.errors}}
                         </div>
                     </div>
                     <div class="col-sm-6 fieldWrapper">
                         <div class="form-group">
                             <div class="form-line">
-                                {{form.creditos.errors}}
                                 <label for="form.creditos.id_for_label">Créditos</label>
                                 {{form.creditos}}
                             </div>
+                                {{form.creditos.errors}}
                         </div>
                     </div>
                     <div class="col-sm-12 fieldWrapper">
@@ -52,6 +65,7 @@
                                 <label for="form.nomAsig.id_for_label">Denominación y Programa</label>
                                 {{form.nomAsig}}
                             </div>
+                                {{form.nomAsig.errors}}
                         </div>
                     </div>
                     <div class="col-sm-6 fieldWrapper">
@@ -60,16 +74,17 @@
                                 <label for="form.codDpto.id_for_label">Departamento</label>
                                 {{form.codDpto}}
                             </div>
+                                {{form.codDpto.errors}}
                         </div>
                     </div>
 
                     <div class="col-sm-6 fieldWrapper">
                         <div class="form-group">
                             <div class="form-line">
-                                {{form.prof.errors}}
                                 <label for="form.prof.id_for_label">Profesor</label>
                                 {{form.prof}}
                             </div>
+                                {{form.prof.errors}}
                         </div>
                     </div>
                     <div class="col-sm-12 fieldWrapper">
@@ -78,6 +93,7 @@
                                 <label for="form.progAsig.id_for_label">Programa</label>
                                 {{form.progAsig}}
                             </div>
+                                {{form.progAsig.errors}}
                         </div>
                     </div>
                     <div class="col-sm-6 fieldWrapper">
@@ -90,8 +106,10 @@
                                 <label for="form.diaHora.id_for_label">Horario</label>
                                 {{form.diaHora}}
                             </div>
+                                {{form.diaHora.errors}}
                         </div>
                     </div>
+                    <div id="check">
                     <div class="col-sm-4 fieldWrapper">
                         <div class="form-group">
                             <div class="form-line text-center">
@@ -141,12 +159,17 @@
                                 {{ form.vie_fin}}
                             </div>
                         </div>
+                    </div>
                     {{form.lun.errors}}
+                    {{form.mar.errors}}
+                    {{form.mie.errors}}
+                    {{form.jue.errors}}
+                    {{form.vie.errors}}
                     </div>
                     <div class="col-sm-12 fieldWrapper">
                         <div class="form-group">
                             <div class="text-center">
-                                <button type="submit" class="btn bg-amber waves-effect col-sm-12">
+                                <button id="save" disabled="" type="submit" class="btn bg-amber waves-effect col-sm-12">
                                   <i class="material-icons">save</i>
                                     <span>Guardar</span>
                               </button>
@@ -160,5 +183,4 @@
         </div>
     </div>
 </section>
-
 {% endblock %}

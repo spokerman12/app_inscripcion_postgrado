@@ -5,12 +5,15 @@
 
     {% block general %}
     {% endblock %}
-
+    <!-- ESTE DOCUMENTO REPRESENTA LA ESTRUCTURA BÁSICA DEL SOFTWARE
+        TODOS LOS DEMÁS TEMPLATES HEREDAN DE ESTE ARCHIVO
+     -->
 	<head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <title>ING DE SOFTWARE</title>
+        <!-- HOJAS DE ESTILO CSS -->
 
         <!-- Favicon -->
         <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
@@ -43,17 +46,25 @@
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
         <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+        <!-- SCRIPT Y ARCHIVOS JAVASCRIPT -->
         <link href="{% static 'css/themes/all-themes.css' %}" rel="stylesheet" />
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="{% static 'js/sortable.js' %}"></script>
-
+        <!-- ESTILOS ADICIONALES -->
+        <style>
+            .errorlist li {
+                color:red;
+                list-style:none;
+            }
+        </style>
 	</head>
 
     {% block styles %}
     {% endblock %}
-
+    
+    <!-- INICIO DEL CUERPO -->
 	<body class="theme-indigo">
-        <!-- Page Loader -->
+        <!-- Page Loader: Animación de carga de la página -->
         <div class="page-loader-wrapper">
             <div class="loader">
                 <div class="preloader">
@@ -69,51 +80,55 @@
                 <p>Cargando...</p>
             </div>
         </div>
-        <!-- #END# Page Loader -->
+        <!-- #FIN# Page Loader -->
 
         <!-- Overlay For Sidebars -->
         <div class="overlay"></div>
         <!-- #END# Overlay For Sidebars -->
 
-        <!-- Search Bar -->
-        <!-- #END# Search Bar -->
-
-        <!-- Top Bar -->
+        <!-- Top Bar: Barra superior, la cual indica el nombre del software -->
         <nav class="navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                     <a href="javascript:void(0);" class="bars"></a>
-                    <a class="navbar-brand" href="{% url 'coordinaAsignaturas:principal' %}">SISTEMA GESTOR DE ASIGNATURAS</a>
+                    <a class="navbar-brand" href="{% url 'coordinaAsignaturas:principal' %}">
+                        SISTEMA GESTOR DE ASIGNATURAS</a>
                 </div>
             </div>
         </nav>
         <!-- #Top Bar -->
 
         <section>
-            <!-- Left Sidebar -->
+            <!-- Left Sidebar: Barra lateral izquierda con menu e inforamción del usuario -->
             <aside id="leftsidebar" class="sidebar">
-                <!-- User Info -->
+                <!-- Información del usuario -->
                 <div class="user-info">
                     <div class="info-container">
-                        <div class="name font-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><h4>Post Grado Ciencias</h4></div>
+                        <div class="name font-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <h4>Post Grado Ciencias</h4></div>
                         <div class="email">postgradociencias@usb.ve</div>
                         <div class="btn-group user-helper-dropdown">
-                            <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                            <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                keyboard_arrow_down</i>
                             <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
+                                <li><a href="javascript:void(0);">
+                                    <i class="material-icons">person</i>Perfil</a></li>
                                 <li role="seperator" class="divider"></li>
-                                <li><a href="{% url 'coordinaAsignaturas:verAsignaturas' %}"><i class="material-icons">business</i>Asignaturas</a></li>
-                                <li><a href="{% url 'coordinaAsignaturas:oferta' %}"><i class="material-icons">subject</i>Ofertas</a></li>
+                                <li><a href="{% url 'coordinaAsignaturas:verAsignaturas' %}">
+                                    <i class="material-icons">business</i>Asignaturas</a></li>
+                                <li><a href="{% url 'coordinaAsignaturas:oferta' %}">
+                                    <i class="material-icons">subject</i>Ofertas</a></li>
                                 <li role="seperator" class="divider"></li>
-                                <li><a href="javascript:void(0);"><i class="material-icons">input</i>Cerrar Sesión</a></li>
+                                <li><a href="javascript:void(0);">
+                                    <i class="material-icons">input</i>Cerrar Sesión</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <!-- #User Info -->
+                <!-- #Información del usuario -->
                 
-                <!-- Menu -->
+                <!-- Menú: menu lateral en el sidebar-->
                 <div class="menu">
                     <ul class="list">
                         <li class="header">OPCIONES</li>
@@ -130,186 +145,20 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="javascript:void(0);">
-                                <i class="material-icons">view_column</i>
-                                <span>Períodos</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="javascript:void(0);">
-                                <i class="material-icons">toc</i>
-                                <span>Programas</span>
-                            </a>
-                        </li>
-                        <li class="">
                             <a href="{% url 'coordinaAsignaturas:oferta' %}">
                                 <i class="material-icons">subject</i>
                                 <span>Ofertas</span>
                             </a>
                         </li>
-
                     </ul>
                 </div>
             </aside>
         </section>
-        <!-- #Menu -->
-
-        <!-- Footer 
-        <div class="legal">
-            <div class="">
-                &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
-            </div>
-            <div class="version">
-                <b>Version: </b> 1.0.5
-            </div>
-        </div>-->
-        <!-- #Footer -->
-
-        <!-- Right Sidebar 
-        <aside id="rightsidebar" class="right-sidebar">
-            <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
-                <li role="presentation"><a href="#settings" data-toggle="tab">SETTINGS</a></li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
-                    <ul class="demo-choose-skin">
-                        <li data-theme="red" class="active">
-                            <div class="red"></div>
-                            <span>Red</span>
-                        </li>
-                        <li data-theme="pink">
-                            <div class="pink"></div>
-                            <span>Pink</span>
-                        </li>
-                        <li data-theme="purple">
-                            <div class="purple"></div>
-                            <span>Purple</span>
-                        </li>
-                        <li data-theme="deep-purple">
-                            <div class="deep-purple"></div>
-                            <span>Deep Purple</span>
-                        </li>
-                        <li data-theme="indigo">
-                            <div class="indigo"></div>
-                            <span>Indigo</span>
-                        </li>
-                        <li data-theme="blue">
-                            <div class="blue"></div>
-                            <span>Blue</span>
-                        </li>
-                        <li data-theme="light-blue">
-                            <div class="light-blue"></div>
-                            <span>Light Blue</span>
-                        </li>
-                        <li data-theme="cyan">
-                            <div class="cyan"></div>
-                            <span>Cyan</span>
-                        </li>
-                        <li data-theme="teal">
-                            <div class="teal"></div>
-                            <span>Teal</span>
-                        </li>
-                        <li data-theme="green">
-                            <div class="green"></div>
-                            <span>Green</span>
-                        </li>
-                        <li data-theme="light-green">
-                            <div class="light-green"></div>
-                            <span>Light Green</span>
-                        </li>
-                        <li data-theme="lime">
-                            <div class="lime"></div>
-                            <span>Lime</span>
-                        </li>
-                        <li data-theme="yellow">
-                            <div class="yellow"></div>
-                            <span>Yellow</span>
-                        </li>
-                        <li data-theme="amber">
-                            <div class="amber"></div>
-                            <span>Amber</span>
-                        </li>
-                        <li data-theme="orange">
-                            <div class="orange"></div>
-                            <span>Orange</span>
-                        </li>
-                        <li data-theme="deep-orange">
-                            <div class="deep-orange"></div>
-                            <span>Deep Orange</span>
-                        </li>
-                        <li data-theme="brown">
-                            <div class="brown"></div>
-                            <span>Brown</span>
-                        </li>
-                        <li data-theme="grey">
-                            <div class="grey"></div>
-                            <span>Grey</span>
-                        </li>
-                        <li data-theme="blue-grey">
-                            <div class="blue-grey"></div>
-                            <span>Blue Grey</span>
-                        </li>
-                        <li data-theme="black">
-                            <div class="black"></div>
-                            <span>Black</span>
-                        </li>
-                    </ul>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="settings">
-                    <div class="demo-settings">
-                        <p>GENERAL SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Report Panel Usage</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Email Redirect</span>
-                                <div class="switch">
-                                    <label><input type="checkbox"><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                        <p>SYSTEM SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Notifications</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Auto Updates</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                        <p>ACCOUNT SETTINGS</p>
-                        <ul class="setting-list">
-                            <li>
-                                <span>Offline</span>
-                                <div class="switch">
-                                    <label><input type="checkbox"><span class="lever"></span></label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Location Permission</span>
-                                <div class="switch">
-                                    <label><input type="checkbox" checked><span class="lever"></span></label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </aside>-->
-        <!-- #END# Right Sidebar -->
+        <!-- #Menú -->
 
         {% block content %}
+        <!-- Bloque para colocar el contenido de la página, los demas templates agregarán su contenido
+            en este bloque-->
         {% endblock %}
 
 
@@ -357,15 +206,24 @@
         <!-- Demo Js -->
         <script src="{% static 'js/demo.js' %}"></script>
 
+        <!-- Stript contiene la función para realizar una búsqueda en la página,
+            de las asignaturas, ofertas académica -->
         <script>
             function myFunction() {
-              // Declare variables 
+              /* Variables
+                input:
+                filter:
+                table:
+                tr:
+                td:
+                i: */ 
               var input, filter, table, tr, td, i;
               input = document.getElementById("myInput");
               filter = input.value.toUpperCase();
               table = document.getElementById("myTable");
               tr = table.getElementsByTagName("tr");
-              // Loop through all table rows, and hide those who don't match the search query
+              
+              // Se busca por toda la tabla las filas que correspondan a lo buscado
               for (i = 0; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[0];
                 td2 = tr[i].getElementsByTagName("td")[1];
@@ -381,6 +239,7 @@
         </script>
 
         {% block scripts %}
+        <!-- Bloque para colocar scripts específicos de la página -->
         {% endblock %}
 
 	</body>

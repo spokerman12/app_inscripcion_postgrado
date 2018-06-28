@@ -4,6 +4,7 @@
 
 {% block content %}
 
+<!-- Barra de búsqueda -->
 <div class="search-bar" onkeyup="myFunction()">
     <div class="search-icon">
         <i class="material-icons">search</i>
@@ -70,8 +71,14 @@
                             	{% if ultimasOfertas %}
                                 <thead>
                                     <tr>
-                                        <th class="text-center"><button style="background: transparent; border-style: none">Trimestre</button></th>
-                                        <th class="text-center"><button style="background: transparent; border-style: none">Año</button></th>
+                                        <th class="text-center">
+                                            <button style="background: transparent; border-style: none">
+                                            Trimestre</button>
+                                        </th>
+                                        <th class="text-center">
+                                            <button style="background: transparent; border-style: none">
+                                            Año</button>
+                                        </th>
                                         <th class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
@@ -98,16 +105,6 @@
                                 	<p>No hay ofertas creadas</p>
                                 {% endif %} 
                             </table>
-                           <!-- <nav>
-                                    <ul class="pager">
-                                        <li class="previous">
-                                            <a href="javascript:void(0);" class="waves-effect"><span aria-hidden="true">←</span> Anterior</a>
-                                        </li>
-                                        <li class="next">
-                                            <a href="javascript:void(0);" class="waves-effect">Siguiente <span aria-hidden="true">→</span></a>
-                                        </li>
-                                    </ul>
-                                </nav>-->
                         </div>
                     </div>
                 </div>
@@ -175,6 +172,8 @@
         </div>
     </div>
 </section>
+
+<!-- PopUp de confirmación para eliminar una oferta -->
 {% for oferta in ultimasOfertas %}
     <div class="modal fade" id="{{oferta.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">

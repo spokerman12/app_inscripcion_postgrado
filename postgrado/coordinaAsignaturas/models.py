@@ -16,9 +16,8 @@ import datetime, hashlib
 
 fecha = datetime.datetime.now()
 
-# Departamentos de la USB
-# junto a sus abreviaciones
 
+# Departamentos de la USB junto a sus abreviaciones
 DPTOS = (
     ('EA','Estudios Ambientales'),
     ('CE','Ciencias Económicas y Administrativas'),
@@ -46,9 +45,8 @@ DPTOS = (
     ('PB','Tecnología de Procesos Biológicos y Bioquímicos'),
     )
 
-# Coordinaciones de postgrado de la USB
-# junto a sus abreviaciones
 
+# Coordinaciones de postgrado de la USB junto a sus abreviaciones
 COORDS = (
     ('MAT','Matemáticas'),
     ('CB','Ciencias Biológicas'),
@@ -83,21 +81,26 @@ COORDS = (
     ('P-IT','Postgrado - Ingeniería y Tecnología'),
     )
 
-# Los tres períodos trimestrales estándar de la USB
 
+# Los tres períodos trimestrales estándar de la USB
 TRIMESTRES   = (('E-M','Enero-Marzo'),('A-J','Abril-Julio'),('S-D','Septiembre-Diciembre'))
-    
+
+
 # Las clases descritas a continuación siguen el orden de dependencia igual al que
 # poseen actualmente. Modificar con cuidado
 
-# Usuario del sistema de postgrado
+
+# Clase que representa la entidad Usuario del sistema de postgrado
 class Usuario(models.Model):
     username    = models.EmailField(max_length=30, primary_key=True)
     password    = models.CharField(max_length=64, null=False)
     nombres     = models.CharField(max_length=80)
     apellidos   = models.CharField(max_length=80)
 
-    # Recibe strings. Devuelve Bool
+    ''' Funcion que crea un usuario en la base de datos.
+        usr -> Nombre de usuario
+        pwd -> Contraseña
+        Retorna True si se crea exitosamente, sino False '''
     def crearUsuario(self,usr,pwd):
 
         try:
@@ -111,13 +114,14 @@ class Usuario(models.Model):
         except:
             return False
 
+    # Extrae por defecto el nombre de usuario
     def __str__(self):
         return self.username
 
     class Meta:
         app_label = 'coordinaAsignaturas'
 
-# Profesor de la USB
+# Clase que representa la entidad Profesor de la USB
 class Profesor(models.Model):
     ciProf      = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(99999999)], primary_key=True)
     nomProf     = models.CharField(max_length=80)
@@ -129,9 +133,10 @@ class Profesor(models.Model):
         verbose_name_plural = "Profesores"
         app_label = 'coordinaAsignaturas'
 
-# Asignatura de postgrado
-# El campo diaHora recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6")
-# a través de la interfaz gráfica.
+
+'''Clase que representa la entidad Asignatura de postgrado
+El campo diaHora recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6")
+a través de la interfaz gráfica. '''
 class Asignatura(models.Model):
     codAsig     = models.CharField(max_length=7, primary_key=True)
     codDpto     = models.CharField(max_length=6, choices = DPTOS, blank=True)
@@ -151,20 +156,23 @@ class Asignatura(models.Model):
         ordering = ('nomAsig',)
         app_label = 'coordinaAsignaturas'
 
-    # Elimina asignatura de la base. Devuelve bool
+    # Elimina una asignatura de la base de dato.
+    # Retorna True si se elimina exitosamente, sino Flase
     def eliminarAsignatura(self):
         try:
             return self.delete()
         except:
             return False
 
-    # Recibe codigo string. Devuelve objeto asignatura
+    # Funcion que obtiene una asignatura de la base de datos
+    # Retorna True si se obtiene exitosamente, sino Flase
     def obtenAsignatura(self,cod):
         try:
             codA = cod.upper()
             return self.get(pk=codA)
         except:
             return False
+
 
 # Coordinación de postgrado
 # Puede tener muchas asignaturas asociadas sin importar el departamento.
@@ -201,7 +209,7 @@ class Coordinacion(models.Model):
 
     # Recibe el codigo de la asignatura. Devuelve bool
     def agregaAsignaturaExistente(self,codAsig):
-        
+
         try:
             self.asignaturas.add(Asignatura.objects.get(pk=codAsig))
             self.save()
@@ -415,7 +423,7 @@ def esEstudiante(usr):
     try:
         u = Usuario.objects.get(pk=usr)
         e = Estudiante.objects.filter(usuario__exact=u)
-        if e != None:
+        if e.first():
             return True
         else: return False
     except:
