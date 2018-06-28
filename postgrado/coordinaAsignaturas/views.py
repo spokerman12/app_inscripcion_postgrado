@@ -9,8 +9,11 @@ def home(request):
         args = {'form': form}
         if form.is_valid() :
             request.session['username'] = form.cleaned_data['username']
-            # return redirect('/coordinaAsignaturas/ver')
-            return redirect('/coordinaAsignaturas/principal')
+            if esEstudiante(request.session['username']):
+                return render(request, 'coordinaAsignaturas/login.html', args)
+            else:  
+                # return redirect('/coordinaAsignaturas/ver')
+                return redirect('/coordinaAsignaturas/principal')
     else :
         args = {'form': LoginForm()}
     return render(request, 'coordinaAsignaturas/login.html', args)
