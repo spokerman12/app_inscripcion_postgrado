@@ -208,7 +208,7 @@ class Asignatura(models.Model):
     codDpto  = models.CharField(max_length = 6, choices = DPTOS, blank = True)
     creditos = models.IntegerField(choices = CREDITOS)
     nomAsig  = models.CharField(max_length = 80, blank = True)
-    progAsig = models.CharField(max_length = 20, blank = True)
+    progAsig = models.FileField(upload_to = "programas/")
     diaHora  = models.CharField(max_length = 60, blank = True)
     prof     = models.ForeignKey(Profesor, on_delete = models.PROTECT)
     vista    = models.BooleanField(default = False)
@@ -377,7 +377,7 @@ Puede tener muchas asignaturas. Es una oferta con trimestre y año.
 '''
 class Oferta(models.Model):
     coordinacion = models.ForeignKey(Coordinacion, on_delete = models.PROTECT,
-                                     null=True)
+                                     null = True)
     trimestre    = models.CharField(max_length = 8, choices = TRIMESTRES)
     asignaturas  = models.ManyToManyField(Asignatura)
     anio         = models.IntegerField(validators = [MinValueValidator(1970)])
