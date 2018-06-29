@@ -30,11 +30,11 @@ def home(request):
 
         # Se verifica si el form es válido. Ver form.is_valid en forms.py
         if form.is_valid() :
-            #request.session['username'] = form.cleaned_data['username']
-            #print(request.session['username'])
-            #if esEstudiante(request.session['username']):
-                #return render(request, 'coordinaAsignaturas/login.html', args)
-            #else:  
+            data = form.cleaned_data
+            request.session['username'] = data['username']
+            if esEstudiante(data['username']):
+                return redirect('/coordinaAsignaturas/inscripcion')
+            else:  
                 # return redirect('/coordinaAsignaturas/ver')
                 return redirect('/coordinaAsignaturas/principal')
     else :
@@ -53,6 +53,14 @@ def principal(request):
     asignaturas = Asignatura.objects.all()
     context = {'asignaturas' : asignaturas}
     return render(request, 'coordinaAsignaturas/initIndex.html', context)
+
+'''
+inscripcion: Vista de la inscripcion del estudiante
+'''
+def inscripcion(request):
+    usuario = get_object_or_404(Estudiante, usuario=request.session['username'])
+    estudiante = {'estudiante' : usuario}
+    return render(request, 'coordinaAsignaturas/inscripcion.html', estudiante)
 
 '''
 verOfertas: Vista que representa la página de inicio de sesión

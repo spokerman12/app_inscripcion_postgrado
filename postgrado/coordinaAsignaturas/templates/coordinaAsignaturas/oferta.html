@@ -89,10 +89,10 @@
                                         	<td>{{oferta.anio}}</td>
                                             <td>
                                             	<a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
-                                                    <i class="material-icons">pageview</i>
+                                                    <i class="material-icons">pageview</i></button>
                                                 </a> 
                                                 <a href="{% url 'coordinaAsignaturas:modificarOferta' oferta_id=oferta.id %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
-                                            		<i class="material-icons">edit</i>
+                                            		<i class="material-icons">edit</i></button>
                                         		</a> 
                                                     <button type="button" data-toggle="modal" data-target="#{{oferta.id}}" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
                                                     <i class="material-icons">delete</i>
