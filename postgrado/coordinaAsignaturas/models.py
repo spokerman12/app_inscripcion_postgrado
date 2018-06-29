@@ -37,12 +37,13 @@ Ver modelo UML e informe técnico para mayor información
 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-import datetime, hashlib
+from datetime import datetime
+from hashlib import sha256
 
 '''
 Fecha del acceso a la aplicación.
 '''
-FECHA = datetime.datetime.now()
+FECHA = datetime.now()
 
 '''
 Departamentos de la USB junto a sus abreviaciones.
@@ -151,7 +152,7 @@ class Usuario(models.Model):
     def crearUsuario(self, usr, pwd):
         try:
             self.username = usr
-            hashm = hashlib.sha256()
+            hashm = sha256()
             pswd = str.encode(pwd)
             hashm.update(pswd)
             self.password = hashm.hexdigest()
@@ -359,9 +360,8 @@ class Oferta(models.Model):
     coordinacion = models.ForeignKey(Coordinacion, on_delete = models.PROTECT)
     trimestre    = models.CharField(max_length = 8, choices = TRIMESTRES)
     asignaturas  = models.ManyToManyField(Asignatura)
-    anio         = models.IntegerField(
-        validators = [MinValueValidator(1970)]
-        )
+    anio         = models.IntegerField(validators = [MinValueValidator(1970)])
+    
     def __str__(self):
         return ("%s %s" % (self.trimestre, self.anio))
 
@@ -375,9 +375,7 @@ puede calcular la suma de créditos (carga académica) el metodo sumCreditos
 '''
 class Inscripcion(models.Model):
     asignaturas = models.ManyToManyField(Asignatura)
-    anio        = models.IntegerField(
-        validators=[MinValueValidator(1967), MaxValueValidator(2050)]
-        )
+    anio        = models.IntegerField(validators=[MinValueValidator(1970)])
     trimestre   = models.CharField(max_length = 7, choices = TRIMESTRES)
 
     def __str__(self):
@@ -424,7 +422,7 @@ class Sesion(models.Model):
     def validaUsuario(self, usr, pwd):
         try:
             busqueda = Usuario.objects.get(pk = usr)
-            hashm = hashlib.sha256()
+            hashm = sha256()
             pswd = str.encode(pwd)
             hashm.update(pswd)
             if hashm.hexdigest() == busqueda.password:
@@ -528,8 +526,9 @@ def agregaAsignaturaACoord(usr, codAsig):
         sesion = Sesion()
         usuario = Usuario.objects.get(pk=usr)
         sesion.usuario = usuario
-        sesion.obtenCoordinacion().asignaturas.add(Asignatura.objects.get(
-            pk = codAsig))
+        sesion.obtenCoordinacion().asignaturas.add(
+            Asignatura.objects.get(pk = codAsig)
+            )
     except:
         return False
     return True

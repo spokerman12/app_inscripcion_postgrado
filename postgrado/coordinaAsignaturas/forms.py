@@ -4,10 +4,11 @@
 from django import forms
 from django.forms.widgets import CheckboxSelectMultiple
 from coordinaAsignaturas.models import Usuario, Asignatura, Oferta
-import hashlib, datetime
+from hashlib import sha256
+from datetime import datetime
 import re
 
-fecha = datetime.datetime.now()
+fecha = datetime.now()
 
 '''
 
@@ -39,13 +40,17 @@ class LoginForm(forms.Form):
     username = forms.EmailField(max_length = 30)
     password = forms.CharField(max_length = 64, widget = forms.PasswordInput)
 
+    '''
+    Esta funcion maneja los datos introducidos en el formulario para generar
+    las entradas de la base de datos.
+    '''
     def clean(self):
         limpio = super(LoginForm, self).clean()
         usr = limpio.get('username')
         pwd = limpio.get('password')
         try:
             busqueda = Usuario.objects.get(pk = usr)
-            hashm = hashlib.sha256()
+            hashm = sha256()
             pswd = str.encode(pwd)
             hashm.update(pswd)
 
@@ -107,7 +112,10 @@ class FormularioAsignatura(forms.ModelForm):
             'codDpto': forms.Select(attrs = {'class': 'form-control'})
         }
 
-    # Haciendole override al metodo clean
+    '''
+    Esta funcion maneja los datos introducidos en el formulario para generar
+    las entradas de la base de datos.
+    '''
     def clean(self):
         regexCodigo = '^([A-Z]{2,2})(\-){0,1}([0-9]{4,4})$'
         mensajeErrorCodigo = 'El codigo debe ser dos letras mayusculas y cuatro digitos separados, o no, por un guion'
@@ -148,7 +156,10 @@ class FormularioAsignatura(forms.ModelForm):
             pass
         return limpio
 
-    # Haciendo overwrite a la funcion de save #
+    '''
+    Esta funcion maneja los datos introducidos en el formulario para generar
+    las entradas de la base de datos.
+    '''
     def save(self, commit = True):
         asignatura = super(FormularioAsignatura, self).save(commit = False)
         dias = ['lun','mar','mie','jue','vie']
@@ -174,6 +185,11 @@ class FormularioAsignatura(forms.ModelForm):
     Fomulario que se encarga de crear una nueva asignatura en el sistema
 '''
 class FormCrearAsignatura(FormularioAsignatura):
+
+    '''
+    Esta funcion maneja los datos introducidos en el formulario para generar
+    las entradas de la base de datos.
+    '''
     def clean(self):
         limpio = super(FormCrearAsignatura, self).clean()
         codigo = limpio.get('codAsig')
@@ -246,6 +262,11 @@ class FormModificarAsignatura(FormularioAsignatura):
     Formulario que se encarga de agregar una materia existente a la coordinacion
 '''
 class FormAgregarAsignatura(FormularioAsignatura):
+
+    '''
+    Esta funcion maneja los datos introducidos en el formulario para generar
+    las entradas de la base de datos.
+    '''
     def clean(self):
         limpio = super(FormAgregarAsignatura, self).clean()
         codigo = limpio.get('codAsig')
