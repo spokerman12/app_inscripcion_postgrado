@@ -16,6 +16,7 @@
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 </head>
 <body>
+	<!-- Formulario para el inicio de sesion -->
 	<form class="login-form" method="post">
 	  <p class="login-text">
 		<span class="fa-stack fa-lg">
@@ -25,7 +26,7 @@
 	  </p>
 	  <div align="center">{% csrf_token %}
           <br>
-		  <!-- {{ form.username.errors }} -->
+		  <!-- Se carga el form django. Cada input se carga individualmente y son capturados por el boton de ingresar -->
 		  {{ form.username }}
 		  <br>
 		  {{ form.password }}

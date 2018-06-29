@@ -47,7 +47,6 @@ FECHA = datetime.datetime.now()
 '''
 Departamentos de la USB junto a sus abreviaciones.
 '''
->>>>>>> origin/H4-comentarios-Francisco
 DPTOS = (
     ('EA','Estudios Ambientales'),
     ('CE','Ciencias Económicas y Administrativas'),
@@ -78,7 +77,6 @@ DPTOS = (
 '''
 Coordinaciones de postgrado de la USB junto a sus abreviaciones.
 '''
->>>>>>> origin/H4-comentarios-Francisco
 COORDS = (
     ('MAT','Matemáticas'),
     ('CB','Ciencias Biológicas'),
@@ -134,7 +132,6 @@ CREDITOS = (
 Las clases descritas a continuación siguen el orden de dependencia igual al 
 que poseen actualmente. Modificar con cuidado
 '''
->>>>>>> origin/H4-comentarios-Francisco
 
 '''
 Clase que representa la entidad Usuario del sistema de postgrado.
@@ -167,7 +164,6 @@ class Usuario(models.Model):
     Extrae por defecto el nombre de usuario
     '''
     def __str__(self) -> str:
->>>>>>> origin/H4-comentarios-Francisco
         return self.username
 
     class Meta:
@@ -176,7 +172,6 @@ class Usuario(models.Model):
 '''
 Clase que representa la entidad Profesor de la USB.
 '''
->>>>>>> origin/H4-comentarios-Francisco
 class Profesor(models.Model):
     ciProf  = models.IntegerField(
         validators = [MinValueValidator(0), MaxValueValidator(99999999)],
@@ -191,7 +186,6 @@ class Profesor(models.Model):
         verbose_name_plural = "Profesores"
         app_label = 'coordinaAsignaturas'
 
->>>>>>> origin/H4-comentarios-Francisco
 
 '''
 Clase que representa la entidad Asignatura de postgrado. El campo diaHora
@@ -222,7 +216,6 @@ class Asignatura(models.Model):
     Elimina una asignatura de la base de dato. Retorna True si se elimina
     exitosamente, sino Flase
     '''
->>>>>>> origin/H4-comentarios-Francisco
     def eliminarAsignatura(self):
         try:
             return self.delete()
@@ -234,7 +227,6 @@ class Asignatura(models.Model):
     obtiene exitosamente, sino False.
     '''
     def obtenAsignatura(self, cod):
->>>>>>> origin/H4-comentarios-Francisco
         try:
             codA = cod.upper()
             return self.get(pk = codA)
@@ -246,7 +238,6 @@ class Asignatura(models.Model):
 Coordinación de postgrado. Puede tener muchas asignaturas asociadas sin
 importar el departamento.
 '''
->>>>>>> origin/H4-comentarios-Francisco
 class Coordinacion(models.Model):
     nomCoord    = models.CharField(
         max_length = 15,
@@ -293,7 +284,6 @@ class Coordinacion(models.Model):
     codAsig es agregada exitosamente a la lista, False si no.
     '''
     def agregaAsignaturaExistente(self, codAsig):
->>>>>>> origin/H4-comentarios-Francisco
         try:
             self.asignaturas.add(Asignatura.objects.get(pk = codAsig))
             self.save()
@@ -370,9 +360,8 @@ class Oferta(models.Model):
     trimestre    = models.CharField(max_length = 7, choices = TRIMESTRES)
     asignaturas  = models.ManyToManyField(Asignatura)
     anio         = models.IntegerField(
-        validators = [MinValueValidator(1697), MaxValueValidator(2050)]
+        validators = [MinValueValidator(1970)]
         )
-
     def __str__(self):
         return ("%s %s" % (self.trimestre, self.anio))
 
@@ -415,7 +404,6 @@ class Estudiante(models.Model):
     usuario       = models.OneToOneField(Usuario, on_delete = models.CASCADE)
     carnet        = models.CharField(max_length = 12, primary_key = True)
     inscripciones = models.ManyToManyField(Inscripcion, blank = True)
->>>>>>> origin/H4-comentarios-Francisco
 
     class Meta:
         app_label = 'coordinaAsignaturas'
@@ -427,7 +415,6 @@ class Estudiante(models.Model):
 '''
 Una sesion en el sistema.
 '''
->>>>>>> origin/H4-comentarios-Francisco
 class Sesion(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete = models.PROTECT)
 
@@ -465,7 +452,6 @@ class Sesion(models.Model):
 '''
 Obtiene asignaturas del coordinador 'usr'
 '''
->>>>>>> origin/H4-comentarios-Francisco
 def obtenAsignaturas(usr):
     try:
         usuario = Usuario.objects.get(pk=usr)
@@ -481,7 +467,6 @@ Busca asignaturas del coordinador 'usr' con campos flexibles
 '''
 def buscaAsignaturas(usr, codAsig = None, nomAsig = None, creditos = None,
     progAsig = None):
->>>>>>> origin/H4-comentarios-Francisco
     try:
         usuario        = Usuario.objects.get(pk = usr)
         sesion         = Sesion()
@@ -495,7 +480,6 @@ def buscaAsignaturas(usr, codAsig = None, nomAsig = None, creditos = None,
 '''
 Elimina de la base de datos la asignatura de codigo 'codAsig'
 '''
->>>>>>> origin/H4-comentarios-Francisco
 def eliminaAsignatura(codAsig):
     try:
         return Asignatura().obtenAsignatura(codAsig).delete()
@@ -507,7 +491,6 @@ def eliminaAsignatura(codAsig):
 Elimina la oferta 'oferta_id' de la coordinacion de 'usr'
 '''
 def eliminaOferta(usr, oferta_id):
->>>>>>> origin/H4-comentarios-Francisco
     try:
         usuario = Usuario.objects.get(pk = usr)
         sesion = Sesion()
@@ -527,7 +510,6 @@ def eliminaOferta(usr, oferta_id):
 Elimina la asignatura 'codAsig' de la coordinacion de 'usr'
 '''
 def eliminaAsignaturaDeCoord(usr, codAsig):
->>>>>>> origin/H4-comentarios-Francisco
     try:
         usuario        = Usuario.objects.get(pk=usr)
         sesion         = Sesion()
@@ -542,7 +524,6 @@ def eliminaAsignaturaDeCoord(usr, codAsig):
 Agrega la asignatura 'codAsig' a la coordinacion de 'usr'
 '''
 def agregaAsignaturaACoord(usr, codAsig):
->>>>>>> origin/H4-comentarios-Francisco
     try:
         sesion = Sesion()
         usuario = Usuario.objects.get(pk=usr)
@@ -565,10 +546,9 @@ def esEstudiante(usr):
         else: return False
     except:
         return False
-<<<<<<< HEAD
->>>>>>> origin/H4-comentarios-Francisco
-=======
-
+'''
+Obtiene a un estudiante a partir de su nombre de usuario
+'''
 def obtenerEstudiante(usr):
     try:
         u = Usuario.objects.get(pk=usr)
@@ -578,4 +558,3 @@ def obtenerEstudiante(usr):
         else: return None
     except:
         return None
->>>>>>> origin/H4-busquedaAsigOferta

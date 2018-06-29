@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<!-- Formulario para modificar una asignatura seleccionada. Carga por defecto
+los datos de la asignatura seleccionado, y permite la edicòn de alguno de 
+estos campos -->
 <section class="content">
     <div class="container-fluid">
         <div class="card">
@@ -13,8 +15,8 @@
             </div>
             <div class="body">
                 <div class="row clearfix">
-                    <div class="col-sm-12">
-                        <form method="POST" class="post-form">
+                    <div class="col-sm-12"><!-- Cada campo del form django es cargado individualmente -->
+                        <form method="POST" enctype="multipart/form-data" class="post-form">
                             {% csrf_token %}
                             <div class="col-sm-6 fieldWrapper">
                                 <div class="form-group">
@@ -131,6 +133,7 @@
                                 </div>
                             {{form.lun.errors}}
                             </div>
+                            <!-- Boton que guarda los cambios realizados en la asignatura -->
                             <div class="col-sm-12 fieldWrapper">
                                 <div class="form-group">
                                     <div class="text-center">

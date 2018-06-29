@@ -40,7 +40,7 @@ input[type="checkbox"] {
                         REPORTA SUS ATRIBUTOS, Y LOS ERRORES EN CASO DE QUE OCURRAN
                         
                      -->
-                    <form method="post" novalidate>{% csrf_token %}
+                    <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
                     <div class="col-sm-6 fieldWrapper" >
                         <div class="form-group">
                             <div class="form-line">
@@ -166,11 +166,12 @@ input[type="checkbox"] {
                     {{form.jue.errors}}
                     {{form.vie.errors}}
                     </div>
+                    <!-- Finaliza la data del form -->
                     <div class="col-sm-12 fieldWrapper">
                         <div class="form-group">
                             <div class="text-center">
-                                <button id="save" disabled="" type="submit" class="btn bg-amber waves-effect col-sm-12">
-                                  <i class="material-icons">save</i>
+                                <button id="save" type="submit" class="btn bg-amber waves-effect col-sm-12">
+                                  <i class="material-icons">save</i><!-- Boton que ejecuta la accion de guardado -->
                                     <span>Guardar</span>
                               </button>
                             </div>

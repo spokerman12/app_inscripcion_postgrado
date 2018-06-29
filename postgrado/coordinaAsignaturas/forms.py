@@ -105,7 +105,6 @@ class FormularioAsignatura(forms.ModelForm):
             'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
             'creditos' : forms.Select(attrs = {'class':'form-control'}),
             'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
-            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
             'prof' : forms.Select(attrs = {'class':'form-control'}),
             'codDpto' : forms.Select(attrs = {'class':'form-control'})
         }

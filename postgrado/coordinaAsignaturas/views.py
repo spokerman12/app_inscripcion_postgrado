@@ -26,8 +26,6 @@ Desarrollado por Equipo Null Pointer Exception
       14. listaTodasAsignaturas.
       15. agregarACoord.
 
-
->>>>>>> origin/H4-comentarios-Francisco
 '''
 
 # -*- coding: utf-8 -*-
@@ -62,12 +60,11 @@ def home(request):
 
         # Se verifica si el form es válido. Ver form.is_valid en forms.py
         if form.is_valid() :
-            data = form.cleaned_data
-            request.session['username'] = data['username']
-            if esEstudiante(data['username']):
-                return redirect('/coordinaAsignaturas/inscripcion')
+            request.session['username'] = form.cleaned_data['username']
+            if esEstudiante(request.session['username']):
+                return render(request, 'coordinaAsignaturas/login.html', args)
             else:  
-                # return redirect('/coordinaAsignaturas/ver')
+                #return redirect('/coordinaAsignaturas/ver')
                 return redirect('/coordinaAsignaturas/principal')
     else :
 
@@ -129,23 +126,30 @@ agregarOferta: Permite agregar una nueva oferta
 '''
 def agregarOferta(request):
 
-    # Se reproduce el formulario
-    form = FormCrearOferta(request.POST)
-
     # Redirección si no hay sesión
     if not('username' in request.session.keys()):
         return redirect('/coordinaAsignaturas/login')
 
     # Se envía el formulario
     if request.method == 'POST':
-        form = FormCrearOferta(request.POST)
+        # Se reproduce el formulario
+        form = FormularioOferta(request.POST)
         args = {'form' : form}
         if form.is_valid():
-            form.save()
-
+            # se guarda la oferta sin la coordinacion
+            oferta = form.save()
+            # se obtiene la coordinacion del coordinador logeado
+            s = Sesion()
+            s.usuario = Usuario.objects.get(pk=request.session["username"])
+            coord = s.obtenCoordinacion()
+            # se le asigna la coordinacion a la oferta
+            oferta.coordinacion = coord
+            # se guarda la oferta definitivamente
+            oferta.save()
             return redirect('/coordinaAsignaturas/ofertas')
     else :
-        args = {'form' : FormCrearAsignatura()}
+        form = FormularioOferta()
+        args = {'form' : form}
 
     return render(request, 'coordinaAsignaturas/agregarOferta.html', {'form' : form})
 
@@ -160,15 +164,13 @@ def modificarOferta(request,oferta_id):
 
     # Se envía el formulario
     if request.method == 'POST':
-        form = FormModificarOferta(request.POST, instance=Oferta.objects.get(pk=oferta_id))
+        form = FormularioOferta(request.POST, instance=Oferta.objects.get(pk=oferta_id))
         args = {'form' : form}
         if form.is_valid():
             form.save()
             return redirect('coordinaAsignaturas:detallesOferta', oferta_id=oferta_id)
-        else :
-            print("Error al modificar oferta")
     else :
-        args = {'form' : FormModificarOferta(instance=Oferta.objects.get(pk=oferta_id))}
+        args = {'form' : FormularioOferta(instance=Oferta.objects.get(pk=oferta_id))}
 
     return render(request, 'coordinaAsignaturas/modificarOferta.html', args)
 
@@ -213,7 +215,7 @@ def verAsignaturas(request):
                 args['asignaturas'] = []
         return render(request, 'coordinaAsignaturas/asignaturas.html', args)
     else :
-        return redirect('login')
+        return redirect('/coordinaAsignaturas/login')
 
 '''
 agregarAsignatura: Permite agregar nuevas asignaturas al sistema.
@@ -227,12 +229,11 @@ def agregarAsignatura(request):
 
     # Se intenta agregar la asignatura a la base de datos
     if request.method == 'POST':
-        form = FormCrearAsignatura(request.POST)
+        form = FormCrearAsignatura(request.POST,request.FILES)
         args = {'form' : form}
         if form.is_valid():
             form.save()
             data = form.cleaned_data
-
             # Se agrega a la coordinación
             agregaAsignaturaACoord(request.session['username'],data['codAsig'])
             args['asignaturas'] = obtenAsignaturas(request.session['username'])
@@ -250,7 +251,7 @@ def modificarAsignatura(request, codAsig):
 
     # Redirección si no hay sesión
     if request.method == "POST":
-        form = FormModificarAsignatura(request.POST, instance=asignatura)
+        form = FormModificarAsignatura(request.POST, request.FILES, instance=asignatura)
         if form.is_valid():
             asignatura = form.save(commit=False)
 
@@ -291,8 +292,6 @@ def detallesAsignatura(request, codAsig):
     return render(request, 'coordinaAsignaturas/detallesAsignatura.html', 
                  {'asignatura' : asignatura})
 
-
->>>>>>> origin/H4-comentarios-Francisco
 '''
 listaTodasAsignaturas: Genera el template con todas las asignaturas existentes
                        Las pasa por request
@@ -302,7 +301,6 @@ def listaTodasAsignaturas(request):
     return render(request, 'coordinaAsignaturas/listaTodasAsignaturas.html', 
                  {'asignaturas' : asignaturas})
 
->>>>>>> origin/H4-comentarios-Francisco
 '''
 agregarACoord: Instanciando un formulario, permite agregar 
                una asignatura a la coordinación.
