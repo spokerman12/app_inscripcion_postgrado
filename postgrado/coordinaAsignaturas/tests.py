@@ -38,8 +38,14 @@
 #           2.25. testFormularioAsignaturaVacio.
 
 from django.test import TestCase
+from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 from coordinaAsignaturas.forms import LoginForm, FormularioAsignatura
 from coordinaAsignaturas.models import Asignatura, Profesor, Usuario
+
+ruta = str(settings.MEDIA_ROOT) + "\\programas\\"
+file = open(ruta + "4_Taller_4.pdf", 'rb')
+archivo = SimpleUploadedFile(file.name, file.read())
 
 # Clase de pruebas para el formulario LoginForm.
 class TestLoginForm(TestCase):
@@ -145,12 +151,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertTrue(form.is_valid())
 
     # testFormularioAsignaturaCodigoMenosDeSeisCaracteres: verifica que se
@@ -176,12 +181,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoMasDeSieteCaracteres: verifica que se
@@ -207,12 +211,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MAA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoEmpiezaConNumero: verifica que se retorne
@@ -237,12 +240,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "1A1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoTerminaConUnaLetra: verifica que se retorne
@@ -267,12 +269,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA111X",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConCaracterNoValido: verifica que se
@@ -298,12 +299,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA*1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConUnaLetra: verifica que se retorne False
@@ -328,12 +328,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "M1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConTresLetras: verifica que se retorne
@@ -359,12 +358,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MMA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConTresDigitos: verifica que se retorne
@@ -389,12 +387,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConCincoDigitos: verifica que se retorne
@@ -419,12 +416,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA11115",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoRepetido: verifica que se retorne False si
@@ -454,12 +450,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCreditosNegativos: verifica que se retorne False
@@ -484,12 +479,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 20,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCreditoNoNumerico: verifica que se retorne False
@@ -514,12 +508,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': "cuatro",
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaNombreMasDeOchentaCaracteres: verifica que se
@@ -545,12 +538,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I" + ("1" * 80),
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaNombreConCaracteresInvalidos: verifica que se
@@ -576,12 +568,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "かわいいMatemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaHoraInicioDespuesDeHoraFin: verifica que se
@@ -606,12 +597,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaFinalizaSinEmpezar: verifica que se retorne False
@@ -636,12 +626,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaFinalizaSinEmpezar: verifica que se retorne False
@@ -666,12 +655,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoVacio: verifica que se retorne False si no
@@ -696,12 +684,11 @@ class TestFormularioAsignatura(TestCase):
             # 'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCreditosVacio: verifica que se retorne False si
@@ -726,12 +713,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             # 'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaNombreVacio: verifica que se retorne False si no
@@ -756,12 +742,11 @@ class TestFormularioAsignatura(TestCase):
             # 'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaProgramaVacio: verifica que se retorne False si
@@ -786,13 +771,12 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            # 'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
-        self.assertTrue(form.is_valid())
+        form = FormularioAsignatura(valores,{})
+        self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaProfVacio: verifica que se retorne False si no se
     # ingresa el profesor de la asignatura. Caso frontera
@@ -816,12 +800,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             # 'prof': 12345678,
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaVistaVacio: verifica que se retorne False si no
@@ -846,12 +829,11 @@ class TestFormularioAsignatura(TestCase):
             'codAsig': "MA1111",
             'creditos': 4,
             'nomAsig': "Matemáticas I",
-            'progAsig': "PROG-106",
             'prof': 12345678,
             'codDpto': "MA",
             # 'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        form = FormularioAsignatura(valores,{'progAsig':archivo})
         self.assertTrue(form.is_valid())
 
     # testFormularioAsignaturVacio: verifica que se retorne False si no se
@@ -876,10 +858,12 @@ class TestFormularioAsignatura(TestCase):
             # 'codAsig': "MA1111",
             # 'creditos': 4,
             # 'nomAsig': "Matemáticas I",
-            # 'progAsig': "PROG-106",
             # 'prof': 12345678,
             # 'codDpto': "MA",
             # 'vista': False
         }
-        form = FormularioAsignatura(data = valores)
+        dic = {
+            # 'progAsig': archivo
+        }
+        form = FormularioAsignatura(valores,dic)
         self.assertFalse(form.is_valid())
