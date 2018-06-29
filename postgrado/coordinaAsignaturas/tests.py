@@ -39,7 +39,20 @@
           2.24. testFormularioAsignaturaVistaVacio.
           2.25. testFormularioAsignaturaVacio.
       3. Pruebas sobre FormularioOferta:
-          3.1
+          3.1.  testOfertaDatosCorrectos.
+          3.2.  testOfertaAnioMinimo.
+          3.4.  testOfertaAnioAnterior.
+          3.5.  testOfertaAnioMinimoTrimestrePrimero.
+          3.6.  testOfertaAnioMinimoTrimestreUltimo.
+          3.7.  testOfertaAnioActualTrimestrePrimero.
+          3.8.  testOfertaAnioActualTrimestreSegundo.
+          3.9.  testOfertaAnioActualTrimestreUltimo.
+          3.10. testOfertaAnioLejanoTrimestrePrimero.
+          3.11. testOfertaAnioLejanoTrimestreSegundo.
+          3.12. testOfertaAnioLejanoTrimestreUltimo.
+          3.13. testOfertaAnioVacio.
+          3.14. testOfertaTrimestreVacio.
+          3.15. testOfertaAnioYTrimestreVacio.
 '''
 from django.test import TestCase
 from coordinaAsignaturas.forms import LoginForm, FormularioAsignatura, FormularioOferta
@@ -918,16 +931,6 @@ class TestFormularioOferta(TestCase):
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
-    # testOfertaDatosCorrectos: verifica que se retorne True al crear una
-    # oferta con datos correctos. Caso dentro del dominio
-
-    def testOfertaDatosCorrectos(self):
-        trimestre = 'Ene-Mar'
-        anio      = '2019'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
-        oferta    = FormularioOferta(data = valores)
-        self.assertTrue(oferta.is_valid())
-
     # testOfertaAnioMinimo: verifica que se retorne True al crear una
     # oferta con el año de apertura de la Universidad. Caso dentro del dominio
 
@@ -1030,3 +1033,33 @@ class TestFormularioOferta(TestCase):
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())        
+
+    # testOfertaAnioVacio: verifica que se retorne False al crear una
+    # oferta con un año vacio. Caso Frontera
+
+    def testOfertaAnioVacio(self):
+        trimestre = 'Sept-Dic'
+        anio      = ''
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertFalse(oferta.is_valid())        
+
+    # testOfertaTrimestreVacio: verifica que se retorne False al crear una
+    # oferta con un trimestre vacio. Caso Frontera
+
+    def testOfertaTrimestreVacio(self):
+        trimestre = ''
+        anio      = fecha.year
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertFalse(oferta.is_valid())   
+
+    # testOfertaAnioYTrimestreVacio: verifica que se retorne False al crear una
+    # oferta con un año y un trimestre vacio. Caso Esquina
+
+    def testOfertaAnioYTrimestreVacio(self):
+        trimestre = ''
+        anio      = ''
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertFalse(oferta.is_valid())   
