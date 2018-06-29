@@ -8,8 +8,6 @@ Vistas de coordinaAsignaturas
 
 Desarrollado por Equipo Null Pointer Exception
 
-<<<<<<< HEAD
-=======
 
  Indice de vistas:
       1.  home.
@@ -41,12 +39,20 @@ from .models import Oferta, Usuario, Sesion, Asignatura
 from .models import agregaAsignaturaACoord, eliminaOferta, obtenAsignaturas
 from .models import eliminaAsignaturaDeCoord
 
+def inscripcion(request):
+
+    estudiante = obtenerEstudiante(request.session['username'])
+    inscripciones = estudiante.inscripciones.all()
+    context = {
+        'estudiante' : estudiante,
+        'inscripciones' : inscripciones
+    }
+    return render(request, 'coordinaAsignaturas/inscripcion.html', context)
 
 '''
 home: Vista que representa la página de inicio de sesión
 '''
 def home(request):
-
 
     if request.method == "POST" :
 
@@ -56,11 +62,11 @@ def home(request):
 
         # Se verifica si el form es válido. Ver form.is_valid en forms.py
         if form.is_valid() :
-            #request.session['username'] = form.cleaned_data['username']
-            #print(request.session['username'])
-            #if esEstudiante(request.session['username']):
-                #return render(request, 'coordinaAsignaturas/login.html', args)
-            #else:  
+            data = form.cleaned_data
+            request.session['username'] = data['username']
+            if esEstudiante(data['username']):
+                return redirect('/coordinaAsignaturas/inscripcion')
+            else:  
                 # return redirect('/coordinaAsignaturas/ver')
                 return redirect('/coordinaAsignaturas/principal')
     else :
@@ -79,6 +85,14 @@ def principal(request):
     asignaturas = Asignatura.objects.all()
     context = {'asignaturas' : asignaturas}
     return render(request, 'coordinaAsignaturas/initIndex.html', context)
+
+'''
+inscripcion: Vista de la inscripcion del estudiante
+'''
+def inscripcion(request):
+    usuario = get_object_or_404(Estudiante, usuario=request.session['username'])
+    estudiante = {'estudiante' : usuario}
+    return render(request, 'coordinaAsignaturas/inscripcion.html', estudiante)
 
 '''
 verOfertas: Vista que representa la página de inicio de sesión
@@ -276,10 +290,6 @@ def detallesAsignatura(request, codAsig):
     asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
     return render(request, 'coordinaAsignaturas/detallesAsignatura.html', 
                  {'asignatura' : asignatura})
-<<<<<<< HEAD
-
-
-=======
 
 
 >>>>>>> origin/H4-comentarios-Francisco
@@ -291,13 +301,6 @@ def listaTodasAsignaturas(request):
     asignaturas = Asignatura.objects.all()
     return render(request, 'coordinaAsignaturas/listaTodasAsignaturas.html', 
                  {'asignaturas' : asignaturas})
-<<<<<<< HEAD
-
-
-
-=======
-
-
 
 >>>>>>> origin/H4-comentarios-Francisco
 '''

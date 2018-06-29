@@ -1,6 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
-
 
 {% block content %}
 
@@ -18,7 +16,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="block-header">
-            <h2>OFERTAS</h2>
+            <h2>INSCRIPCIONES</h2>
         </div>
 
         <!-- Widgets -->
@@ -63,12 +61,12 @@
             <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
                 <div class="card">
                     <div class="header">
-                        <h2>OFERTAS DE LA COORDINACIÓN {{ultimasOfertas.coordinacion}}</h2>
+                        <h2>INSCRIPCIONES</h2>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
                             <table id="myTable" class="table table-hover dashboard-task-infos text-center sortable">
-                            	{% if ultimasOfertas %}
+                            	{% if estudiante %}
                                 <thead>
                                     <tr>
                                         <th class="text-center">
@@ -83,10 +81,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for oferta in ultimasOfertas %}
+                                    {% for inscrpcion in inscripciones %}
                                 		<tr>
-                                        	<td>{{oferta.trimestre}}</td>
-                                        	<td>{{oferta.anio}}</td>
+                                        	<td>{{inscripcion.trimestre}}</td>
+                                        	<td>{{inscripcion.anio}}</td>
                                             <td>
                                             	<a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
                                                     <i class="material-icons">pageview</i></button>
@@ -102,7 +100,7 @@
                                     {% endfor %}
                                 </tbody>
                                 {% else %}
-                                	<p>No hay ofertas creadas</p>
+                                	<p>No hay inscrpciones creadas</p>
                                 {% endif %} 
                             </table>
                         </div>

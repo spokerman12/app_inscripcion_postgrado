@@ -9,7 +9,32 @@ import re
 
 fecha = datetime.datetime.now()
 
-# Formulario de registro #
+'''
+
+Universidad Simón Bolívar
+Ingeniería de Software I CI-3715
+Sistema de gestión de postgrados de la USB
+
+Vistas de coordinaAsignaturas
+
+Desarrollado por Equipo Null Pointer Exception
+
+
+ Indice de vistas:
+      1.  LoginForm
+      2.  FormularioAsignatura.
+      3.  FormularioCrearAsignatura.
+      4.  FormularioModificarAsignatura.
+      5.  FormularioAgregarAsignatura.
+      6.  FormularioOferta.
+      7.  FormularioModificarAsignatura.
+      8.  FormCrearOferta
+'''
+
+'''
+1. LoginForm
+    Formulario que se encarga de registrar al usuario
+'''
 class LoginForm(forms.Form) :
     username = forms.EmailField(max_length=30)
     password = forms.CharField(max_length=64, widget=forms.PasswordInput)
@@ -32,8 +57,14 @@ class LoginForm(forms.Form) :
         except:
             self.add_error('username', 'Usuario o clave incorrecto')
         return limpio
+    class Meta:
+        model = Usuario
+        exlude = []
 
-# Formulario base de una asignatura #
+'''
+2. FormularioAsignatura
+    Formulario base para los fomularios de agregar, crear y modificar
+'''
 class FormularioAsignatura(forms.ModelForm):
     lun = forms.BooleanField(required=False)
     lun_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
@@ -117,6 +148,7 @@ class FormularioAsignatura(forms.ModelForm):
             pass
         return limpio
 
+    # Haciendo overwrite a la funcion de save #
     def save(self, commit=True):
         asignatura = super(FormularioAsignatura, self).save(commit=False)
         dias = ['lun','mar','mie','jue','vie']
@@ -130,7 +162,10 @@ class FormularioAsignatura(forms.ModelForm):
             asignatura.save()
         return asignatura
 
-# Formulario para crear una nueva asignatura #
+'''
+3. FormCrearAsignatura
+    Fomulario que se encarga de crear una nueva asignatura en el sistema
+'''
 class FormCrearAsignatura(FormularioAsignatura) :
     def clean(self) :
         limpio = super(FormCrearAsignatura, self).clean()
@@ -152,7 +187,10 @@ class FormCrearAsignatura(FormularioAsignatura) :
 
         return limpio
 
-# Formulario para Modificar una asignatura #
+'''
+4. FormModificarAsignatura
+    Formulario que se encarga de registrar cambios a una asignatura
+'''
 class FormModificarAsignatura(FormularioAsignatura) :
 
     def __init__(self, *args, **kwargs):
@@ -189,7 +227,10 @@ class FormModificarAsignatura(FormularioAsignatura) :
         except :
             pass
 
-# Formulario para agregar una asignatura a la coordinacion #
+'''
+5. FormAgregarAsignatura
+    Formulario que se encarga de agregar una materia existente a la coordinacion
+'''
 class FormAgregarAsignatura(FormularioAsignatura) :
     def clean(self) :
         limpio = super(FormAgregarAsignatura, self).clean()
@@ -198,7 +239,10 @@ class FormAgregarAsignatura(FormularioAsignatura) :
 
         return limpio
 
-# Formulario para agregar una nueva oferta #
+'''
+6. FormularioOferta
+    Formulario base para la creacion y modificacion de una oferta
+'''
 class FormularioOferta(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -225,9 +269,10 @@ class FormularioOferta(forms.ModelForm):
             'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
         }
 
-class FormCrearOferta(FormularioOferta):
-    pass
-
+'''
+7. FromMoodificarOferta
+    Formulario que se encarga de modificar una oferta existente
+'''
 class FormModificarOferta(FormularioOferta) :
     def __init__(self, *args, **kwargs):
         super(FormModificarOferta, self).__init__(*args, **kwargs)
@@ -243,3 +288,10 @@ class FormModificarOferta(FormularioOferta) :
             'anio' : forms.TextInput(attrs = {'class':'form-control'}),
             'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
         }
+
+'''
+8. FromCrearOferta
+    Formulario que se encarga de registrar una nueva oferta a la coordinacion
+'''
+class FormCrearOferta(FormularioOferta):
+    pass

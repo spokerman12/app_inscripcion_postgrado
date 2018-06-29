@@ -7,7 +7,7 @@ Sistema de gestión de postgrados de la USB
 
 Coniguración WSGI
 
-Este módulo no se ha mod
+Este módulo no se ha modificado
 
 '''
 
