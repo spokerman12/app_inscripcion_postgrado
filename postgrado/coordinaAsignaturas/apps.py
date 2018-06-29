@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+'''
+Se registra la aplicación como instalada
+'''
+
+
 from django.apps import AppConfig
 
 

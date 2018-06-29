@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+'''
+Se registran los models para manejarlos con el panel de administrador
+
+'''
+
 
 from django.contrib import admin
 from coordinaAsignaturas.models import Profesor, Asignatura, Oferta, Sesion

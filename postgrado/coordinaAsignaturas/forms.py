@@ -287,7 +287,7 @@ class FormularioOferta(forms.ModelForm):
         }
 
 '''
-7. FromMoodificarOferta
+7. FormModificarOferta
     Formulario que se encarga de modificar una oferta existente
 '''
 class FormModificarOferta(FormularioOferta):

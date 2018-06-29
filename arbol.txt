@@ -1,0 +1,125 @@
+* e5b2099 (HEAD -> H4, origin/H4) Comentarios de urls.py
+* ac1dd9a Pruebas de regresion y aceptacion hechas
+* e3bb264 Pruebas de regresion y aceptacion hechas
+*   ead64d5 (H4-pruebas-daniel) merge prueba-comentarios-buscar-PDF
+|\  
+| * 90c1a9d (origin/Programa_PDF) Ajuste de pruebas.
+| * 73cf006 cambios a templates
+| * 33e1a23 Apuntador a PDF para programa
+* |   b073146 Merge pruebas-comentarios-busquedaasigoferta
+|\ \  
+| * | 37b2b4d (origin/H4-busquedaAsigOferta) Busqueda de asig en oferta
+| * | a92f3bd forms.py comentado
+| * | bfc34f5 Forms.py comentado
+| |/  
+* |   6543e04 (origin/H4-pruebas-daniel) Merge daniel-pruebas francisco-comentarios
+|\ \  
+| * | 73bbb05 (origin/H4-comentarios-Francisco) Comentarios.
+| * |   225624d Merge branch 'H4-comentarios-Francisco' of https://github.com/spokerman12/postgrado-NullPointerException into H4-comentarios-Francisco
+| |\ \  
+| | * | 6cc0b69 Update .gitignore
+| * | | 0ab15dd Comentarios version vieja
+| |/ /  
+| * | 4211872 Archivo innecesario
+* | | d79c31b Agregadas pruebas de frontera de datos vacios para oferta
+* | | 4e13902 Corregido datetime
+* | | b9f1bd2 Mas pruebas de FormularioOferta
+* | | ad6320e Agregando pruebas en tests
+| |/  
+|/|   
+* |   744e71b resolviendo conflictos añadiendo nuevas dependecias, comentarios, y estilos a los templates
+|\ \  
+| * | e003727 Comentarios en coordinaAsignaturas.views, postgrado.views, .wsgi, .urls, .settings
+| * | 80842c4 Eliminados dos archivos inutiles
+| * |   ca4e556 Merge branch 'H4' of https://github.com/spokerman12/postgrado-NullPointerException into H4
+| |\ \  
+| * | | 3276bdc Limpieza y refactorización de código.
+* | | | 90d5336 merge del proyecto
+| |/ /  
+|/| |   
+* | | 79eb5bf Update .gitignore
+|/ /  
+* | c1c1e58 Usuario: 11-11111@usb.ve Contrasena: frito esEstudiante(nombreDeUsuario) -> Bool
+* |   5380a57 Merge branch 'H2' of https://github.com/spokerman12/postgrado-NullPointerException into H4
+|\ \  
+| |/  
+| * 866b9cf Pruebas 3
+| * c102a15 Pruebas 2
+| * d5d8cf2 Casos de prueba.
+| * dc591ee Prueba pagina principal. Eliminacion de templates innecesarios en static. Favicon se muestra correctamente. Otros detalles
+| * c7138f7 Detalle modificar oferta
+| *   a5110b7 Merge base.html
+| |\  
+| | * b931e3e Implementación del base.html
+| * | a3a1faf Merge
+| * | 5338051 Arreglos varios. Ejemplo testCase
+| * | 8154103 detalles en templates
+| * | d434245 ordenar ascendente y descendente
+| * | e8bec34 modificar template, delete buttons
+| * | 7a020a0 Arreglos links
+| * | 0f329da Arreglo varios detalles
+| * | 3ae2488 Borrados templates innecesarios
+| * | 9ac62c4 Comentado el boton de ejemplo para confirmar eliminar
+| * | 26ef3f4 Templates innecesarios eliminados. Se muestra Si/No cuando una asginatura fue vista o no
+| |/  
+* | 19205cc (origin) Reconoce a estudiante en login
+|/  
+*   a70f1f9 (H2) Merge branch 'desarrollo' dentro H2. Arreglo desorden de ramas
+|\  
+| * f9a16fe Añadiendo gitignore a la master
+| * 0b24d97 (master) Borrados plugins e imagenes sin uso
+* | 1c9f551 Añadiendo gitignore a la épica 2
+* | 4bc34d4 Mostrar horario correctamente en modificar asignatura
+* | 98b2850 Eliminar Oferta
+* | a87a166 Checkbox de asignaturas en Crear Oferta
+* |   5a70759 Merge branch 'H2' of https://github.com/spokerman12/postgrado-NullPointerException into H2
+|\ \  
+| * | 3b71532 detalles de oferta, y agregar oferta template
+| * | 4c475af template para ver ofertas
+* | | a54c3ea Modificar ofertas carga instancia y muestra asignaturas con checkbox
+|/ /  
+* | a943cd6 Solo se muestran ofertas de mi asignatura
+* | 603e9be Probar agregarOferta
+|/  
+* 4f5b7ac Agregar existente solo muestra las que no estan en la coord
+* 809aaa9 eliminar de la coordinacion
+* 4c85334 merge del proyecto, nuevas funcionalidades
+*   b3f7e57 Merge pull request #3 from gnus19/H1.1
+|\  
+| * efa6ebd Probar Agregar a coordinacion
+* |   23f1757 Merge pull request #2 from gnus19/H1.1
+|\ \  
+| |/  
+| * 8c3ff9e Listo Modificar
+| * 788e762 Funciones eliminar agregadas
+| * 053a823 eliminaAsignatura(codAsig) eliminaAsignaturaDeCoord(usr,codAsig)
+| * a1e2bc2 (pruebaModulos) Vista de modificar
+| * 9410091 Busqueda sirve
+| * bef0334 Muestra asigs de coord
+| * 0813081 Version de la sala 12:23 pm
+| * 9d31de3 Funciones de H1
+| * a698463 (origin/sprint2, origin/H1.1.1, desarrollo, H1.1.1) Funciones de login listas. Anadido modelo sesion
+|/  
+*   163f829 # Conflicts: #	.pydevproject #	postgrado/coordinaAsignaturas/__pycache__/__init__.cpython-35.pyc #	postgrado/coordinaAsignaturas/__pycache__/admin.cpython-35.pyc #	postgrado/coordinaAsignaturas/__pycache__/models.cpython-35.pyc #	postgrado/coordinaAsignaturas/migrations/0001_initial.py #	postgrado/coordinaAsignaturas/migrations/__pycache__/0001_initial.cpython-35.pyc #	postgrado/coordinaAsignaturas/migrations/__pycache__/__init__.cpython-35.pyc #	postgrado/coordinaAsignaturas/models.py #	postgrado/db.sqlite3 #	postgrado/postgrado/__pycache__/__init__.cpython-35.pyc #	postgrado/postgrado/__pycache__/settings.cpython-35.pyc #	postgrado/postgrado/__pycache__/urls.cpython-35.pyc #	postgrado/postgrado/__pycache__/wsgi.cpython-35.pyc
+|\  
+| * f76d82d Primer Sprint. Entrega jueves 31.05.2018
+| * 88197ed Arreglado: Readme, largo de campos. Añadidos: Objetos iniciales
+| * 505a878 Integracion con eclipse
+* | e03bbbb (spr) Vistas para agregar y ver asignaturas
+* | 351a0d4 Comentarios. Default en codAsig si no existe el codigo
+* | 0e295cc Añadido metodo __str__
+* | 97a1cd6 Corregido campos foraneos de Coordinacion
+* | 24814f4 Agregadas FK's para Coordinacion
+* | 6cf181a Corregida abreviacion de Ingenieria de Telecomunicaciones/Biomedica
+* | 9daee66 Agregado verbose_name_plural = Coordinaciones
+* | ac1cef9 Agregado Coordinacion a panel de admin
+* | c8c92fa Agregada entidad Coordinacion
+* | 0f8015d Base de datos robusta para trabajar las historias Falta pulir restricciones
+* | c5e07a4 Estado robusto de la base de datos. Faltan restricciones de formato.
+* | e67a5a8 Agregada interfaz de base de datos a panel de admin.
+|/  
+* a1ffb45 Corregido esquema relacional README con instrucciones
+*   032a22d Merge https://github.com/spokerman12/postgrado-NullPointerException
+|\  
+| * 841c853 Initial commit
+* 0b82242 Primer commit.
