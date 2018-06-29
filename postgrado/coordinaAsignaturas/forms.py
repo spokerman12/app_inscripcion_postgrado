@@ -1,27 +1,16 @@
 # -*- coding: utf-8 -*-
 
 
-from django import forms
-from django.forms.widgets import CheckboxSelectMultiple
-from coordinaAsignaturas.models import Usuario, Asignatura, Oferta
-from hashlib import sha256
-from datetime import datetime
-import re
-
-fecha = datetime.now()
-
 '''
 
 Universidad Simón Bolívar
 Ingeniería de Software I CI-3715
 Sistema de gestión de postgrados de la USB
-
-Vistas de coordinaAsignaturas
+Formas para la aplicación coordinaAsignaturas
 
 Desarrollado por Equipo Null Pointer Exception
 
-
- Indice de vistas:
+ Indice de formas:
       1.  LoginForm
       2.  FormularioAsignatura.
       3.  FormularioCrearAsignatura.
@@ -30,7 +19,24 @@ Desarrollado por Equipo Null Pointer Exception
       6.  FormularioOferta.
       7.  FormularioModificarAsignatura.
       8.  FormCrearOferta
+
 '''
+
+from django import forms
+from django.forms.widgets import CheckboxSelectMultiple
+from coordinaAsignaturas.models import Usuario, Asignatura, Oferta
+from hashlib import sha256
+from datetime import datetime
+import re
+
+
+'''#############################################################################
+
+    Formas que se encargan de obtener los valores que intrduce el usuario en los
+    formularios presentados en las vistas
+
+'''#############################################################################
+
 
 '''
 1. LoginForm
@@ -118,11 +124,12 @@ class FormularioAsignatura(forms.ModelForm):
     '''
     def clean(self):
         regexCodigo = '^([A-Z]{2,2})(\-){0,1}([0-9]{4,4})$'
-        mensajeErrorCodigo = 'El codigo debe ser dos letras mayusculas y cuatro digitos separados, o no, por un guion'
+        mensajeErrorCodigo = 'El código debe ser dos letras mayúsculas y cuatro\
+                                dígitos separados, o no, por un guión'
         regexNombre = '^[a-záéíóúäëïöüA-ZÁÉÍÓÚÄËÏÖÜ0-9ñ¿?¡!\ ]{0,80}$'
-        mensajeErrorNombre = 'El nombre de la materia no es valido'
+        mensajeErrorNombre = 'El nombre de la materia no es válido'
         mensajeErrorIntervalo = 'El intervalo de tiempo debe ser positivo'
-        mensajeErrorLimites = 'Debe indicarse el inicio y la finalizacion'
+        mensajeErrorLimites = 'Debe indicarse el inicio y la finalización'
         try:
             limpio = super(FormularioAsignatura, self).clean()
             codigo = limpio.get('codAsig')
@@ -139,8 +146,8 @@ class FormularioAsignatura(forms.ModelForm):
             d = False
             for dia in dias:
                 d = d or limpio.get(dia)
-            if not (d):
-                self.add_error('lun', 'Debe haber al menos un dia de clases')
+            if not(d) :
+                self.add_error('lun', 'Debe haber al menos un día de clases')
                 return limpio
             for dia in dias:
                 if  limpio.get(dia) == False:
@@ -194,17 +201,15 @@ class FormCrearAsignatura(FormularioAsignatura):
         limpio = super(FormCrearAsignatura, self).clean()
         codigo = limpio.get('codAsig')
         nombre = limpio.get('nomAsig')
-        # Comprobando que no haya una asignatura con igual codigo
+
+        # Comprobar que no exista una asignatura con el mismo código
         try:
-            Asignatura.objects.get(codAsig = codigo)
-            self.add_error(
-                'codAsig',
-                'Ya existe una asignatura con ese codigo'
-                )
-        except Asignatura.DoesNotExist:
+            Asignatura.objects.get(codAsig=codigo)
+            self.add_error('codAsig', 'Ya existe una asignatura con ese código')
+        except Asignatura.DoesNotExist :
             pass
 
-        # Comprobando que no haya una asignatura con igual nombre
+        # Comprobar que no exista una asignatura con el mismo nombre
         try:
             Asignatura.objects.get(nomAsig = nombre)
             self.add_error(
@@ -259,7 +264,7 @@ class FormModificarAsignatura(FormularioAsignatura):
 
 '''
 5. FormAgregarAsignatura
-    Formulario que se encarga de agregar una materia existente a la coordinacion
+    Formulario que se encarga de agregar una materia existente a la coordinación
 '''
 class FormAgregarAsignatura(FormularioAsignatura):
 
@@ -275,7 +280,7 @@ class FormAgregarAsignatura(FormularioAsignatura):
 
 '''
 6. FormularioOferta
-    Formulario base para la creacion y modificacion de una oferta
+    Formulario base para la creación y modificación de una oferta
 '''
 class FormularioOferta(forms.ModelForm):
 
@@ -333,7 +338,7 @@ class FormModificarOferta(FormularioOferta):
 
 '''
 8. FromCrearOferta
-    Formulario que se encarga de registrar una nueva oferta a la coordinacion
+    Formulario que se encarga de registrar una nueva oferta a la coordinación
 '''
 class FormCrearOferta(FormularioOferta):
     pass

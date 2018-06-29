@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
+
 Universidad Simón Bolívar (USB)
 Ingeniería de Software I - CI3715
 Equipo Null Pointer Exception
@@ -29,10 +30,12 @@ Ver modelo UML e informe técnico para mayor información
         3.1. obtenAsignaturas.
         3.2. buscaAsignaturas.
         3.3. eliminaAsignatura.
-        3.4. eliminaOferta.
-        3.5. eliminaAsignaturaDeCoord.
-        3.6. agregaAsignaturaACoord.
+        3.4. eliminaAsignaturaDeCoord.
+        3.5. agregaAsignaturaACoord.
+        3.6. eliminaOferta.
         3.7. esEstudiante.
+        3.8. obtenerEstudiante.
+
 '''
 
 from django.db import models
@@ -125,17 +128,23 @@ TRIMESTRES   = (
 El numero de creditos posibles para una asignatura.
 '''
 CREDITOS = (
-    (0,0), (1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9),
-    (10,10), (11,11), (12,12), (13,13), (14,14), (15,15)
-    )
+            (0,0), (1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8),
+            (9,9), (10,10), (11,11), (12,12), (13,13), (14,14), (15,15)
+            )
+
+
+'''#############################################################################
+
+2.  Clases que representan las tablas de la base de datos, junto con funciones
+    que pueden ejecutarse sobre la tabla respectiva.
+
+    Siguen el orden de dependencia que poseen actualmente.
+
+'''#############################################################################
+
 
 '''
-Las clases descritas a continuación siguen el orden de dependencia igual al 
-que poseen actualmente. Modificar con cuidado
-'''
-
-'''
-Clase que representa la entidad Usuario del sistema de postgrado.
+2.1 Tabla Usuario del sistema de postgrado.
 '''
 class Usuario(models.Model):
     username  = models.EmailField(max_length = 30, primary_key = True)
@@ -171,7 +180,7 @@ class Usuario(models.Model):
         app_label = 'coordinaAsignaturas'
 
 '''
-Clase que representa la entidad Profesor de la USB.
+2.2 Tabla Profesor de la USB.
 '''
 class Profesor(models.Model):
     ciProf  = models.IntegerField(
@@ -189,9 +198,10 @@ class Profesor(models.Model):
 
 
 '''
-Clase que representa la entidad Asignatura de postgrado. El campo diaHora
-recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6") a través de la
-interfaz gráfica.
+2.3 Tabla Asignatura de postgrado.
+
+El campo diaHora posee restricciones de formato (e.g. "Lunes 7-8, Martes 5-6")
+a través de la interfaz gráfica.
 '''
 class Asignatura(models.Model):
     codAsig  = models.CharField(max_length = 7, primary_key = True)
@@ -214,8 +224,8 @@ class Asignatura(models.Model):
         app_label = 'coordinaAsignaturas'
 
     '''
-    Elimina una asignatura de la base de dato. Retorna True si se elimina
-    exitosamente, sino Flase
+    Elimina una asignatura de la base de datos.
+    Retorna True si se elimina exitosamente, sino Flase
     '''
     def eliminarAsignatura(self):
         try:
@@ -224,8 +234,8 @@ class Asignatura(models.Model):
             return False
 
     '''
-    Funcion que obtiene una asignatura de la base de datos. Retorna True si se
-    obtiene exitosamente, sino False.
+    Funcion que obtiene una asignatura de la base de datos.
+    Retorna True si se obtiene exitosamente, sino False.
     '''
     def obtenAsignatura(self, cod):
         try:
@@ -236,15 +246,15 @@ class Asignatura(models.Model):
 
 
 '''
-Coordinación de postgrado. Puede tener muchas asignaturas asociadas sin
-importar el departamento.
+2.4 Tabla Coordinación de postgrado.
+
+Puede tener muchas asignaturas asociadas sin importar el departamento.
 '''
 class Coordinacion(models.Model):
-    nomCoord    = models.CharField(
-        max_length = 15,
-        choices = COORDS,
-        primary_key = True
-        )
+    nomCoord    = models.CharField(max_length = 15,
+                                   choices = COORDS,
+                                   primary_key = True
+                                  )
     asignaturas = models.ManyToManyField(Asignatura, blank = True)
 
     class Meta:
@@ -259,8 +269,8 @@ class Coordinacion(models.Model):
 
     '''
     Agrega una asignatura nueva a la base de datos a partir de sus datos
-    individuales. Retorna True si la asignatura es exitosamente agregada, False
-    si no.
+    individuales.
+    Retorna True si la asignatura es exitosamente agregada, False si no.
     '''
     def agregaAsignaturaNueva(self, codAsig, codDpto, creditos, nomAsig,
         progAsig, diaHora, ciprof):
@@ -281,8 +291,8 @@ class Coordinacion(models.Model):
             return False
 
     '''
-    Recibe el codigo de la asignatura. Devuelve True si la asignatura de codigo
-    codAsig es agregada exitosamente a la lista, False si no.
+    Agrega una asignatura ya existene en la base de datos a la lista de
+    asignaturas existentes en la coordinación.
     '''
     def agregaAsignaturaExistente(self, codAsig):
         try:
@@ -293,7 +303,9 @@ class Coordinacion(models.Model):
             return False
 
     '''
-    Recibe codigo string. Devuelve objeto asignatura
+    Obtiene la asignatura correspondiente al código dado desde la lista de
+    asignaturas existentes en la coordinación.
+    Devuelve objeto asignatura
     '''
     def obtenAsignatura(self, cod):
         try:
@@ -303,7 +315,7 @@ class Coordinacion(models.Model):
             return False
 
     '''
-    Devuelve lista de asignaturas de la coordinación.
+    Obtiene la lista de asignaturas existentes en la coordinación.
     '''
     def obtenAsignaturas(self):
         try:
@@ -312,8 +324,8 @@ class Coordinacion(models.Model):
             return False
 
     '''
-    Toma codigo string, devuelve bool.
-    Elimina de la coordinacion.
+    Elimina de la coordinación la asignatura dada, a través de su código, si se
+    encuentra en la lista de asignaturas existentes de la coordinación.
     '''
     def eliminaAsignatura(self, cod):
         try:
@@ -323,6 +335,10 @@ class Coordinacion(models.Model):
         except:
             return False
 
+    '''
+    Filtra una asignatura en la base de datos por lo atributos especificados.
+    Por código, nombre, créditos y/o programa de la asignatura
+    '''
     def buscaAsignatura(self,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
 
         try:
@@ -341,8 +357,9 @@ class Coordinacion(models.Model):
             return False
 
 '''
-Coordinador de coordinación de postgrado. Tiene un usuario Django asociado
-con permisología específica.
+2.5 Tabla Coordinador de coordinación de postgrado.
+
+Tiene un usuario Django asociado con permisología específica.
 '''
 class Coordinador(models.Model):
     usuario      = models.OneToOneField(Usuario, on_delete = models.CASCADE,
@@ -354,14 +371,17 @@ class Coordinador(models.Model):
         verbose_name_plural = "Coordinadores"
 
 '''
-Oferta de asignaturas proveniente de una coordinación de postgrado. Puede tener muchas asignaturas. Es una oferta con trimestre y año.
+2.6 Tabla Oferta de asignaturas proveniente de una coordinación de postgrado.
+
+Puede tener muchas asignaturas. Es una oferta con trimestre y año.
 '''
 class Oferta(models.Model):
-    coordinacion = models.ForeignKey(Coordinacion, on_delete = models.PROTECT)
+    coordinacion = models.ForeignKey(Coordinacion, on_delete = models.PROTECT,
+                                     null=True)
     trimestre    = models.CharField(max_length = 8, choices = TRIMESTRES)
     asignaturas  = models.ManyToManyField(Asignatura)
     anio         = models.IntegerField(validators = [MinValueValidator(1970)])
-    
+
     def __str__(self):
         return ("%s %s" % (self.trimestre, self.anio))
 
@@ -370,8 +390,7 @@ class Oferta(models.Model):
         ordering = ('anio',)
 
 '''
-Inscripción de un estudiante. Consta de asignaturas, año y trimestre. Se
-puede calcular la suma de créditos (carga académica) el metodo sumCreditos
+2.7 Tabla Inscripción de un estudiante.
 '''
 class Inscripcion(models.Model):
     asignaturas = models.ManyToManyField(Asignatura)
@@ -382,7 +401,7 @@ class Inscripcion(models.Model):
         return ("%s %s" % (self.trimestre, self.anio))
 
     '''
-    Funcion que permite calcular la carga académica del estudiante.
+    Función que permite calcular la carga académica del estudiante.
     '''
     def sumCreditos(self):
         suma = 0
@@ -395,8 +414,10 @@ class Inscripcion(models.Model):
         verbose_name_plural = "Inscripciones"
 
 '''
-Estudiante de postgrado. Está asociado a un usuario Django. Necesita tener
-alguna inscripción para contar como estudiante.
+2.8 Tabla Estudiante de postgrado.
+
+Está asociado a un usuario Django.
+Necesita tener alguna inscripción para considerado un estudiante.
 '''
 class Estudiante(models.Model):
     usuario       = models.OneToOneField(Usuario, on_delete = models.CASCADE)
@@ -411,13 +432,16 @@ class Estudiante(models.Model):
         return ("%s %s" % (self.carnet, nombres))
 
 '''
-Una sesion en el sistema.
+2.9 Tabla Sesiónn en el sistema.
+
+Contiene la sesión actual del usuario
 '''
 class Sesion(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete = models.PROTECT)
 
     '''
-    Recibe strings. Retorna Booleano
+    Verifica que el usuario se encuentre en la base de datos y que el nombre de
+    usuario coincida con la contraseña suiministrada
     '''
     def validaUsuario(self, usr, pwd):
         try:
@@ -434,7 +458,7 @@ class Sesion(models.Model):
             return False
 
     '''
-    Retorna la coordinacion del usuario activo o False
+    Obtiene la coordinación asociada al usuario activo
     '''
     def obtenCoordinacion(self):
         try:
@@ -447,8 +471,16 @@ class Sesion(models.Model):
     class Meta:
         app_label = 'coordinaAsignaturas'
 
+
+'''#############################################################################
+
+    Funciones
+
+'''#############################################################################
+
+
 '''
-Obtiene asignaturas del coordinador 'usr'
+3.1 Obtiene las asignaturas existentes asociadas al coordinador 'usr'
 '''
 def obtenAsignaturas(usr):
     try:
@@ -461,7 +493,8 @@ def obtenAsignaturas(usr):
         return False
 
 '''
-Busca asignaturas del coordinador 'usr' con campos flexibles
+3.2 Filtra las asignaturas del coordinador 'usr' en la lista de asignaturas
+    existentes asociadas a la coordinación por los atributos especificados.
 '''
 def buscaAsignaturas(usr, codAsig = None, nomAsig = None, creditos = None,
     progAsig = None):
@@ -476,7 +509,7 @@ def buscaAsignaturas(usr, codAsig = None, nomAsig = None, creditos = None,
         return False
 
 '''
-Elimina de la base de datos la asignatura de codigo 'codAsig'
+3.3 Elimina de la base de datos la asignatura asociada al código 'codAsig'
 '''
 def eliminaAsignatura(codAsig):
     try:
@@ -486,7 +519,37 @@ def eliminaAsignatura(codAsig):
 
 
 '''
-Elimina la oferta 'oferta_id' de la coordinacion de 'usr'
+3.4 Elimina la asignatura 'codAsig' de la coordinación del usuario 'usr'
+'''
+def eliminaAsignaturaDeCoord(usr, codAsig):
+    try:
+        usuario        = Usuario.objects.get(pk=usr)
+        sesion         = Sesion()
+        sesion.usuario = usuario
+        sesion.obtenCoordinacion().asignaturas.remove(codAsig)
+        return True
+    except:
+        return False
+
+
+'''
+3.5 Agrega la asignatura 'codAsig' a la coordinacion del usuario 'usr'
+'''
+def agregaAsignaturaACoord(usr, codAsig):
+    try:
+        sesion = Sesion()
+        usuario = Usuario.objects.get(pk=usr)
+        sesion.usuario = usuario
+        sesion.obtenCoordinacion().asignaturas.add(
+            Asignatura.objects.get(pk = codAsig)
+            )
+    except:
+        return False
+    return True
+
+
+'''
+3.6 Elimina la oferta 'oferta_id' de la coordinacion del usuario 'usr'
 '''
 def eliminaOferta(usr, oferta_id):
     try:
@@ -505,36 +568,7 @@ def eliminaOferta(usr, oferta_id):
 
 
 '''
-Elimina la asignatura 'codAsig' de la coordinacion de 'usr'
-'''
-def eliminaAsignaturaDeCoord(usr, codAsig):
-    try:
-        usuario        = Usuario.objects.get(pk=usr)
-        sesion         = Sesion()
-        sesion.usuario = usuario
-        sesion.obtenCoordinacion().asignaturas.remove(codAsig)
-        return True
-    except:
-        return False
-
-
-'''
-Agrega la asignatura 'codAsig' a la coordinacion de 'usr'
-'''
-def agregaAsignaturaACoord(usr, codAsig):
-    try:
-        sesion = Sesion()
-        usuario = Usuario.objects.get(pk=usr)
-        sesion.usuario = usuario
-        sesion.obtenCoordinacion().asignaturas.add(
-            Asignatura.objects.get(pk = codAsig)
-            )
-    except:
-        return False
-    return True
-
-'''
-Retorna True o False dependiendo de si 'usr' es Estudiante o no
+3.7 Determina si el usuario 'usr' es un estudiante o no
 '''
 def esEstudiante(usr):
     try:
@@ -546,7 +580,7 @@ def esEstudiante(usr):
     except:
         return False
 '''
-Obtiene a un estudiante a partir de su nombre de usuario
+3.8 Obtiene al objeto usuario estudiante 'usr'
 '''
 def obtenerEstudiante(usr):
     try:
