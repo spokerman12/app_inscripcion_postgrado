@@ -1,26 +1,15 @@
 # -*- coding: utf-8 -*-
 
-
-from django import forms
-from django.forms.widgets import CheckboxSelectMultiple
-from coordinaAsignaturas.models import *
-import hashlib, datetime
-import re
-
-fecha = datetime.datetime.now()
-
 '''
 
 Universidad Simón Bolívar
 Ingeniería de Software I CI-3715
 Sistema de gestión de postgrados de la USB
-
-Vistas de coordinaAsignaturas
+Formas para la aplicación coordinaAsignaturas
 
 Desarrollado por Equipo Null Pointer Exception
 
-
- Indice de vistas:
+ Indice de formas:
       1.  LoginForm
       2.  FormularioAsignatura.
       3.  FormularioCrearAsignatura.
@@ -29,7 +18,23 @@ Desarrollado por Equipo Null Pointer Exception
       6.  FormularioOferta.
       7.  FormularioModificarAsignatura.
       8.  FormCrearOferta
+
 '''
+
+from django import forms
+from django.forms.widgets import CheckboxSelectMultiple
+from coordinaAsignaturas.models import *
+import hashlib, datetime
+import re
+
+
+'''#############################################################################
+
+    Formas que se encargan de obtener los valores que intrduce el usuario en los
+    formularios presentados en las vistas
+
+'''#############################################################################
+
 
 '''
 1. LoginForm
@@ -108,14 +113,16 @@ class FormularioAsignatura(forms.ModelForm):
             'prof' : forms.Select(attrs = {'class':'form-control'}),
             'codDpto' : forms.Select(attrs = {'class':'form-control'})
         }
-    # Haciendole override al metodo clean
+
+    # Override del método clean
     def clean(self):
         regexCodigo = '^([A-Z]{2,2})(\-){0,1}([0-9]{4,4})$'
-        mensajeErrorCodigo = 'El codigo debe ser dos letras mayusculas y cuatro digitos separados, o no, por un guion'
+        mensajeErrorCodigo = 'El código debe ser dos letras mayúsculas y cuatro\
+                                dígitos separados, o no, por un guión'
         regexNombre = '^[a-záéíóúäëïöüA-ZÁÉÍÓÚÄËÏÖÜ0-9ñ¿?¡!\ ]{0,80}$'
-        mensajeErrorNombre = 'El nombre de la materia no es valido'
+        mensajeErrorNombre = 'El nombre de la materia no es válido'
         mensajeErrorIntervalo = 'El intervalo de tiempo debe ser positivo'
-        mensajeErrorLimites = 'Debe indicarse el inicio y la finalizacion'
+        mensajeErrorLimites = 'Debe indicarse el inicio y la finalización'
         try:
             limpio = super(FormularioAsignatura, self).clean()
             codigo = limpio.get('codAsig')
@@ -133,7 +140,7 @@ class FormularioAsignatura(forms.ModelForm):
             for dia in dias :
                 d = d or limpio.get(dia)
             if not(d) :
-                self.add_error('lun', 'Debe haber al menos un dia de clases')
+                self.add_error('lun', 'Debe haber al menos un día de clases')
                 return limpio
             for dia in dias :
                 if  limpio.get(dia) == False :
@@ -155,7 +162,8 @@ class FormularioAsignatura(forms.ModelForm):
         for dia in dias :
             if self.cleaned_data[dia] :
                 dias_clase.append(dia)
-        s = [dia+" "+self.cleaned_data[dia+'_inicio']+"-"+self.cleaned_data[dia+'_fin'] for dia in dias_clase]
+        s = [dia+" "+self.cleaned_data[dia+'_inicio']+"-"+\
+                self.cleaned_data[dia+'_fin'] for dia in dias_clase]
         asignatura.diaHora = " ; ".join(s)
         if commit:
             asignatura.save()
@@ -170,14 +178,15 @@ class FormCrearAsignatura(FormularioAsignatura) :
         limpio = super(FormCrearAsignatura, self).clean()
         codigo = limpio.get('codAsig')
         nombre = limpio.get('nomAsig')
-        # Comprobando que no haya una asignatura con igual codigo
+
+        # Comprobar que no exista una asignatura con el mismo código
         try:
             Asignatura.objects.get(codAsig=codigo)
-            self.add_error('codAsig', 'Ya existe una asignatura con ese codigo')
+            self.add_error('codAsig', 'Ya existe una asignatura con ese código')
         except Asignatura.DoesNotExist :
             pass
 
-        # Comprobando que no haya una asignatura con igual nombre
+        # Comprobar que no exista una asignatura con el mismo nombre
         try:
             Asignatura.objects.get(nomAsig=nombre)
             self.add_error('nomAsig', 'Ya existe una asignatura con ese nombre')
@@ -228,7 +237,7 @@ class FormModificarAsignatura(FormularioAsignatura) :
 
 '''
 5. FormAgregarAsignatura
-    Formulario que se encarga de agregar una materia existente a la coordinacion
+    Formulario que se encarga de agregar una materia existente a la coordinación
 '''
 class FormAgregarAsignatura(FormularioAsignatura) :
     def clean(self) :
@@ -240,7 +249,7 @@ class FormAgregarAsignatura(FormularioAsignatura) :
 
 '''
 6. FormularioOferta
-    Formulario base para la creacion y modificacion de una oferta
+    Formulario base para la creación y modificación de una oferta
 '''
 class FormularioOferta(forms.ModelForm):
 
@@ -285,12 +294,16 @@ class FormModificarOferta(FormularioOferta) :
         widgets = {
             'trimestre' : forms.Select(attrs = {'class':'form-control'}),
             'anio' : forms.TextInput(attrs = {'class':'form-control'}),
-            'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
+            'asignaturas' : forms.Select(attrs =
+                                         {'class':'form-control text-center',
+                                         'multiple':'multiple'
+                                         }
+                                        )
         }
 
 '''
 8. FromCrearOferta
-    Formulario que se encarga de registrar una nueva oferta a la coordinacion
+    Formulario que se encarga de registrar una nueva oferta a la coordinación
 '''
 class FormCrearOferta(FormularioOferta):
     pass

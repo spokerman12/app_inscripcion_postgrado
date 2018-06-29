@@ -54,6 +54,7 @@
           3.14. testOfertaTrimestreVacio.
           3.15. testOfertaAnioYTrimestreVacio.
 '''
+
 from django.test import TestCase
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -65,6 +66,7 @@ ruta = str(settings.MEDIA_ROOT) + "\\programas\\"
 file = open(ruta + "4_Taller_4.pdf", 'rb')
 archivo = SimpleUploadedFile(file.name, file.read())
 
+
 # Clase de pruebas para el formulario LoginForm.
 class TestLoginForm(TestCase):
 
@@ -73,7 +75,7 @@ class TestLoginForm(TestCase):
     def setUp(self):
         usuario = Usuario()
         usuario.crearUsuario("coord@usb.ve", "frito")
-    
+
     # testLoginDatosCorrectos: verifica que se retorne True al hacer login con
     # los datos correctos. Caso dentro del dominio.
     def testLoginDatosCorrectos(self):
@@ -137,6 +139,7 @@ class TestLoginForm(TestCase):
         valores = { 'username': username, 'password': password }
         login = LoginForm(data = valores)
         self.assertFalse(login.is_valid())
+
 
 '''
 Clase de pruebas para el formulario FormularioAsignatura.
@@ -888,6 +891,7 @@ class TestFormularioAsignatura(TestCase):
         form = FormularioAsignatura(valores,dic)
         self.assertFalse(form.is_valid())
 
+
 '''
 Clase de pruebas para el formulario FormularioOferta
 '''
@@ -1012,7 +1016,7 @@ class TestFormularioOferta(TestCase):
         anio      = '2050'
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
-        self.assertTrue(oferta.is_valid())        
+        self.assertTrue(oferta.is_valid())
 
     # testOfertaAnioVacio: verifica que se retorne False al crear una
     # oferta con un año vacio. Caso Frontera
@@ -1022,7 +1026,7 @@ class TestFormularioOferta(TestCase):
         anio      = ''
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
-        self.assertFalse(oferta.is_valid())        
+        self.assertFalse(oferta.is_valid())
 
     # testOfertaTrimestreVacio: verifica que se retorne False al crear una
     # oferta con un trimestre vacio. Caso Frontera
@@ -1032,7 +1036,7 @@ class TestFormularioOferta(TestCase):
         anio      = fecha.year
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
-        self.assertFalse(oferta.is_valid())   
+        self.assertFalse(oferta.is_valid())
 
     # testOfertaAnioYTrimestreVacio: verifica que se retorne False al crear una
     # oferta con un año y un trimestre vacio. Caso Esquina
@@ -1042,4 +1046,4 @@ class TestFormularioOferta(TestCase):
         anio      = ''
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
-        self.assertFalse(oferta.is_valid())   
+        self.assertFalse(oferta.is_valid())
