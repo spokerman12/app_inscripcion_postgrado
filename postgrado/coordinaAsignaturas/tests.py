@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-  Modulo de pruebas
+  Módulo de pruebas
 
   Indice de pruebas:
       1. Pruebas sobre LoginForm:
