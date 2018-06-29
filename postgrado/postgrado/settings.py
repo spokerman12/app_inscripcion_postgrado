@@ -5,8 +5,6 @@ Universidad Simón Bolívar
 Ingeniería de Software I CI-3715
 Sistema de gestión de postgrados de la USB
 
-Vistas de postgrado
-
 Desarrollado por Equipo Null Pointer Exception
 
 Se añade a  INSTALLED_APPS a 'coordinaAsignaturas'

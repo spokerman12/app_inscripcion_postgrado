@@ -63,7 +63,11 @@ from coordinaAsignaturas.forms import FormularioOferta
 from coordinaAsignaturas.models import Asignatura, Profesor, Usuario, Oferta
 from datetime import datetime
 
-ruta = str(settings.MEDIA_ROOT) + "\\programas\\"
+# Descomentar esta línea para correr las pruebas en windows
+# ruta = str(settings.MEDIA_ROOT) + "\\programas\\"
+
+
+ruta = str(settings.MEDIA_ROOT) + "/programas/"
 file = open(ruta + "4_Taller_4.pdf", 'rb')
 archivo = SimpleUploadedFile(file.name, file.read())
 fecha = datetime.now()
@@ -804,7 +808,7 @@ class TestFormularioAsignatura(TestCase):
             # 'progAsig': archivo
         }
         form = FormularioAsignatura(valores, dic)
-        self.assertTrue(form.is_valid())
+        self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaProfVacio: verifica que se retorne False si no se
     # ingresa el profesor de la asignatura. Caso frontera
@@ -969,7 +973,7 @@ class TestFormularioOferta(TestCase):
         oferta    = FormularioOferta(data = valores)
         self.assertFalse(oferta.is_valid())
 
-    # testOfertaAnioMinimoTrimestrePrimero: verifica que se retorne True al 
+    # testOfertaAnioMinimoTrimestrePrimero: verifica que se retorne True al
     # crear una oferta con un año igual al de apertura de la Universidad en el
     # primer trimestre (Primera clase magistral dada en enero de 1970). Caso
     # Esquina
