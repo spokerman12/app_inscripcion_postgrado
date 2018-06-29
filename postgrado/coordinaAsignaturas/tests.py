@@ -1,47 +1,53 @@
 # -*- coding: utf-8 -*-
-#   Modulo de pruebas
-#
-#   Indice de pruebas:
-#       1. Pruebas sobre LoginForm:
-#           1.1. testLoginDatosCorrectos.
-#           1.2. testLoginUsernameNoEsEmail.
-#           1.3. testLoginUsernameNoRegistrado.
-#           1.4. testLoginUsernameCorrectoYPasswordIncorrecta.
-#           1.5. testLoginUsernameVacio.
-#           1.6. testLoginPasswordVacio.
-#           1.7. testLoginUsernameYPasswordVacios.
-#       2. Pruebas sobre FormularioAsignatura:
-#           2.1.  testFormularioAsignaturaDatosCorrectos.
-#           2.2.  testFormularioAsignaturaCodigoMenosDeSeisCaracteres.
-#           2.3.  testFormularioAsignaturaCodigoMasDeSieteCaracteres.
-#           2.4.  testFormularioAsignaturaCodigoEmpiezaConNumero.
-#           2.5.  testFormularioAsignaturaCodigoTerminaConUnaLetra.
-#           2.6.  testFormularioAsignaturaCodigoConCaracterNoValido.
-#           2.7.  testFormularioAsignaturaCodigoConUnaLetra.
-#           2.8.  testFormularioAsignaturaCodigoConTresLetras.
-#           2.9.  testFormularioAsignaturaCodigoConTresDigitos.
-#           2.10. testFormularioAsignaturaCodigoConCincoDigitos.
-#           2.11. testFormularioAsignaturaCodigoRepetido.
-#           2.12. testFormularioAsignaturaCreditosNegativos
-#           2.13. testFormularioAsignaturaCreditoNoNumerico.
-#           2.14. testFormularioAsignaturaNombreMasDeOchentaCaracteres.
-#           2.15. testFormularioAsignaturaNombreConCaracteresInvalidos.
-#           2.16. testFormularioAsignaturaHoraInicioDespuesDeHoraFin.
-#           2.17. testFormularioAsignaturaFinalizaSinEmpezar.
-#           2.18. testFormularioAsignaturaEmpiezaYNoFinaliza.
-#           2.19. testFormularioAsignaturaCodigoVacio.
-#           2.20. testFormularioAsignaturaCreditosVacio.
-#           2.21. testFormularioAsignaturaNombreVacio.
-#           2.22. testFormularioAsignaturaProgramaVacio.
-#           2.23. testFormularioAsignaturaProfVacio.
-#           2.24. testFormularioAsignaturaVistaVacio.
-#           2.25. testFormularioAsignaturaVacio.
 
+'''
+  Modulo de pruebas
+
+  Indice de pruebas:
+      1. Pruebas sobre LoginForm:
+          1.1. testLoginDatosCorrectos.
+          1.2. testLoginUsernameNoEsEmail.
+          1.3. testLoginUsernameNoRegistrado.
+          1.4. testLoginUsernameCorrectoYPasswordIncorrecta.
+          1.5. testLoginUsernameVacio.
+          1.6. testLoginPasswordVacio.
+          1.7. testLoginUsernameYPasswordVacios.
+      2. Pruebas sobre FormularioAsignatura:
+          2.1.  testFormularioAsignaturaDatosCorrectos.
+          2.2.  testFormularioAsignaturaCodigoMenosDeSeisCaracteres.
+          2.3.  testFormularioAsignaturaCodigoMasDeSieteCaracteres.
+          2.4.  testFormularioAsignaturaCodigoEmpiezaConNumero.
+          2.5.  testFormularioAsignaturaCodigoTerminaConUnaLetra.
+          2.6.  testFormularioAsignaturaCodigoConCaracterNoValido.
+          2.7.  testFormularioAsignaturaCodigoConUnaLetra.
+          2.8.  testFormularioAsignaturaCodigoConTresLetras.
+          2.9.  testFormularioAsignaturaCodigoConTresDigitos.
+          2.10. testFormularioAsignaturaCodigoConCincoDigitos.
+          2.11. testFormularioAsignaturaCodigoRepetido.
+          2.12. testFormularioAsignaturaCreditosNegativos
+          2.13. testFormularioAsignaturaCreditoNoNumerico.
+          2.14. testFormularioAsignaturaNombreMasDeOchentaCaracteres.
+          2.15. testFormularioAsignaturaNombreConCaracteresInvalidos.
+          2.16. testFormularioAsignaturaHoraInicioDespuesDeHoraFin.
+          2.17. testFormularioAsignaturaFinalizaSinEmpezar.
+          2.18. testFormularioAsignaturaEmpiezaYNoFinaliza.
+          2.19. testFormularioAsignaturaCodigoVacio.
+          2.20. testFormularioAsignaturaCreditosVacio.
+          2.21. testFormularioAsignaturaNombreVacio.
+          2.22. testFormularioAsignaturaProgramaVacio.
+          2.23. testFormularioAsignaturaProfVacio.
+          2.24. testFormularioAsignaturaVistaVacio.
+          2.25. testFormularioAsignaturaVacio.
+      3. Pruebas sobre FormularioOferta:
+          3.1
+'''
 from django.test import TestCase
-from coordinaAsignaturas.forms import LoginForm, FormularioAsignatura
-from coordinaAsignaturas.models import Asignatura, Profesor, Usuario
+from coordinaAsignaturas.forms import LoginForm, FormularioAsignatura, FormularioOferta
+from coordinaAsignaturas.models import Asignatura, Profesor, Usuario, Oferta
 
-# Clase de pruebas para el formulario LoginForm.
+'''
+Clase de pruebas para el formulario LoginForm.
+'''
 class TestLoginForm(TestCase):
 
     # Funcion setUp agregar la instancia de Usuario que permite hacer las
@@ -114,7 +120,9 @@ class TestLoginForm(TestCase):
         login = LoginForm(data = valores)
         self.assertFalse(login.is_valid())
 
-# Clase de pruebas para el formulario FormularioAsignatura.
+'''
+Clase de pruebas para el formulario FormularioAsignatura.
+'''
 class TestFormularioAsignatura(TestCase):
 
     # Funcion setUp agregar la instancia de Profesor que permite hacer las
@@ -883,3 +891,55 @@ class TestFormularioAsignatura(TestCase):
         }
         form = FormularioAsignatura(data = valores)
         self.assertFalse(form.is_valid())
+
+'''
+Clase de pruebas para el formulario FormularioOferta
+'''
+class TestFormularioOferta(TestCase):
+
+    # Funcion setUp agregar la instancia de Profesor que permite hacer las
+    # pruebas siguientes.
+    def setUp(self):
+        usuario = Usuario()
+        usuario.crearUsuario("coord@usb.ve", "frito")
+
+
+    # testOfertaDatosCorrectos: verifica que se retorne True al crear una
+    # oferta con datos correctos. Caso dentro del dominio
+
+    def testOfertaDatosCorrectos(self):
+        trimestre = 'Ene-Mar'
+        anio      = '2019'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaDatosCorrectos: verifica que se retorne True al crear una
+    # oferta con datos correctos. Caso dentro del dominio
+
+    def testOfertaDatosCorrectos(self):
+        trimestre = 'Ene-Mar'
+        anio      = '2019'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioMinimo: verifica que se retorne True al crear una
+    # oferta con el año de fundacion de la Universidad. Caso dentro del dominio
+
+    def testOfertaAnioMinimo(self):
+        trimestre = 'Sept-Dic'
+        anio      = '1967'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioAnterior: verifica que se retorne False al crear una
+    # oferta con el año de fundacion de la Universidad. Caso frontera
+
+    def testOfertaAnioAnterior(self):
+        trimestre = 'Sept-Dic'
+        anio      = '1966'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertFalse(oferta.is_valid())
