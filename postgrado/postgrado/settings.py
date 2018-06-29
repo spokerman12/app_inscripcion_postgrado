@@ -131,3 +131,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # URL de redirección al hacer login
 LOGIN_REDIRECT_URL = '/coordinaAsignaturas/principal'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'archivos')
+MEDIA_URL = '/archivos/'
+

@@ -143,7 +143,7 @@ class Asignatura(models.Model):
     creditos    = models.IntegerField(choices = ((0,0),(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),
                                                 (7,7),(8,8),(9,9),(10,10),(11,11),(12,12),(13,13),(14,14),(15,15)))
     nomAsig     = models.CharField(max_length=80, blank=True)
-    progAsig    = models.CharField(max_length=20, blank=True)
+    progAsig    = models.FileField(upload_to='programas/')
     diaHora     = models.CharField(max_length=60, blank=True)
     prof        = models.ForeignKey(Profesor, on_delete=models.PROTECT)
     vista       = models.BooleanField(default = False)

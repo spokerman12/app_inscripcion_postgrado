@@ -74,7 +74,6 @@ class FormularioAsignatura(forms.ModelForm):
             'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
             'creditos' : forms.Select(attrs = {'class':'form-control'}),
             'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
-            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
             'prof' : forms.Select(attrs = {'class':'form-control'}),
             'codDpto' : forms.Select(attrs = {'class':'form-control'})
         }
@@ -205,15 +204,6 @@ class FormularioOferta(forms.ModelForm):
         super(FormularioOferta, self).__init__(*args, **kwargs)
         self.fields['asignaturas'].widget = CheckboxSelectMultiple()
         self.fields['asignaturas'].queryset = Asignatura.objects.all()
-
-    class Meta:
-        model = Oferta
-        exclude = []
-        fields = [
-            'trimestre',
-            'asignaturas',
-            'anio'
-        ]
         labels = {
             'trimestre' : 'Trimestre',
             'asignaturas' : 'Asignaturas',
@@ -225,14 +215,9 @@ class FormularioOferta(forms.ModelForm):
             'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
         }
 
-class FormCrearOferta(FormularioOferta):
-    pass
-
-class FormModificarOferta(FormularioOferta) :
-    def __init__(self, *args, **kwargs):
-        super(FormModificarOferta, self).__init__(*args, **kwargs)
-        self.fields['asignaturas'].widget = CheckboxSelectMultiple()
-        self.fields['asignaturas'].queryset = Asignatura.objects.all()
+    class Meta:
+        model = Oferta
+        exclude = ["coordinacion"]
         labels = {
             'trimestre' : 'Trimestre',
             'asignaturas' : 'Asignaturas',
