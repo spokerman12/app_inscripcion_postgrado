@@ -428,3 +428,13 @@ def esEstudiante(usr):
         else: return False
     except:
         return False
+
+def obtenerEstudiante(usr):
+    try:
+        u = Usuario.objects.get(pk=usr)
+        e = Estudiante.objects.filter(usuario__exact=u)
+        if e.first():
+            return e
+        else: return None
+    except:
+        return None

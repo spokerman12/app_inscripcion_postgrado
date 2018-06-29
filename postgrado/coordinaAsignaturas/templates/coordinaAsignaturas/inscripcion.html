@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Barra de búsqueda -->
+<div class="search-bar" onkeyup="myFunction()">
+    <div class="search-icon">
+        <i class="material-icons">search</i>
+    </div>
+    <input id="myInput" type="text" placeholder="BUSCAR ASIGNATURA">
+    <div class="close-search">
+        <i class="material-icons">close</i>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>INSCRIPCIONES</h2>
+        </div>
+
+        <!-- Widgets -->
+        <div class="row clearfix">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-indigo hover-expand-effect hover-zoom-effect">
+                    <div class="icon">
+                        <i class="material-icons">clear_all</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">TODAS</div>
+                        <div class="number count-to" data-from="0" data-to="{{ ultimasOfertas|length }}" data-speed="1000" data-fresh-interval="0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-light-green hover-expand-effect hover-zoom-effect">
+                    <div class="icon">
+                        <i class="material-icons">check</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">ACTIVAS</div>
+                        <div class="number count-to" data-from="0" data-to="{{ ultimasOfertas|length }}" data-speed="1000" data-fresh-interval="0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-amber hover-expand-effect hover-zoom-effect">
+                    <div class="icon">
+                        <i class="material-icons">do_not_disturb_on</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">DESHABILITADAS</div>
+                        <div class="number count-to" data-from="0" data-to="0" data-speed="2000" data-fresh-interval="1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <!-- Task Info -->
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                <div class="card">
+                    <div class="header">
+                        <h2>INSCRIPCIONES</h2>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table id="myTable" class="table table-hover dashboard-task-infos text-center sortable">
+                            	{% if estudiante %}
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            <button style="background: transparent; border-style: none">
+                                            Trimestre</button>
+                                        </th>
+                                        <th class="text-center">
+                                            <button style="background: transparent; border-style: none">
+                                            Año</button>
+                                        </th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for inscrpcion in inscripciones %}
+                                		<tr>
+                                        	<td>{{inscripcion.trimestre}}</td>
+                                        	<td>{{inscripcion.anio}}</td>
+                                            <td>
+                                            	<a href="{% url 'coordinaAsignaturas:detallesOferta' oferta_id=oferta.pk %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
+                                                    <i class="material-icons">pageview</i></button>
+                                                </a> 
+                                                <a href="{% url 'coordinaAsignaturas:modificarOferta' oferta_id=oferta.id %}"><button type="button" data-toggle="tooltip" data-placement="top" title="Detalles" data-original-title="Detalles" class="btn bg-indigo btn-circle waves-effect waves-circle waves-float">
+                                            		<i class="material-icons">edit</i></button>
+                                        		</a> 
+                                                    <button type="button" data-toggle="modal" data-target="#{{oferta.id}}" class="btn bg-red btn-circle waves-effect waves-circle waves-float">
+                                                    <i class="material-icons">delete</i>
+                                                    </button>
+                                        	</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                {% else %}
+                                	<p>No hay inscrpciones creadas</p>
+                                {% endif %} 
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                <div class="align-center">
+                <form method='post'>
+                    <h5>Buscar</h5>
+                    <a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                    <i class="material-icons">search</i>
+                    </button></a>
+                </form>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                <div class="align-center">
+                <form method='post'>
+                    <h5>Nueva</h5>
+                    <a href="{% url 'coordinaAsignaturas:agregarOferta' %}">
+                    <button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                        <i class="material-icons">add</i>
+                    </button></a>
+                </form>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="card">
+                    <div class="header bg-orange">
+                        <h2>
+                            Sistema Gestor de Asignaturas <small>Lee la Descripción</small>
+                        </h2>
+                    </div>
+                    <div class="body">
+                        El sistema gestor de asignaturas permite a la coordinación llevar un control ordenado, limpio, sencillo y eficaz para la admnistración y control de asignaturas y ofertas.
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="card">
+                    <div class="header bg-orange">
+                        <h2>
+                            Módulo de Asignaturas <small>Lee la Descripción</small>
+                        </h2>
+                    </div>
+                    <div class="body">
+                        En el módulo de asginaturas podrás agregar nuevas asignaturas  personalmente o tomarlas de una lista de asignaturas creadas. También, podrás modificarlas, eliminarlas y acceder a su información detallada.
+                            <div class="text-left">
+                                 <a href="{% url 'coordinaAsignaturas:verAsignaturas' %}"><button type="button" class="btn bg-amber waves-effect">Ir a asignaturas</button></a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="card">
+                    <div class="header bg-orange">
+                        <h2>
+                            Módulo de Ofertas <small>Lee la Descripción</small>
+                        </h2>
+                    </div>
+                    <div class="body">
+                        En el módulo de ofertas podrás agregar nuevas ofertas a tu coordinación. También, podrás modificarlas, eliminarlas y acceder a su información detallada.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PopUp de confirmación para eliminar una oferta -->
+{% for oferta in ultimasOfertas %}
+    <div class="modal fade" id="{{oferta.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <i class="material-icons">warning</i><h5 class="modal-title" id="exampleModalLabel">Eliminar Oferta</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+
+            ¿Está seguro que desea eliminar de su coordinación esta oferta académica?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <a href="{% url 'coordinaAsignaturas:eliminarOferta' oferta_id=oferta.id %}"><button type="button" class="btn btn-danger">Eliminar</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

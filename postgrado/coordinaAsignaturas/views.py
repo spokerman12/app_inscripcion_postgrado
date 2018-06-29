@@ -15,12 +15,20 @@ from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from .models import *
 from .forms import *
 
+def inscripcion(request):
+
+    estudiante = obtenerEstudiante(request.session['username'])
+    inscripciones = estudiante.inscripciones.all()
+    context = {
+        'estudiante' : estudiante,
+        'inscripciones' : inscripciones
+    }
+    return render(request, 'coordinaAsignaturas/inscripcion.html', context)
 
 '''
 home: Vista que representa la página de inicio de sesión
 '''
 def home(request):
-
 
     if request.method == "POST" :
 
