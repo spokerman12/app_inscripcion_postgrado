@@ -995,7 +995,7 @@ class TestFormularioOferta(TestCase):
 
     def testOfertaAnioActualTrimestreUltimo(self):
         trimestre = 'Sept-Dic'
-        anio      = fecha.year()
+        anio      = fecha.year
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
