@@ -8,17 +8,45 @@ Modelos para la aplicación coordinaAsignaturas
 
 Ver modelo UML e informe técnico para mayor información
 
+ Indice de modelos:
+      1. Variables Globales.
+        1.1. FECHA.
+        1.2. DPTOS.
+        1.3. COORDS.
+        1.4. TRIMESTRES.
+        1.5. CREDITOS.
+      2. Clases.
+        2.1. Usuario.
+        2.2. Profesor.
+        2.3. Asignatura.
+        2.4. Coordinacion.
+        2.5. Coordinador.
+        2.6. Oferta.
+        2.7. Inscripcion.
+        2.8. Estudiante.
+        2.9. Sesion.
+      3. Funciones.
+        3.1. obtenAsignaturas.
+        3.2. buscaAsignaturas.
+        3.3. eliminaAsignatura.
+        3.4. eliminaOferta.
+        3.5. eliminaAsignaturaDeCoord.
+        3.6. agregaAsignaturaACoord.
+        3.7. esEstudiante.
 '''
 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 import datetime, hashlib
 
-fecha = datetime.datetime.now()
+'''
+Fecha del acceso a la aplicación.
+'''
+FECHA = datetime.datetime.now()
 
-# Departamentos de la USB
-# junto a sus abreviaciones
-
+'''
+Departamentos de la USB junto a sus abreviaciones.
+'''
 DPTOS = (
     ('EA','Estudios Ambientales'),
     ('CE','Ciencias Económicas y Administrativas'),
@@ -46,9 +74,9 @@ DPTOS = (
     ('PB','Tecnología de Procesos Biológicos y Bioquímicos'),
     )
 
-# Coordinaciones de postgrado de la USB
-# junto a sus abreviaciones
-
+'''
+Coordinaciones de postgrado de la USB junto a sus abreviaciones.
+'''
 COORDS = (
     ('MAT','Matemáticas'),
     ('CB','Ciencias Biológicas'),
@@ -83,67 +111,100 @@ COORDS = (
     ('P-IT','Postgrado - Ingeniería y Tecnología'),
     )
 
-# Los tres períodos trimestrales estándar de la USB
+'''
+Los tres períodos trimestrales estándar de la USB.
+'''
+TRIMESTRES   = (
+    ('E-M','Enero-Marzo'),
+    ('A-J','Abril-Julio'),
+    ('S-D','Septiembre-Diciembre')
+    )
 
-TRIMESTRES   = (('E-M','Enero-Marzo'),('A-J','Abril-Julio'),('S-D','Septiembre-Diciembre'))
-    
-# Las clases descritas a continuación siguen el orden de dependencia igual al que
-# poseen actualmente. Modificar con cuidado
+'''
+El numero de creditos posibles para una asignatura.
+'''
+CREDITOS = (
+    (0,0), (1,1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (9,9),
+    (10,10), (11,11), (12,12), (13,13), (14,14), (15,15)
+    )
 
-# Usuario del sistema de postgrado
+'''
+Las clases descritas a continuación siguen el orden de dependencia igual al 
+que poseen actualmente. Modificar con cuidado
+'''
+
+'''
+Clase que representa la entidad Usuario del sistema de postgrado.
+'''
 class Usuario(models.Model):
-    username    = models.EmailField(max_length=30, primary_key=True)
-    password    = models.CharField(max_length=64, null=False)
-    nombres     = models.CharField(max_length=80)
-    apellidos   = models.CharField(max_length=80)
+    username  = models.EmailField(max_length = 30, primary_key = True)
+    password  = models.CharField(max_length = 64, null = False)
+    nombres   = models.CharField(max_length = 80)
+    apellidos = models.CharField(max_length = 80)
 
-    # Recibe strings. Devuelve Bool
-    def crearUsuario(self,usr,pwd):
-
+    '''
+    Funcion que crea un usuario en la base de datos.
+    usr -> Nombre de usuario
+    pwd -> Contraseña
+    Retorna True si se crea exitosamente, sino False
+    '''
+    def crearUsuario(self, usr, pwd):
         try:
             self.username = usr
-            m = hashlib.sha256()
-            p = str.encode(pwd)
-            m.update(p)
-            self.password = m.hexdigest()
+            hashm = hashlib.sha256()
+            pswd = str.encode(pwd)
+            hashm.update(pswd)
+            self.password = hashm.hexdigest()
             self.save()
             return True
         except:
             return False
 
-    def __str__(self):
+    '''
+    Extrae por defecto el nombre de usuario
+    '''
+    def __str__(self) -> str:
         return self.username
 
     class Meta:
         app_label = 'coordinaAsignaturas'
 
-# Profesor de la USB
+'''
+Clase que representa la entidad Profesor de la USB.
+'''
 class Profesor(models.Model):
-    ciProf      = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(99999999)], primary_key=True)
-    nomProf     = models.CharField(max_length=80)
+    ciProf  = models.IntegerField(
+        validators = [MinValueValidator(0), MaxValueValidator(99999999)],
+        primary_key = True
+        )
+    nomProf = models.CharField(max_length = 80)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.nomProf
 
     class Meta:
         verbose_name_plural = "Profesores"
         app_label = 'coordinaAsignaturas'
 
-# Asignatura de postgrado
-# El campo diaHora recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6")
-# a través de la interfaz gráfica.
+
+'''
+Clase que representa la entidad Asignatura de postgrado. El campo diaHora
+recibe restricciones de formato (e.g. "Lunes 7-8, Martes 5-6") a través de la
+interfaz gráfica.
+'''
 class Asignatura(models.Model):
-    codAsig     = models.CharField(max_length=7, primary_key=True)
-    codDpto     = models.CharField(max_length=6, choices = DPTOS, blank=True)
-    creditos    = models.IntegerField(choices = ((0,0),(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),
-                                                (7,7),(8,8),(9,9),(10,10),(11,11),(12,12),(13,13),(14,14),(15,15)))
-    nomAsig     = models.CharField(max_length=80, blank=True)
-    progAsig    = models.CharField(max_length=20, blank=True)
-    diaHora     = models.CharField(max_length=60, blank=True)
-    prof        = models.ForeignKey(Profesor, on_delete=models.PROTECT)
-    vista       = models.BooleanField(default = False)
+    codAsig  = models.CharField(max_length = 7, primary_key = True)
+    codDpto  = models.CharField(max_length = 6, choices = DPTOS, blank = True)
+    creditos = models.IntegerField(choices = CREDITOS)
+    nomAsig  = models.CharField(max_length = 80, blank = True)
+    progAsig = models.CharField(max_length = 20, blank = True)
+    diaHora  = models.CharField(max_length = 60, blank = True)
+    prof     = models.ForeignKey(Profesor, on_delete = models.PROTECT)
+    vista    = models.BooleanField(default = False)
 
-
+    '''
+    Extrae por defecto el nombre de la asignatura.
+    '''
     def __str__(self):
         return self.nomAsig
 
@@ -151,81 +212,108 @@ class Asignatura(models.Model):
         ordering = ('nomAsig',)
         app_label = 'coordinaAsignaturas'
 
-    # Elimina asignatura de la base. Devuelve bool
+    '''
+    Elimina una asignatura de la base de dato. Retorna True si se elimina
+    exitosamente, sino Flase
+    '''
     def eliminarAsignatura(self):
         try:
             return self.delete()
         except:
             return False
 
-    # Recibe codigo string. Devuelve objeto asignatura
-    def obtenAsignatura(self,cod):
+    '''
+    Funcion que obtiene una asignatura de la base de datos. Retorna True si se
+    obtiene exitosamente, sino False.
+    '''
+    def obtenAsignatura(self, cod):
         try:
             codA = cod.upper()
-            return self.get(pk=codA)
+            return self.get(pk = codA)
         except:
             return False
 
-# Coordinación de postgrado
-# Puede tener muchas asignaturas asociadas sin importar el departamento.
+'''
+Coordinación de postgrado. Puede tener muchas asignaturas asociadas sin
+importar el departamento.
+'''
 class Coordinacion(models.Model):
-    nomCoord    = models.CharField(max_length=15, choices = COORDS, primary_key=True)
+    nomCoord    = models.CharField(
+        max_length = 15,
+        choices = COORDS,
+        primary_key = True
+        )
     asignaturas = models.ManyToManyField(Asignatura, blank = True)
 
     class Meta:
         app_label = 'coordinaAsignaturas'
         verbose_name_plural = "Coordinaciones"
 
+    '''
+    Extrae por defecto el nombre de la coordinación.
+    '''
     def __str__(self):
         return self.nomCoord
 
-    # ciprof y creditos son int. Los demas string.
-    # Devuelve bool
-    def agregaAsignaturaNueva(self,codAsig,codDpto,creditos,nomAsig,progAsig,diaHora,ciprof):
+    '''
+    Agrega una asignatura nueva a la base de datos a partir de sus datos
+    individuales. Retorna True si la asignatura es exitosamente agregada, False
+    si no.
+    '''
+    def agregaAsignaturaNueva(self, codAsig, codDpto, creditos, nomAsig,
+        progAsig, diaHora, ciprof):
         asig = Asignatura()
-
         try:
-            asig.codAsig = codAsig
-            asig.codDpto = codDpto
+            asig.codAsig  = codAsig
+            asig.codDpto  = codDpto
             asig.creditos = creditos
-            asig.nomAsig = nomAsig
+            asig.nomAsig  = nomAsig
             asig.progAsig = progAsig
-            asig.diaHora = diaHora
-            asig.prof = Profesor.objects.get(pk=ciprof)
+            asig.diaHora  = diaHora
+            asig.prof     = Profesor.objects.get(pk = ciprof)
             asig.save()
             self.save()
-            self.asignaturas.add(Asignatura.objects.get(pk=codAsig))
+            self.asignaturas.add(Asignatura.objects.get(pk = codAsig))
             return True
         except:
             return False
 
-    # Recibe el codigo de la asignatura. Devuelve bool
-    def agregaAsignaturaExistente(self,codAsig):
-        
+    '''
+    Recibe el codigo de la asignatura. Devuelve True si la asignatura de codigo
+    codAsig es agregada exitosamente a la lista, False si no.
+    '''
+    def agregaAsignaturaExistente(self, codAsig):
         try:
-            self.asignaturas.add(Asignatura.objects.get(pk=codAsig))
+            self.asignaturas.add(Asignatura.objects.get(pk = codAsig))
             self.save()
             return True
         except:
             return False
 
-    # Recibe codigo string. Devuelve objeto asignatura
-    def obtenAsignatura(self,cod):
+    '''
+    Recibe codigo string. Devuelve objeto asignatura
+    '''
+    def obtenAsignatura(self, cod):
         try:
             codA = cod.upper()
-            return self.asignaturas.get(pk=codA)
+            return self.asignaturas.get(pk = codA)
         except:
             return False
 
-    # Devuelve lista de asignaturas
+    '''
+    Devuelve lista de asignaturas de la coordinación.
+    '''
     def obtenAsignaturas(self):
         try:
             return list(self.asignaturas.all())
         except:
             return False
 
-    # Toma codigo string, devuelve bool. Elimina de la coordinacion.
-    def eliminaAsignatura(self,cod):
+    '''
+    Toma codigo string, devuelve bool.
+    Elimina de la coordinacion.
+    '''
+    def eliminaAsignatura(self, cod):
         try:
             codA = cod.upper()
             self.asignaturas.remove(codA)
@@ -250,87 +338,109 @@ class Coordinacion(models.Model):
         except:
             return False
 
-# Coordinador de coordinación de postgrado
-# Tiene un usuario Django asociado con permisología específica
+'''
+Coordinador de coordinación de postgrado. Tiene un usuario Django asociado
+con permisología específica.
+'''
 class Coordinador(models.Model):
-    usuario          = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
-    coordinacion   = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
+    usuario      = models.OneToOneField(Usuario, on_delete = models.CASCADE,
+        primary_key = True)
+    coordinacion = models.ForeignKey(Coordinacion, on_delete = models.PROTECT)
 
     class Meta:
         app_label = 'coordinaAsignaturas'
         verbose_name_plural = "Coordinadores"
 
-# Oferta de asignaturas proveniente de una coordinación de postgrado
-# Puede tener muchas asignaturas. Es una oferta con trimestre y año.
+'''
+Oferta de asignaturas proveniente de una coordinación de postgrado. Puede tener muchas asignaturas. Es una oferta con trimestre y año.
+'''
 class Oferta(models.Model):
-    coordinacion    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
-    trimestre   = models.CharField(max_length=7, choices = TRIMESTRES)
-    asignaturas = models.ManyToManyField(Asignatura)
-    anio        = models.IntegerField(validators=[MinValueValidator(fecha.year),MaxValueValidator(2050)])
+    coordinacion = models.ForeignKey(Coordinacion, on_delete = models.PROTECT)
+    trimestre    = models.CharField(max_length = 7, choices = TRIMESTRES)
+    asignaturas  = models.ManyToManyField(Asignatura)
+    anio         = models.IntegerField(
+        validators = [MinValueValidator(1697), MaxValueValidator(2050)]
+        )
 
     def __str__(self):
-        return (str(self.trimestre)+" "+str(self.anio))
+        return ("%s %s" % (self.trimestre, self.anio))
 
     class Meta:
         app_label = 'coordinaAsignaturas'
         ordering = ('anio',)
 
-# Inscripción de un estudiante
-# Consta de asignaturas, año y trimestre.
-# Se puede calcular la suma de créditos (carga académica)
-# con sumCreditos()
+'''
+Inscripción de un estudiante. Consta de asignaturas, año y trimestre. Se
+puede calcular la suma de créditos (carga académica) el metodo sumCreditos
+'''
 class Inscripcion(models.Model):
     asignaturas = models.ManyToManyField(Asignatura)
-    anio        = models.IntegerField(validators=[MinValueValidator(fecha.year),MaxValueValidator(2050)])
-    trimestre   = models.CharField(max_length=7, choices=TRIMESTRES)
+    anio        = models.IntegerField(
+        validators=[MinValueValidator(1967), MaxValueValidator(2050)]
+        )
+    trimestre   = models.CharField(max_length = 7, choices = TRIMESTRES)
 
     def __str__(self):
-        return (self.trimestre+", "+str(self.anio))
+        return ("%s %s" % (self.trimestre, self.anio))
 
+    '''
+    Funcion que permite calcular la carga académica del estudiante.
+    '''
     def sumCreditos(self):
         suma = 0
-        for a in self.asignaturas:
-            suma += a.creditos
-        return (suma)
+        for asignatura in self.asignaturas:
+            suma += asignatura.creditos
+        return suma
 
     class Meta:
         app_label = 'coordinaAsignaturas'
         verbose_name_plural = "Inscripciones"
 
-# Estudiante de postgrado
-# Está asociado a un usuario Django
-# Necesita tener alguna inscripción para contar como estudiante.
+'''
+Estudiante de postgrado. Está asociado a un usuario Django. Necesita tener
+alguna inscripción para contar como estudiante.
+'''
 class Estudiante(models.Model):
-    usuario         = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    carnet          = models.CharField(max_length=12, primary_key=True)
-    inscripciones   = models.ManyToManyField(Inscripcion)
+    usuario       = models.OneToOneField(Usuario, on_delete = models.CASCADE)
+    carnet        = models.CharField(max_length = 12, primary_key = True)
+    inscripciones = models.ManyToManyField(Inscripcion, blank = True)
 
     class Meta:
         app_label = 'coordinaAsignaturas'
 
-# Una sesion en el sistema
-class Sesion(models.Model):
-    usuario     = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    def __str__(self):
+        nombres = "%s, %s" % (self.usuario.apellidos, self.usuario.nombres)
+        return ("%s %s" % (self.carnet, nombres))
 
-    # Recibe strings. Retorna Booleano
-    def validaUsuario(self,usr,pwd):
+'''
+Una sesion en el sistema.
+'''
+class Sesion(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete = models.PROTECT)
+
+    '''
+    Recibe strings. Retorna Booleano
+    '''
+    def validaUsuario(self, usr, pwd):
         try:
-            q = Usuario.objects.get(pk=usr)
-            m = hashlib.sha256()
-            p = str.encode(pwd)
-            m.update(p)
-            if (m.hexdigest()==q.password):
-                self.usuario = q
+            busqueda = Usuario.objects.get(pk = usr)
+            hashm = hashlib.sha256()
+            pswd = str.encode(pwd)
+            hashm.update(pswd)
+            if hashm.hexdigest() == busqueda.password:
+                self.usuario = busqueda
                 return True
             else:
                 return False
         except:
             return False
 
-    # Retorna la coordinacion del usuario activo o False
+    '''
+    Retorna la coordinacion del usuario activo o False
+    '''
     def obtenCoordinacion(self):
         try:
-            coordinador = Coordinador.objects.get(pk=self.usuario)
+            coordinador  = Coordinador.objects.get(pk = self.usuario)
             coordinacion = coordinador.coordinacion
             return coordinacion
         except:
@@ -339,64 +449,97 @@ class Sesion(models.Model):
     class Meta:
         app_label = 'coordinaAsignaturas'
 
+'''
+Obtiene asignaturas del coordinador 'usr'
+'''
 def obtenAsignaturas(usr):
     try:
         usuario = Usuario.objects.get(pk=usr)
-        s = Sesion()
-        s.usuario = usuario
-        asignaturas = s.obtenCoordinacion().obtenAsignaturas()
+        sesion = Sesion()
+        sesion.usuario = usuario
+        asignaturas = sesion.obtenCoordinacion().obtenAsignaturas()
         return asignaturas
     except:
         return False
 
-def buscaAsignaturas(usr,codAsig=None,nomAsig=None,creditos=None,progAsig=None):
+'''
+Busca asignaturas del coordinador 'usr' con campos flexibles
+'''
+def buscaAsignaturas(usr, codAsig = None, nomAsig = None, creditos = None,
+    progAsig = None):
     try:
-        usuario = Usuario.objects.get(pk=usr)
-        s = Sesion()
-        s.usuario = usuario
-        asignaturas = s.obtenCoordinacion().buscaAsignatura(codAsig,nomAsig,creditos,progAsig)
+        usuario        = Usuario.objects.get(pk = usr)
+        sesion         = Sesion()
+        sesion.usuario = usuario
+        asignaturas    = sesion.obtenCoordinacion().buscaAsignatura(codAsig,
+            nomAsig, creditos, progAsig)
         return asignaturas
     except:
         return False
 
+'''
+Elimina de la base de datos la asignatura de codigo 'codAsig'
+'''
 def eliminaAsignatura(codAsig):
     try:
-        q = Asignatura().obtenAsignatura(codAsig).delete()
-        return q
+        return Asignatura().obtenAsignatura(codAsig).delete()
     except:
         return False
 
-def eliminaOferta(usr,oferta_id):
+'''
+Elimina la oferta 'oferta_id' de la coordinacion de 'usr'
+'''
+def eliminaOferta(usr, oferta_id):
     try:
-        usuario = Usuario.objects.get(pk=usr)
-        s = Sesion()
-        s.usuario = usuario
-        c = s.obtenCoordinacion()
-        o = Oferta.objects.get(pk = oferta_id)
-        if c == o.coordinacion :
-            o.delete()
+        usuario = Usuario.objects.get(pk = usr)
+        sesion = Sesion()
+        sesion.usuario = usuario
+        coordinacion = sesion.obtenCoordinacion()
+        oferta = Oferta.objects.get(pk = oferta_id)
+        if coordinacion == oferta.coordinacion :
+            oferta.delete()
             return True
         else :
             return False
     except:
         return False
-    
-def eliminaAsignaturaDeCoord(usr,codAsig):
+
+'''
+Elimina la asignatura 'codAsig' de la coordinacion de 'usr'
+'''
+def eliminaAsignaturaDeCoord(usr, codAsig):
     try:
-        usuario = Usuario.objects.get(pk=usr)
-        s = Sesion()
-        s.usuario = usuario
-        s.obtenCoordinacion().asignaturas.remove(codAsig)
+        usuario        = Usuario.objects.get(pk=usr)
+        sesion         = Sesion()
+        sesion.usuario = usuario
+        sesion.obtenCoordinacion().asignaturas.remove(codAsig)
         return True
     except:
         return False
 
-def agregaAsignaturaACoord(usr,codAsig):
+'''
+Agrega la asignatura 'codAsig' a la coordinacion de 'usr'
+'''
+def agregaAsignaturaACoord(usr, codAsig):
     try:
-        s = Sesion()
-        u = Usuario.objects.get(pk=usr)
-        s.usuario = u
-        s.obtenCoordinacion().asignaturas.add(Asignatura.objects.get(pk=codAsig))
+        sesion = Sesion()
+        usuario = Usuario.objects.get(pk=usr)
+        sesion.usuario = usuario
+        sesion.obtenCoordinacion().asignaturas.add(Asignatura.objects.get(
+            pk = codAsig))
     except:
         return False
     return True
+
+'''
+Retorna True o False dependiendo de si 'usr' es Estudiante o no
+'''
+def esEstudiante(usr):
+    try:
+        usuario = Usuario.objects.get(pk = usr)
+        estudiante = Estudiante.objects.filter(usuario__exact = usuario)
+        if estudiante.first():
+            return True
+        else: return False
+    except:
+        return False
