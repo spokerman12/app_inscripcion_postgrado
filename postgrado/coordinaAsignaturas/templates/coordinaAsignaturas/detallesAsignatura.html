@@ -6,6 +6,10 @@
 <section class="content">
     <div class="container-fluid">
         <div class="card">
+            <!-- ESTA VISTA CARGA LOS DETALLES DE UNA ASIGNATURA SELECCIONADA
+                Cada campo es llenado con los datos registrados de la misma
+                Se carga cada dato de forma individual con el form django
+             -->
             <div class="header text-center">
                 <h2>
                     Detalles de: {{asignatura.nomAsig}} <i class="material-icons col-amber">search</i>
@@ -94,9 +98,11 @@
                                     </div>
                                 </div>
                             </div>
+                        <!-- BOTONES PARA ACCIONES SOBRE LA ASIGNATURA -->
                          <div class="col-sm-6 fieldWrapper">
                             <div class="form-group">
                                 <div class="text-center">
+                                    <!-- Editar: Te lleva a la vista de editar asignatura -->
                                     <a href="{% url 'coordinaAsignaturas:modificarAsignatura' codAsig=asignatura.codAsig %}">
                                         <button type="button" class="btn bg-indigo waves-effect col-sm-12">
                                               <i class="material-icons">edit</i>
@@ -109,6 +115,7 @@
                         <div class="col-sm-6 fieldWrapper">
                             <div class="form-group">
                                 <div class="text-center">
+                                    <!-- Eliminar: Carga el Modal de confirmaciòn para eliminar asignatura -->
                                         <button type="button" data-toggle="modal" data-target="#{{asignatura.codAsig}}" class="btn bg-red waves-effect col-sm-12">
                                         <i class="material-icons">clear</i>
                                             <span>Eliminar</span>
@@ -125,7 +132,7 @@
     </div>
 </section>
 
-<!-- PopUp de confirmación para eliminar una asignatura -->
+<!-- Modal de confirmación para eliminar una asignatura -->
 <div class="modal fade" id="{{asignatura.codAsig}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
 <div class="modal-content">

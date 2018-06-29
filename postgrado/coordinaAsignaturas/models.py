@@ -271,7 +271,7 @@ class Coordinador(models.Model):
 # Oferta de asignaturas proveniente de una coordinación de postgrado
 # Puede tener muchas asignaturas. Es una oferta con trimestre y año.
 class Oferta(models.Model):
-    coordinacion    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT)
+    coordinacion    = models.ForeignKey(Coordinacion, on_delete=models.PROTECT, null=True)
     trimestre   = models.CharField(max_length=7, choices = TRIMESTRES)
     asignaturas = models.ManyToManyField(Asignatura)
     anio        = models.IntegerField(validators=[MinValueValidator(fecha.year),MaxValueValidator(2050)])

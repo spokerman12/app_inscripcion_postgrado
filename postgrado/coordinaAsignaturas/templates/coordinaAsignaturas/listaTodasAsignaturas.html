@@ -16,6 +16,8 @@
 </div>
 
 <section class="content">
+    <!-- Esta vista contiene TODAS las asignaturas en la base de Datos
+    las cuales podrán ser agregadas a la coordinación  -->
     <div class="container-fluid">
         <div class="block-header">
             <h2>ASIGNATURAS</h2>
@@ -51,6 +53,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <!-- Cada asignatura con sus datos son cargados de la base de datos
+                                    y por cada instancia se genera el código html necesario -->
                                     {% for a in asignaturas %}
                                         <tr>
                                             <td><a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=a.codAsig %}">
@@ -72,6 +76,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Boton que despliega la barra de busqueda, la que permite buscar una asignatura en la lista -->
             <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
                 <div class="align-center">
                 <form method='post'>
@@ -84,26 +89,6 @@
         </div>
     </div>
     
-        <div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="defaultModalLabel">Modal title</h4>
-                    </div>
-                    <div class="modal-body">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales orci ante, sed ornare eros vestibulum ut. Ut accumsan
-                        vitae eros sit amet tristique. Nullam scelerisque nunc enim, non dignissim nibh faucibus ullamcorper.
-                        Fusce pulvinar libero vel ligula iaculis ullamcorper. Integer dapibus, mi ac tempor varius, purus
-                        nibh mattis erat, vitae porta nunc nisi non tellus. Vivamus mollis ante non massa egestas fringilla.
-                        Vestibulum egestas consectetur nunc at ultricies. Morbi quis consectetur nunc.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 </section>
 
 {% endblock %}

@@ -99,12 +99,16 @@ def agregarOferta(request):
         form = FormularioOferta(request.POST)
         args = {'form' : form}
         if form.is_valid():
-            o = form.save(commit=False)
+            # se guarda la oferta sin la coordinacion
+            oferta = form.save()
+            # se obtiene la coordinacion del coordinador logeado
             s = Sesion()
             s.usuario = Usuario.objects.get(pk=request.session["username"])
-            c = s.obtenCoordinacion()
-            o.coordinacion = c
-            o.save()
+            coord = s.obtenCoordinacion()
+            # se le asigna la coordinacion a la oferta
+            oferta.coordinacion = coord
+            # se guarda la oferta definitivamente
+            oferta.save()
             return redirect('/coordinaAsignaturas/ofertas')
     else :
         form = FormularioOferta()
@@ -126,15 +130,8 @@ def modificarOferta(request,oferta_id):
         form = FormularioOferta(request.POST, instance=Oferta.objects.get(pk=oferta_id))
         args = {'form' : form}
         if form.is_valid():
-            o = form.save(commit=False)
-            s = Sesion()
-            s.usuario = Usuario.objects.get(pk=request.session["username"])
-            c = s.obtenCoordinacion()
-            o.coordinacion = c
-            o.save()
+            form.save()
             return redirect('coordinaAsignaturas:detallesOferta', oferta_id=oferta_id)
-        else :
-            print("Error al modificar oferta")
     else :
         args = {'form' : FormularioOferta(instance=Oferta.objects.get(pk=oferta_id))}
 

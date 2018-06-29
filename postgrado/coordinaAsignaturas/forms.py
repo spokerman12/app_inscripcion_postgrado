@@ -204,20 +204,15 @@ class FormularioOferta(forms.ModelForm):
         super(FormularioOferta, self).__init__(*args, **kwargs)
         self.fields['asignaturas'].widget = CheckboxSelectMultiple()
         self.fields['asignaturas'].queryset = Asignatura.objects.all()
-        labels = {
-            'trimestre' : 'Trimestre',
-            'asignaturas' : 'Asignaturas',
-            'anio' : 'Periodo',
-        }
-        widgets = {
-            'trimestre' : forms.Select(attrs = {'class':'form-control'}),
-            'anio' : forms.TextInput(attrs = {'class':'form-control'}),
-            'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
-        }
 
     class Meta:
         model = Oferta
-        exclude = ["coordinacion"]
+        exclude = []
+        fields = [
+            'trimestre',
+            'asignaturas',
+            'anio'
+        ]
         labels = {
             'trimestre' : 'Trimestre',
             'asignaturas' : 'Asignaturas',
@@ -227,4 +222,4 @@ class FormularioOferta(forms.ModelForm):
             'trimestre' : forms.Select(attrs = {'class':'form-control'}),
             'anio' : forms.TextInput(attrs = {'class':'form-control'}),
             'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
-        }
+}
