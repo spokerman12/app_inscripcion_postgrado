@@ -44,6 +44,9 @@
 from django.test import TestCase
 from coordinaAsignaturas.forms import LoginForm, FormularioAsignatura, FormularioOferta
 from coordinaAsignaturas.models import Asignatura, Profesor, Usuario, Oferta
+import datetime
+
+
 
 '''
 Clase de pruebas para el formulario LoginForm.
@@ -902,6 +905,7 @@ class TestFormularioOferta(TestCase):
     def setUp(self):
         usuario = Usuario()
         usuario.crearUsuario("coord@usb.ve", "frito")
+        fecha = datetime.datetime.now()
 
 
     # testOfertaDatosCorrectos: verifica que se retorne True al crear una
@@ -925,21 +929,104 @@ class TestFormularioOferta(TestCase):
         self.assertTrue(oferta.is_valid())
 
     # testOfertaAnioMinimo: verifica que se retorne True al crear una
-    # oferta con el año de fundacion de la Universidad. Caso dentro del dominio
+    # oferta con el año de apertura de la Universidad. Caso dentro del dominio
 
     def testOfertaAnioMinimo(self):
         trimestre = 'Sept-Dic'
-        anio      = '1967'
+        anio      = '1970'
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
     # testOfertaAnioAnterior: verifica que se retorne False al crear una
-    # oferta con el año de fundacion de la Universidad. Caso frontera
+    # oferta con un año anterior al de apertura de la Universidad. Caso frontera
 
     def testOfertaAnioAnterior(self):
+        trimestre = 'Sept-Dic'
+        anio      = '1969'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertFalse(oferta.is_valid())
+
+    # testOfertaAnioMinimoTrimestrePrimero: verifica que se retorne True al crear una
+    # oferta con un año igual al de apertura de la Universidad en el primer
+    # trimestre (Primera clase magistral dada en enero de 1970). Caso Esquina
+
+    def testOfertaAnioMinimoTrimestrePrimero(self):
+        trimestre = 'Ene-Mar'
+        anio      = '1970'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioMinimoTrimestreUltimo: verifica que se retorne True al crear una
+    # oferta con un año igual al de apertura de la Universidad en el ultimo
+    # trimestre. Caso Esquina
+
+    def testOfertaAnioMinimoTrimestreUltimo(self):
         trimestre = 'Sept-Dic'
         anio      = '1966'
         valores   = {'trimestre' : trimestre, 'anio': anio}
         oferta    = FormularioOferta(data = valores)
-        self.assertFalse(oferta.is_valid())
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioActualTrimestrePrimero: verifica que se retorne True al crear una
+    # oferta con un año actual y en el primer trimestre. Caso Esquina
+
+    def testOfertaAnioActualTrimestrePrimero(self):
+        trimestre = 'Ene-Mar'
+        anio      = fecha.year()
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioActualTrimestreSegundo: verifica que se retorne True al crear una
+    # oferta con un año actual y en el segundo trimestre. Caso Malicia
+
+    def testOfertaAnioActualTrimestreSegundo(self):
+        trimestre = 'Abr-Jul'
+        anio      = fecha.year()
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioActualTrimestreUltimo: verifica que se retorne True al crear una
+    # oferta con un año actual y en el ultimo trimestre. Caso Esquina
+
+    def testOfertaAnioActualTrimestreUltimo(self):
+        trimestre = 'Sept-Dic'
+        anio      = fecha.year()
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioLejanoTrimestrePrimero: verifica que se retorne True al crear una
+    # oferta con un año lejano y en el primer trimestre. Caso Esquina
+
+    def testOfertaAnioLejanoTrimestrePrimero(self):
+        trimestre = 'Ene-Mar'
+        anio      = '2050'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+
+    # testOfertaAnioLejanoTrimestreSegundo: verifica que se retorne True al crear una
+    # oferta con un año lejano y en el segundo trimestre. Caso Malicia
+
+    def testOfertaAnioLejanoTrimestreSegundo(self):
+        trimestre = 'Abr-Jul'
+        anio      = '2050'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
+
+    # testOfertaAnioLejanoTrimestreUltimo: verifica que se retorne True al crear una
+    # oferta con un año lejano y en el segundo trimestre. Caso Malicia
+
+    def testOfertaAnioLejanoTrimestreUltimo(self):
+        trimestre = 'Sept-Dic'
+        anio      = '2050'
+        valores   = {'trimestre' : trimestre, 'anio': anio}
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())        
