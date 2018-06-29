@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- Barra de búsqueda -->
+<div class="search-bar" onkeyup="myFunction()">
+    <div class="search-icon">
+        <i class="material-icons">search</i>
+    </div>
+    <input id="myInput" type="text" placeholder="BUSCAR ASIGNATURA">
+    <div class="close-search">
+        <i class="material-icons">close</i>
+    </div>
+</div>
 
 <section class="content">
     <div class="container-fluid">
         <div class="card">
-            <!-- ESTA VISTA CARGA LOS DETALLES DE UNA OFERTA SELECCIONADA
-                Cada campo es llenado con los datos registrados de la misma
-                Se carga cada dato de forma individual con el form django
-             -->
             <div class="header text-center">
                 <h2>
                     <h3>Detalles de la Oferta: <b>{{oferta_info}}</b><i class="material-icons col-amber">search</i></h3> 
@@ -46,30 +52,62 @@
                             <div class="col-sm-12 fieldWrapper">
                                 <div class="form-group">
                                     <div class="form-line text-center">
-                                    	<label for="asignaturas"><h4>Asignaturas:</h4> </label>
+
+
+                                        <label for="asignaturas"><h4>Asignaturas:</h4> </label>
+                                        <div class="align-center">
+                                            <form method='post'>
+                                                <h5></h5>
+                                                <a href="javascript:void(0);" class="js-search" data-close="true"><button type="button" class="btn bg-indigo btn-circle-lg waves-effect waves-circle waves-float">
+                                                <i class="material-icons">search</i>
+                                                </button></a>
+                                            </form>
+                                        </div>
+
+                                            <table id="myTable" class="table table-hover dashboard-task-infos text-center sortable">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">
+                                                            <button style="background: transparent; border-style: none">
+                                                            Código</button>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <button style="background: transparent; border-style: none">
+                                                            Nombre</button>
+                                                        </th>
+                                                        <th class="text-center">
+                                                            <button style="background: transparent; border-style: none">
+                                                            Creditos</button>
+                                                        </th>
+                                                        <!--<th class="text-center">Acciones</th>-->
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for mat in materiasOfertadas %}
+                                                <tr>
+                                                    <!--<li class="list-group-item">-->
+                                                        <!--<a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=mat.codAsig %}" style="color:#555">-->
+                                                            <!--<b>Código:</b>--> <td>{{ mat.codAsig }}</td>, <!--<b>Nombre:</b>--> <td>{{ mat.nomAsig }}</td>
+                                                        <!--</a>--><span class="badge bg-amber"><td>{{ mat.creditos }}</td></span>
+                                                    <!--</li>-->
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
                                     </div>
                                 </div>
                             </div>
-                            <!-- En esta columna se cargan todas las asignaturas que la oferta tenga registrada en la base de datos. Se carga de forma dinamica -->
                             <div class="col-sm-12 fieldWrapper">
                                 <div class="form-group text-center">
-										<ul class="list-group">
-											{% for mat in materiasOfertadas %}
-			                                <li class="list-group-item">
-			                                	<a href="{% url 'coordinaAsignaturas:detallesAsignatura' codAsig=mat.codAsig %}" style="color:#555">
-                                                    <b>Código:</b> {{ mat.codAsig }}, <b>Nombre:</b> {{ mat.nomAsig }}
-												</a><span class="badge bg-amber">{{ mat.creditos }} Créditos</span>
-			                                </li>
-			                                {% endfor %}
-			                            </ul>
+                                        <!--<ul class="list-group">-->
+                                            
+                                        <!--</ul>-->
                                 </div>
                             </div>
-                            <!-- BOTONES PARA ACCIONES SOBRE LA OFERTA -->
                          <div class="col-sm-6 fieldWrapper">
                             <div class="form-group">
                                 <div class="text-center">
                                     <a href="{% url 'coordinaAsignaturas:modificarOferta' oferta_id=oferta_info.id %}">
-                                        <!-- Editar: Te lleva a la vista de editar OFERTA -->
                                         <button type="button" class="btn bg-indigo waves-effect col-sm-12">
                                               <i class="material-icons">edit</i>
                                                 <span>Editar</span>
@@ -80,7 +118,6 @@
                         </div>
                         <div class="col-sm-6 fieldWrapper">
                             <div class="form-group">
-                                <!-- Eliminar: Carga el Modal de confirmaciòn para eliminar oferta -->
                                 <div class="text-center">
                                         <button type="button" class="btn bg-red waves-effect col-sm-12" data-toggle="modal" data-target="#{{oferta_info.id}}">
                                         <i class="material-icons">clear</i>
@@ -98,7 +135,7 @@
     </div>
 </section>
 
-<!-- Modal de confirmación para eliminar una oferta -->
+<!-- PopUp de confirmación para eliminar una oferta -->
 <div class="modal fade" id="{{oferta_info.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

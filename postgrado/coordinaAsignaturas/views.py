@@ -31,11 +31,8 @@ Desarrollado por Equipo Null Pointer Exception
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import LoginForm, FormCrearOferta, FormCrearAsignatura
-from .forms import FormModificarOferta, FormAgregarAsignatura
-from .models import Oferta, Usuario, Sesion, Asignatura 
-from .models import agregaAsignaturaACoord, eliminaOferta, obtenAsignaturas
-from .models import eliminaAsignaturaDeCoord
+from .forms import *
+from .models import *
 
 def inscripcion(request):
 

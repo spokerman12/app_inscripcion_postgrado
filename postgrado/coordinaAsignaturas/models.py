@@ -357,7 +357,7 @@ Oferta de asignaturas proveniente de una coordinación de postgrado. Puede tener
 '''
 class Oferta(models.Model):
     coordinacion = models.ForeignKey(Coordinacion, on_delete = models.PROTECT)
-    trimestre    = models.CharField(max_length = 7, choices = TRIMESTRES)
+    trimestre    = models.CharField(max_length = 8, choices = TRIMESTRES)
     asignaturas  = models.ManyToManyField(Asignatura)
     anio         = models.IntegerField(
         validators = [MinValueValidator(1970)]
