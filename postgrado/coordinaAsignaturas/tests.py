@@ -57,13 +57,15 @@
 from django.test import TestCase
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
-from coordinaAsignaturas.forms import LoginForm, FormularioAsignatura, FormularioOferta
+from coordinaAsignaturas.forms import LoginForm, FormularioAsignatura
+from coordinaAsignaturas.forms import FormularioOferta
 from coordinaAsignaturas.models import Asignatura, Profesor, Usuario, Oferta
-import datetime
+from datetime import datetime
 
 ruta = str(settings.MEDIA_ROOT) + "\\programas\\"
 file = open(ruta + "4_Taller_4.pdf", 'rb')
 archivo = SimpleUploadedFile(file.name, file.read())
+fecha = datetime.now()
 
 # Clase de pruebas para el formulario LoginForm.
 class TestLoginForm(TestCase):
@@ -175,7 +177,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertTrue(form.is_valid())
 
     # testFormularioAsignaturaCodigoMenosDeSeisCaracteres: verifica que se
@@ -205,7 +207,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoMasDeSieteCaracteres: verifica que se
@@ -235,7 +237,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoEmpiezaConNumero: verifica que se retorne
@@ -264,7 +266,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoTerminaConUnaLetra: verifica que se retorne
@@ -293,7 +295,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConCaracterNoValido: verifica que se
@@ -323,7 +325,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConUnaLetra: verifica que se retorne False
@@ -352,7 +354,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConTresLetras: verifica que se retorne
@@ -382,7 +384,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConTresDigitos: verifica que se retorne
@@ -411,7 +413,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoConCincoDigitos: verifica que se retorne
@@ -440,7 +442,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoRepetido: verifica que se retorne False si
@@ -474,7 +476,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCreditosNegativos: verifica que se retorne False
@@ -503,7 +505,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCreditoNoNumerico: verifica que se retorne False
@@ -532,7 +534,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaNombreMasDeOchentaCaracteres: verifica que se
@@ -562,7 +564,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaNombreConCaracteresInvalidos: verifica que se
@@ -592,7 +594,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaHoraInicioDespuesDeHoraFin: verifica que se
@@ -621,7 +623,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaFinalizaSinEmpezar: verifica que se retorne False
@@ -650,7 +652,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaFinalizaSinEmpezar: verifica que se retorne False
@@ -679,7 +681,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCodigoVacio: verifica que se retorne False si no
@@ -708,7 +710,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaCreditosVacio: verifica que se retorne False si
@@ -737,7 +739,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaNombreVacio: verifica que se retorne False si no
@@ -766,7 +768,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaProgramaVacio: verifica que se retorne False si
@@ -795,8 +797,11 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{})
-        self.assertFalse(form.is_valid())
+        dic = {
+            # 'progAsig': archivo
+        }
+        form = FormularioAsignatura(valores, dic)
+        self.assertTrue(form.is_valid())
 
     # testFormularioAsignaturaProfVacio: verifica que se retorne False si no se
     # ingresa el profesor de la asignatura. Caso frontera
@@ -824,7 +829,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertFalse(form.is_valid())
 
     # testFormularioAsignaturaVistaVacio: verifica que se retorne False si no
@@ -853,7 +858,7 @@ class TestFormularioAsignatura(TestCase):
             'codDpto': "MA",
             # 'vista': False
         }
-        form = FormularioAsignatura(valores,{'progAsig':archivo})
+        form = FormularioAsignatura(valores, {'progAsig': archivo})
         self.assertTrue(form.is_valid())
 
     # testFormularioAsignaturVacio: verifica que se retorne False si no se
@@ -898,148 +903,291 @@ class TestFormularioOferta(TestCase):
     def setUp(self):
         usuario = Usuario()
         usuario.crearUsuario("coord@usb.ve", "frito")
-        fecha = datetime.datetime.now()
 
 
     # testOfertaDatosCorrectos: verifica que se retorne True al crear una
     # oferta con datos correctos. Caso dentro del dominio
-
     def testOfertaDatosCorrectos(self):
         trimestre = 'Ene-Mar'
         anio      = '2019'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
     # testOfertaAnioMinimo: verifica que se retorne True al crear una
     # oferta con el año de apertura de la Universidad. Caso dentro del dominio
-
     def testOfertaAnioMinimo(self):
         trimestre = 'Sept-Dic'
         anio      = '1970'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
     # testOfertaAnioAnterior: verifica que se retorne False al crear una
     # oferta con un año anterior al de apertura de la Universidad. Caso frontera
-
     def testOfertaAnioAnterior(self):
         trimestre = 'Sept-Dic'
         anio      = '1969'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertFalse(oferta.is_valid())
 
-    # testOfertaAnioMinimoTrimestrePrimero: verifica que se retorne True al crear una
-    # oferta con un año igual al de apertura de la Universidad en el primer
-    # trimestre (Primera clase magistral dada en enero de 1970). Caso Esquina
-
+    # testOfertaAnioMinimoTrimestrePrimero: verifica que se retorne True al 
+    # crear una oferta con un año igual al de apertura de la Universidad en el
+    # primer trimestre (Primera clase magistral dada en enero de 1970). Caso
+    # Esquina
     def testOfertaAnioMinimoTrimestrePrimero(self):
         trimestre = 'Ene-Mar'
         anio      = '1970'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
-    # testOfertaAnioMinimoTrimestreUltimo: verifica que se retorne True al crear una
-    # oferta con un año igual al de apertura de la Universidad en el ultimo
-    # trimestre. Caso Esquina
-
+    # testOfertaAnioMinimoTrimestreUltimo: verifica que se retorne True al
+    # crear una oferta con un año igual al de apertura de la Universidad en el
+    # ultimo trimestre. Caso Esquina
     def testOfertaAnioMinimoTrimestreUltimo(self):
         trimestre = 'Sept-Dic'
-        anio      = '1966'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        anio      = '1970'
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
-    # testOfertaAnioActualTrimestrePrimero: verifica que se retorne True al crear una
-    # oferta con un año actual y en el primer trimestre. Caso Esquina
-
+    # testOfertaAnioActualTrimestrePrimero: verifica que se retorne True al
+    # crear una oferta con un año actual y en el primer trimestre. Caso Esquina
     def testOfertaAnioActualTrimestrePrimero(self):
-        trimestre = 'Ene-Mar'
-        anio      = fecha.year()
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        trimestre = 'Abr-Jul'
+        anio      = fecha.year
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
-    # testOfertaAnioActualTrimestreSegundo: verifica que se retorne True al crear una
-    # oferta con un año actual y en el segundo trimestre. Caso Malicia
-
+    # testOfertaAnioActualTrimestreSegundo: verifica que se retorne True al
+    # crear una oferta con un año actual y en el segundo trimestre. Caso
+    # Malicia
     def testOfertaAnioActualTrimestreSegundo(self):
         trimestre = 'Abr-Jul'
-        anio      = fecha.year()
-        valores   = {'trimestre' : trimestre, 'anio': anio}
-        oferta    = FormularioOferta(data = valores)
-        self.assertTrue(oferta.is_valid())
-
-    # testOfertaAnioActualTrimestreUltimo: verifica que se retorne True al crear una
-    # oferta con un año actual y en el ultimo trimestre. Caso Esquina
-
-    def testOfertaAnioActualTrimestreUltimo(self):
-        trimestre = 'Sept-Dic'
         anio      = fecha.year
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
-    # testOfertaAnioLejanoTrimestrePrimero: verifica que se retorne True al crear una
-    # oferta con un año lejano y en el primer trimestre. Caso Esquina
+    # testOfertaAnioActualTrimestreUltimo: verifica que se retorne True al
+    # crear una oferta con un año actual y en el ultimo trimestre. Caso Esquina
+    def testOfertaAnioActualTrimestreUltimo(self):
+        trimestre = 'Abr-Jul'
+        anio      = fecha.year
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
+        oferta    = FormularioOferta(data = valores)
+        self.assertTrue(oferta.is_valid())
 
+    # testOfertaAnioLejanoTrimestrePrimero: verifica que se retorne True al
+    # crear una oferta con un año lejano y en el primer trimestre. Caso Esquina
     def testOfertaAnioLejanoTrimestrePrimero(self):
         trimestre = 'Ene-Mar'
         anio      = '2050'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
 
-    # testOfertaAnioLejanoTrimestreSegundo: verifica que se retorne True al crear una
-    # oferta con un año lejano y en el segundo trimestre. Caso Malicia
-
+    # testOfertaAnioLejanoTrimestreSegundo: verifica que se retorne True al
+    # crear una oferta con un año lejano y en el segundo trimestre. Caso
+    # Malicia
     def testOfertaAnioLejanoTrimestreSegundo(self):
         trimestre = 'Abr-Jul'
         anio      = '2050'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())
 
-    # testOfertaAnioLejanoTrimestreUltimo: verifica que se retorne True al crear una
-    # oferta con un año lejano y en el segundo trimestre. Caso Malicia
-
+    # testOfertaAnioLejanoTrimestreUltimo: verifica que se retorne True al
+    # crear una oferta con un año lejano y en el segundo trimestre. Caso
+    # Malicia
     def testOfertaAnioLejanoTrimestreUltimo(self):
         trimestre = 'Sept-Dic'
         anio      = '2050'
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertTrue(oferta.is_valid())        
 
-    # testOfertaAnioVacio: verifica que se retorne False al crear una
-    # oferta con un año vacio. Caso Frontera
-
+    # testOfertaAnioVacio: verifica que se retorne False al crear una oferta
+    # con un año vacio. Caso Frontera
     def testOfertaAnioVacio(self):
         trimestre = 'Sept-Dic'
         anio      = ''
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertFalse(oferta.is_valid())        
 
     # testOfertaTrimestreVacio: verifica que se retorne False al crear una
     # oferta con un trimestre vacio. Caso Frontera
-
     def testOfertaTrimestreVacio(self):
         trimestre = ''
         anio      = fecha.year
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertFalse(oferta.is_valid())   
 
     # testOfertaAnioYTrimestreVacio: verifica que se retorne False al crear una
     # oferta con un año y un trimestre vacio. Caso Esquina
-
     def testOfertaAnioYTrimestreVacio(self):
         trimestre = ''
         anio      = ''
-        valores   = {'trimestre' : trimestre, 'anio': anio}
+        prof = Profesor(ciProf = 12345678, nomProf = "Probador")
+        prof.save()
+        asignatura = Asignatura()
+        asignatura.codAsig = "MA1111"
+        asignatura.creditos = 4
+        asignatura.prof = Profesor.objects.get(pk = 12345678)
+        asignatura.save()
+        valores   = {
+            'trimestre': trimestre,
+            'anio': anio,
+            'asignaturas': [asignatura]
+            }
         oferta    = FormularioOferta(data = valores)
         self.assertFalse(oferta.is_valid())   

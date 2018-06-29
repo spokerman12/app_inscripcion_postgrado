@@ -3,7 +3,7 @@
 
 from django import forms
 from django.forms.widgets import CheckboxSelectMultiple
-from coordinaAsignaturas.models import *
+from coordinaAsignaturas.models import Usuario, Asignatura, Oferta
 import hashlib, datetime
 import re
 
@@ -35,28 +35,26 @@ Desarrollado por Equipo Null Pointer Exception
 1. LoginForm
     Formulario que se encarga de registrar al usuario
 '''
-class LoginForm(forms.Form) :
-    username = forms.EmailField(max_length=30)
-    password = forms.CharField(max_length=64, widget=forms.PasswordInput)
+class LoginForm(forms.Form):
+    username = forms.EmailField(max_length = 30)
+    password = forms.CharField(max_length = 64, widget = forms.PasswordInput)
 
     def clean(self):
         limpio = super(LoginForm, self).clean()
         usr = limpio.get('username')
         pwd = limpio.get('password')
         try:
-            q = Usuario.objects.get(pk=usr)
-            m = hashlib.sha256()
-            p = str.encode(pwd)
-            m.update(p)
+            busqueda = Usuario.objects.get(pk = usr)
+            hashm = hashlib.sha256()
+            pswd = str.encode(pwd)
+            hashm.update(pswd)
 
-            if (m.hexdigest()==q.password):
-                pass
-                #self.usuario = q
-            else:
+            if hashm.hexdigest() != busqueda.password:
                 self.add_error('username', 'Usuario o clave incorrecto')
         except:
             self.add_error('username', 'Usuario o clave incorrecto')
         return limpio
+
     class Meta:
         model = Usuario
         exlude = []
@@ -66,21 +64,21 @@ class LoginForm(forms.Form) :
     Formulario base para los fomularios de agregar, crear y modificar
 '''
 class FormularioAsignatura(forms.ModelForm):
-    lun = forms.BooleanField(required=False)
-    lun_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    lun_fin = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    mar = forms.BooleanField(required=False)
-    mar_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    mar_fin = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    mie = forms.BooleanField(required=False)
-    mie_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    mie_fin = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    jue = forms.BooleanField(required=False)
-    jue_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    jue_fin = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    vie = forms.BooleanField(required=False)
-    vie_inicio = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
-    vie_fin = forms.ChoiceField(choices=[(n, n) for n in range(1, 11)])
+    lun = forms.BooleanField(required = False)
+    lun_inicio = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    lun_fin = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    mar = forms.BooleanField(required = False)
+    mar_inicio = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    mar_fin = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    mie = forms.BooleanField(required = False)
+    mie_inicio = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    mie_fin = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    jue = forms.BooleanField(required = False)
+    jue_inicio = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    jue_fin = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    vie = forms.BooleanField(required = False)
+    vie_inicio = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
+    vie_fin = forms.ChoiceField(choices = [(n, n) for n in range(1, 11)])
 
     class Meta:
         model = Asignatura
@@ -94,20 +92,21 @@ class FormularioAsignatura(forms.ModelForm):
             'codDpto',
             'vista',
         ]
-        labels = {'codAsig' : 'Codigo de asignatura',
-                  'creditos' : 'Numero de creditos',
-                  'nomAsig' : 'Nombre',
-                  'progAsig' : 'Programa',
-                  'prof' : 'Profesor',
+        labels = {'codAsig': 'Codigo de asignatura',
+                  'creditos': 'Numero de creditos',
+                  'nomAsig': 'Nombre',
+                  'progAsig': 'Programa',
+                  'prof': 'Profesor',
                   'codDpto': 'Departamento',
-                  'vista' : 'Vista'}
+                  'vista': 'Vista'}
         widgets = {
-            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
-            'creditos' : forms.Select(attrs = {'class':'form-control'}),
-            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
-            'prof' : forms.Select(attrs = {'class':'form-control'}),
-            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+            'codAsig': forms.TextInput(attrs = {'class': 'form-control'}),
+            'creditos': forms.Select(attrs = {'class': 'form-control'}),
+            'nomAsig': forms.TextInput(attrs = {'class': 'form-control'}),
+            'prof': forms.Select(attrs = {'class': 'form-control'}),
+            'codDpto': forms.Select(attrs = {'class': 'form-control'})
         }
+
     # Haciendole override al metodo clean
     def clean(self):
         regexCodigo = '^([A-Z]{2,2})(\-){0,1}([0-9]{4,4})$'
@@ -130,33 +129,42 @@ class FormularioAsignatura(forms.ModelForm):
                 return limpio
             dias = ['lun','mar','mie','jue','vie']
             d = False
-            for dia in dias :
+            for dia in dias:
                 d = d or limpio.get(dia)
-            if not(d) :
+            if not (d):
                 self.add_error('lun', 'Debe haber al menos un dia de clases')
                 return limpio
-            for dia in dias :
-                if  limpio.get(dia) == False :
+            for dia in dias:
+                if  limpio.get(dia) == False:
                     continue
                 try:
-                    if int(limpio.get(dia+"_inicio")) > int(limpio.get(dia+"_fin")):
-                        self.add_error(dia+'_inicio', mensajeErrorIntervalo)
+                    inicio = int(limpio.get(dia + "_inicio"))
+                    fin    = int(limpio.get(dia + "_fin"))
+                    if inicio > fin:
+                        self.add_error(dia + '_inicio', mensajeErrorIntervalo)
                 except:
-                    self.add_error(dia+'_inicio', mensajeErrorLimites)
+                    self.add_error(dia + '_inicio', mensajeErrorLimites)
         except:
             pass
         return limpio
 
     # Haciendo overwrite a la funcion de save #
-    def save(self, commit=True):
-        asignatura = super(FormularioAsignatura, self).save(commit=False)
+    def save(self, commit = True):
+        asignatura = super(FormularioAsignatura, self).save(commit = False)
         dias = ['lun','mar','mie','jue','vie']
         dias_clase = []
-        for dia in dias :
-            if self.cleaned_data[dia] :
+        for dia in dias:
+            if self.cleaned_data[dia]:
                 dias_clase.append(dia)
-        s = [dia+" "+self.cleaned_data[dia+'_inicio']+"-"+self.cleaned_data[dia+'_fin'] for dia in dias_clase]
-        asignatura.diaHora = " ; ".join(s)
+        horarios = [
+            "%s %s-%s" % (
+                dia,
+                self.cleaned_data[dia + '_inicio'],
+                self.cleaned_data[dia + '_fin']
+                )
+            for dia in dias_clase
+            ]
+        asignatura.diaHora = " ; ".join(horarios)
         if commit:
             asignatura.save()
         return asignatura
@@ -165,23 +173,29 @@ class FormularioAsignatura(forms.ModelForm):
 3. FormCrearAsignatura
     Fomulario que se encarga de crear una nueva asignatura en el sistema
 '''
-class FormCrearAsignatura(FormularioAsignatura) :
-    def clean(self) :
+class FormCrearAsignatura(FormularioAsignatura):
+    def clean(self):
         limpio = super(FormCrearAsignatura, self).clean()
         codigo = limpio.get('codAsig')
         nombre = limpio.get('nomAsig')
         # Comprobando que no haya una asignatura con igual codigo
         try:
-            Asignatura.objects.get(codAsig=codigo)
-            self.add_error('codAsig', 'Ya existe una asignatura con ese codigo')
-        except Asignatura.DoesNotExist :
+            Asignatura.objects.get(codAsig = codigo)
+            self.add_error(
+                'codAsig',
+                'Ya existe una asignatura con ese codigo'
+                )
+        except Asignatura.DoesNotExist:
             pass
 
         # Comprobando que no haya una asignatura con igual nombre
         try:
-            Asignatura.objects.get(nomAsig=nombre)
-            self.add_error('nomAsig', 'Ya existe una asignatura con ese nombre')
-        except Asignatura.DoesNotExist :
+            Asignatura.objects.get(nomAsig = nombre)
+            self.add_error(
+                'nomAsig',
+                'Ya existe una asignatura con ese nombre'
+                )
+        except Asignatura.DoesNotExist:
             pass
 
         return limpio
@@ -190,52 +204,52 @@ class FormCrearAsignatura(FormularioAsignatura) :
 4. FormModificarAsignatura
     Formulario que se encarga de registrar cambios a una asignatura
 '''
-class FormModificarAsignatura(FormularioAsignatura) :
+class FormModificarAsignatura(FormularioAsignatura):
 
     def __init__(self, *args, **kwargs):
         super(FormModificarAsignatura, self).__init__(*args, **kwargs)
         codAsig = getattr(self, 'codAsig', None)
         self.fields['codAsig'].widget.attrs['readonly'] = True
-        labels = {'codAsig' : 'Codigo de asignatura',
-                  'creditos' : 'Numero de creditos',
-                  'nomAsig' : 'Nombre',
-                  'progAsig' : 'Programa',
-                  'prof' : 'Profesor',
+        labels = {'codAsig': 'Codigo de asignatura',
+                  'creditos': 'Numero de creditos',
+                  'nomAsig': 'Nombre',
+                  'progAsig': 'Programa',
+                  'prof': 'Profesor',
                   'codDpto': 'Departamento',
-                  'vista' : 'Vista'}
+                  'vista': 'Vista'}
         widgets = {
-            'codAsig' : forms.TextInput(attrs = {'class':'form-control'}),
-            'creditos' : forms.Select(attrs = {'class':'form-control'}),
-            'nomAsig' : forms.TextInput(attrs = {'class':'form-control'}),
-            'progAsig' : forms.TextInput(attrs = {'class':'form-control'}),
-            'prof' : forms.Select(attrs = {'class':'form-control'}),
-            'codDpto' : forms.Select(attrs = {'class':'form-control'})
+            'codAsig': forms.TextInput(attrs = {'class': 'form-control'}),
+            'creditos': forms.Select(attrs = {'class': 'form-control'}),
+            'nomAsig': forms.TextInput(attrs = {'class': 'form-control'}),
+            'progAsig': forms.TextInput(attrs = {'class': 'form-control'}),
+            'prof': forms.Select(attrs = {'class': 'form-control'}),
+            'codDpto': forms.Select(attrs = {'class': 'form-control'})
         }
-        try :
-            if kwargs is not None:
-                if "instance" in kwargs.keys() :
-                    horario = kwargs["instance"].diaHora
-                    horario = horario.split(" ; ")
-                    for H in horario :
-                        if H != "" :
-                            H = H.split(" ")
-                            H[1] = H[1].split("-")
-                            self.fields[H[0]].initial = True
-                            self.fields[H[0]+str("_inicio")].initial = int(H[1][0])
-                            self.fields[H[0]+str("_fin")].initial = int(H[1][1])
-        except :
+        try:
+            if kwargs is not None and "instance" in kwargs.keys():
+                horario = kwargs["instance"].diaHora
+                horario = horario.split(" ; ")
+                for hora in horario:
+                    if hora != "":
+                        hora = hora.split(" ")
+                        hora[1] = hora[1].split("-")
+                        self.fields[hora[0]].initial = True
+                        inicio = "%s_inicio" % (hora[0])
+                        fin    = "%s_fin" % (hora[0])
+                        self.fields[inicio].initial = int(hora[1][0])
+                        self.fields[fin].initial = int(hora[1][1])
+        except:
             pass
 
 '''
 5. FormAgregarAsignatura
     Formulario que se encarga de agregar una materia existente a la coordinacion
 '''
-class FormAgregarAsignatura(FormularioAsignatura) :
-    def clean(self) :
+class FormAgregarAsignatura(FormularioAsignatura):
+    def clean(self):
         limpio = super(FormAgregarAsignatura, self).clean()
         codigo = limpio.get('codAsig')
         nombre = limpio.get('nomAsig')
-
         return limpio
 
 '''
@@ -258,34 +272,42 @@ class FormularioOferta(forms.ModelForm):
             'anio'
         ]
         labels = {
-            'trimestre' : 'Trimestre',
-            'asignaturas' : 'Asignaturas',
-            'anio' : 'Periodo',
+            'trimestre': 'Trimestre',
+            'asignaturas': 'Asignaturas',
+            'anio': 'Periodo',
         }
         widgets = {
-            'trimestre' : forms.Select(attrs = {'class':'form-control'}),
-            'anio' : forms.TextInput(attrs = {'class':'form-control'}),
-            'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
+            'trimestre': forms.Select(attrs = {'class': 'form-control'}),
+            'anio': forms.TextInput(attrs = {'class': 'form-control'}),
+            'asignaturas': forms.Select(attrs = {
+                'class': 'form-control text-center',
+                'multiple': 'multiple'
+                }
+            )
         }
 
 '''
 7. FromMoodificarOferta
     Formulario que se encarga de modificar una oferta existente
 '''
-class FormModificarOferta(FormularioOferta) :
+class FormModificarOferta(FormularioOferta):
     def __init__(self, *args, **kwargs):
         super(FormModificarOferta, self).__init__(*args, **kwargs)
         self.fields['asignaturas'].widget = CheckboxSelectMultiple()
         self.fields['asignaturas'].queryset = Asignatura.objects.all()
         labels = {
-            'trimestre' : 'Trimestre',
-            'asignaturas' : 'Asignaturas',
-            'anio' : 'Periodo',
+            'trimestre': 'Trimestre',
+            'asignaturas': 'Asignaturas',
+            'anio': 'Periodo',
         }
         widgets = {
-            'trimestre' : forms.Select(attrs = {'class':'form-control'}),
-            'anio' : forms.TextInput(attrs = {'class':'form-control'}),
-            'asignaturas' : forms.Select(attrs = {'class':'form-control text-center','multiple':'multiple'})
+            'trimestre': forms.Select(attrs = {'class': 'form-control'}),
+            'anio': forms.TextInput(attrs = {'class': 'form-control'}),
+            'asignaturas': forms.Select(attrs = {
+                'class': 'form-control text-center',
+                'multiple': 'multiple'
+                }
+            )
         }
 
 '''

@@ -2,7 +2,9 @@
 
 
 from django.contrib import admin
-from coordinaAsignaturas.models import *
+from coordinaAsignaturas.models import Profesor, Asignatura, Oferta, Sesion
+from coordinaAsignaturas.models import Inscripcion, Estudiante, Coordinador
+from coordinaAsignaturas.models import Coordinacion, Usuario
 
 # Register your models here.
 admin.site.register(Profesor)
