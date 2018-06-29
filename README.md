@@ -3,6 +3,13 @@ Repositorio del primer proyecto de Ingeniería de Software CI3715 de abril-julio
 
 Equipo: Null Pointer Exception
 
+André Corcuera 12-10660
+Daniel Francis 12-10863
+Francisco Márquez 12-11163
+Natascha Gamboa 12-111250
+Ángel Morante 13-10931
+Leonardo López 14-10576
+
 ## Instrucciones basicas:
 
 La página se llama "postgrado"
@@ -17,33 +24,20 @@ El app que cumple las historias se llama "coordinaAsignaturas"
 ### Cuentas preparadas:
 
 Administrador: admin | contrasena0000
-Coordinador: postgradoCiencias@usb.ve | contrasena0000
-Estudiante: 11-11111@usb.ve | contrasena0000
+Coordinador: coord@usb.ve | ciencias
+Estudiante: 11-11111@usb.ve | estudiante
 
-Permisología básica está implementada.
-Mayores restricciones se implementarán a nivel de front-end.
+La cuenta de estudiante aún no está habilitada.
 
-## Estado actual Sprint 1:
+Los nuevos usuarios deben ser creados a traves del metodo correspondiente en el modelo Sesion. Los usuarios no son los de Django.
 
-Base de datos con objetos básicos y relaciones.
-Más del 50% de las restricciones de campo se imponen a través de los modelos de Django.
-Hace falta refinamiento pero es posible cumplir todas las historias de compromiso
-a excepción de la 3.2, que requiere vistas.
+## Estado actual Sprint 3:
 
-## Orden de dependencias:
+Épicas 1, 2 y 3 listas a excepción de la descarga de ofertas en PDF.
 
-Profesor > Asignatura > Coordinacion > Coordinador > Oferta > Inscripcion > Estudiante
 
-La pagina se llama "postgrado"
-El app que cumple las historias se llama "coordinaAsignaturas"
+## Cuando se cambian los modelos en models.py...
 
-1. Debemos clonar el repositorio, digamos en home/Proyecto
-2. Dentro de home/Proyecto/postgrado, 
-	Si queremos visualizar la pagina, ejecutar (con Django instalado) `>python3 manage.py runserver`
-		y entrar a `http://127.0.0.1:8000/` para vista de usuario. Agregar `/admin` para vista de admin.
-
-## Para actualizar el modelado de la base de datos
-1. Cambiar modelos en models.py
 2. Correr `>python3 manage.py makemigrations` para pasar Python a SQL (crear migraciones)
 3. Correr `>python3 manage.py` migrate para ejecutar tales migraciones
 

@@ -32,14 +32,8 @@ Desarrollado por Equipo Null Pointer Exception
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
-from coordinaAsignaturas.forms import LoginForm, FormularioOferta
-from coordinaAsignaturas.forms import FormCrearAsignatura
-from coordinaAsignaturas.forms import FormModificarAsignatura
-from coordinaAsignaturas.forms import FormAgregarAsignatura
-from coordinaAsignaturas.models import Usuario, Estudiante, Oferta, Sesion
-from coordinaAsignaturas.models import obtenerEstudiante, esEstudiante
-from coordinaAsignaturas.models import eliminaAsignaturaDeCoord, eliminaOferta
-from coordinaAsignaturas.models import agregaAsignaturaACoord, obtenAsignaturas
+from coordinaAsignaturas.forms import *
+from coordinaAsignaturas.models import *
 
 '''
 inscripcion: Vista que representa la página de inscripcion de un estudiante.
