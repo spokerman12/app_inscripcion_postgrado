@@ -8,12 +8,38 @@ Vistas de coordinaAsignaturas
 
 Desarrollado por Equipo Null Pointer Exception
 
+<<<<<<< HEAD
+=======
+
+ Indice de vistas:
+      1.  home.
+      2.  principal.
+      3.  verOfertas.
+      4.  detallesOferta.
+      5.  agregarOferta.
+      6.  modificarOferta.
+      7.  verAsignaturas.
+      8.  eliminarOferta.
+      9.  verAsignaturas.
+      10. agregarAsignatura.
+      11. modificarAsignatura.
+      12. eliminarAsignatura.
+      13. detallesAsignatura.
+      14. listaTodasAsignaturas.
+      15. agregarACoord.
+
+
+>>>>>>> origin/H4-comentarios-Francisco
 '''
 
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
-from .models import *
-from .forms import *
+from django.http import HttpResponse, HttpRequest
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import LoginForm, FormCrearOferta, FormCrearAsignatura
+from .forms import FormModificarOferta, FormAgregarAsignatura
+from .models import Oferta, Usuario, Sesion, Asignatura 
+from .models import agregaAsignaturaACoord, eliminaOferta, obtenAsignaturas
+from .models import eliminaAsignaturaDeCoord
 
 
 '''
@@ -250,8 +276,13 @@ def detallesAsignatura(request, codAsig):
     asignatura = get_object_or_404(Asignatura, codAsig=codAsig)
     return render(request, 'coordinaAsignaturas/detallesAsignatura.html', 
                  {'asignatura' : asignatura})
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> origin/H4-comentarios-Francisco
 '''
 listaTodasAsignaturas: Genera el template con todas las asignaturas existentes
                        Las pasa por request
@@ -260,9 +291,15 @@ def listaTodasAsignaturas(request):
     asignaturas = Asignatura.objects.all()
     return render(request, 'coordinaAsignaturas/listaTodasAsignaturas.html', 
                  {'asignaturas' : asignaturas})
+<<<<<<< HEAD
 
 
 
+=======
+
+
+
+>>>>>>> origin/H4-comentarios-Francisco
 '''
 agregarACoord: Instanciando un formulario, permite agregar 
                una asignatura a la coordinación.
