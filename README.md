@@ -18,12 +18,16 @@ El app que cumple las historias se llama "coordinaAsignaturas"
 1. Debemos clonar el repositorio, digamos en /home/
 2. Entrar a /home/postgrado, 
 	Si queremos visualizar la pagina, ejecutar (con Django instalado) `>python3 manage.py runserver`
-		y entrar a `http://127.0.0.1:8000/` para vista de usuario (no funcional). 
-		a `http://127.0.0.1:8000/admin` para vista de admin (funcional).
+		y entrar a `http://127.0.0.1:8000/` para vista de usuario y 
+		a `http://127.0.0.1:8000/admin` para vista de admin.
 
 ### Cuentas preparadas:
 
+Para el panel de admin de Django:
 Administrador: admin | contrasena0000
+
+Para el sistema de asignaturas:
+
 Coordinador: coord@usb.ve | ciencias
 Estudiante: 11-11111@usb.ve | estudiante
 
